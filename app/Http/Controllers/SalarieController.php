@@ -21,10 +21,7 @@ class SalarieController extends Controller
 
     public function create()
     {
-        $sal = new Salarie;
-        $fonc = Fonction::all();
         $service = Service::all();
-        $civ = Civilite::all();
         return view('salarie.create',compact('sal','fonc','service','civ'));
     }
 
@@ -42,16 +39,6 @@ class SalarieController extends Controller
             'service_id'=>$request->service,
             'civilite_id'=>$request->civilite            
         ]);
-
-        function ajout($sal)
-        {
-            if ($sal->civilite->libCiv == "Monsieur") {
-                return "ajouté";
-            } else {
-                return "ajoutée";
-            }
-        }
-
         Flashy::success(sprintf("%s %s %s avec succès",$sal->civilite->libCiv,$sal->nom,ajout($sal)));
         return redirect(route('sal.show',$sal));
     }

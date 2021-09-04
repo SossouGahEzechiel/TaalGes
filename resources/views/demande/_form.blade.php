@@ -1,19 +1,11 @@
 <br>
 <div class="form-floating mb-3">
-    <select class="form-select" id="auteur" name="auteur" aria-label="Floating label select example">
-        <option value=" {{old('auteur')}} " hidden></option>
-      @forelse ($sal as $sal)
-        <option value="{{$sal->id}}">{{$sal->nom}}</option>
-      @empty
-          <option value="">Pas de salarier dans la base de données</option>
-      @endforelse
-    </select>
+    <input type="text" class="form-control" id="auteur" name="auteur" placeholder="auteur" value="{{Auth::user()->nom}}&nbsp;{{Auth::user()->prenom}}" disabled>
     <label for="auteur">Auteur de la demande</label>
 </div>
-{!!$errors->first('auteur','<div class="alert alert-danger" role="alert">:message</div>')!!}
 <label class="form-check" for="check">Type de permission</label>
 <div class="form-check-inline" id="check" >
-    <input class="form-check-input" type="radio" name="typeDem" id="conge" value="conge">
+    <input class="form-check-input" type="radio" name="typeDem" id="conge" value="congé">
     <label class="form-check-label" for="conge">
         Congé
     </label>
@@ -48,4 +40,3 @@
 <hr>
 <a href="{{ route('dem.index') }}" class="btn btn-secondary">Annuler</a> &nbsp;
 <button type="submit" class="btn btn-success">Valider</button>
-

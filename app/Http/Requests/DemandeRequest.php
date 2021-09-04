@@ -24,9 +24,8 @@ class DemandeRequest extends FormRequest
     public function rules()
     {
         return [
-            'auteur'=>['required'],
             'typeDem'=>['required'],
-            'objet'=>['required','max:100','min:7'],
+            'objet'=>['required','max:100','min:5'],
             'dateDeb'=>['required','date',"after:tomorrow"],
             'dure'=>['numeric:1,30']
         ];

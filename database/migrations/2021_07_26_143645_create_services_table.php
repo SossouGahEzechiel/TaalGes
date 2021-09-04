@@ -15,7 +15,7 @@ class CreateServicesTable extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();            
-            $table->string('libServ',35);            
+            $table->string('lib',35);            
         });
     }
 

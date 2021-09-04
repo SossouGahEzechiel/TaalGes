@@ -6,5 +6,4 @@
         @method('put')
         @include('demande._form')
     </form>
-    
 @endsection
