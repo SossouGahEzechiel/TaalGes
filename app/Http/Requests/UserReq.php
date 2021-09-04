@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Rule as ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 
 class UserReq extends FormRequest
@@ -30,23 +33,23 @@ class UserReq extends FormRequest
             'sexe' => ['required'],
             'natCont' => ['required'],
             'adresse' => ['required', 'string', 'max:255','min:3'],
-            'email' => ['required', 'string', 'email', 'max:255','unique:users,email'],
-            //     Rule::unique('users','email')
-            //     ->where(function($query){
-            //         $query->whereEmail($request->input('email'));
-            //     })             
-            // ],
-            'tel' => ['required', 'string', 'max:15','min:8','unique:users,tel'],
-                // Rule::unique('users','tel')
-                // ->where(function($query){
-                //     $query->whereTel($request->email);
-                // })    
-            // ],            
-            'password' => ['required', 'confirmed', Rules\Password::defaults(),'unique:users,password'
-                // Rule::unique('users','password')
-                // ->where(function($query){
-                //     $query->whereTel($request->password);
-                // }) 
+            'email' => ['required', 'string', 'email', 'max:255',
+                Rule::unique('users','email')
+                ->where(function($query){
+                    return ($query->where('email',Auth::user()->email));
+                })             
+            ],
+            'tel' => ['required', 'string', 'max:15','min:8',
+                Rule::unique('users','tel')
+                ->where(function($query){
+                    return $query->whereTel(Auth::user()->tel);
+                })    
+            ],            
+            'password' => ['required', 'confirmed', Rules\Password::defaults(),
+                Rule::unique('users','password')
+                ->where(function($query){
+                    return $query->wherePassword(Auth::user()->password);
+                }) 
             ],
             'dateEmb' => ['required', 'date','before_or_equal:now'],
             'service' => ['required'],

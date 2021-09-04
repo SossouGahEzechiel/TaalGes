@@ -17,7 +17,6 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        // dd(Auth::user()->nom);
         if (Auth::user()->fonction == "admin") {
            return $next($request);
         } else {

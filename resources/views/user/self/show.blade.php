@@ -81,5 +81,5 @@
         </div>
     </div>
 
-    <a href="{{ route('admin.edit', [$user->id]) }}" class="btn btn-primary">Faire des modifications</a>
+    <a href="{{ route('user.edit', [$user->id]) }}" class="btn btn-primary">Faire des modifications</a>
 @endsection

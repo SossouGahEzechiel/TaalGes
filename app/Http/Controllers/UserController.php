@@ -14,9 +14,10 @@ use MercurySeries\Flashy\Flashy;
 class UserController extends Controller
 {
     public function __construct() {
-
         // $this->middleware(['auth','admin']);
-        $this->middleware(['auth','user'])->only(['show','edit','update']);
+        // dump(231);
+        // dd($this);
+        $this->middleware(['user'])->only(['show','edit','update']);
     }
     /**
      * Display a listing of the resource.
@@ -88,6 +89,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        
         if (Auth::user()->fonction == "user") {
             return view('user.self.show',compact('user'));
         }

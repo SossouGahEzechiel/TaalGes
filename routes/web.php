@@ -18,14 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/admin', function () {
-//     return 'Vous êtes là en tant que '. Auth::user()->fonction .' bien venu';
-// })->name('admin');
-
-// Route::get('/user', function () {
-//     return 'Vous êtes là en tant que '. Auth::user()->fonction .' bien venu';
-// })->name('user')->middleware(['auth','user']);
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
