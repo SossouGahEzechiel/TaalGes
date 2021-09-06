@@ -121,7 +121,7 @@ class UserController extends Controller
             'adresse'       =>      $request->adresse,
             'tel'           =>      $request->tel,
             'email'         =>      $request->email,
-            'password'      =>      $request->password,
+            'password'      =>      Hash::make($request->password),
             'sexe'          =>      $request->sexe,
             'dateEmb'       =>      $request->dateEmb,
             'natCont'       =>      $request->natCont,
