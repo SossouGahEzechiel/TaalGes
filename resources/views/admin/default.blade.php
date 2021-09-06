@@ -18,6 +18,12 @@
   <link href="{{ asset('css/sb-admin.css') }}" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+  <style>
+    h1{
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
@@ -53,23 +59,40 @@
         </li>
         {{-- gestion des demandes --}}
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#demande" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-file"></i>
             <span class="nav-link-text">Gestion des demandes</span>
           </a>
-          <ul class="sidenav-second-level collapse" id="collapseExamplePages">
+          <ul class="sidenav-second-level collapse" id="demande">
             <li>
               <a href="login.html">Login Page</a>
             </li>
             <li>
               <a href="register.html">Registration Page</a>
             </li>
+            
+          </ul>
+        </li>
+        
+        {{-- gestion des Services --}}
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#service" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-file"></i>
+            <span class="nav-link-text">Gestion des Services</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="service">
             <li>
+              <a href="{{ route('service.index') }}">Tout les services</a>
+            </li>
+            <li>
+              <a href="{{ route('service.create') }}">Nouveau service</a>
+            </li>
+            {{-- <li>
               <a href="forgot-password.html">Forgot Password Page</a>
             </li>
             <li>
               <a href="blank.html">Blank Page</a>
-            </li>
+            </li> --}}
           </ul>
         </li>
         {{-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">

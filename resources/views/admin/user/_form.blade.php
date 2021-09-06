@@ -133,9 +133,8 @@
             <div class="alert alert-danger">{{ $message }}</div>
         @enderror
     </div>
-</div> <br>
-
-<div class="row">
+</div>
+<div class="row mt-3">
     <!-- Password -->
     <div class="col-6">
         <div class="form-floating mb-3">
@@ -158,6 +157,6 @@
         @enderror
    </div>
 </div>
-<div class="flex items-center justify-end mt-1">
+<div class="d-grid gap-2 col-6 mx-auto mt-1">
     <button type="submit" class="btn btn-primary btn-block">{{$nat}}</button>
-</div>
+  </div>

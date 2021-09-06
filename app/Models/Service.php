@@ -14,6 +14,6 @@ class Service extends Model
     // Un service peut enrôler plusieurs salariés
     public function salaries()
     {
-        return $this->hasMany(Salarie::class);
+        return $this->hasMany(User::class);
     }
 }

@@ -9,50 +9,54 @@ use MercurySeries\Flashy\Flashy;
 class ServiceController extends Controller
 {
 
+    public function __construct() {
+        $this->middleware(['auth','admin']);
+    }
+
     public function index()
     {
-        $serv = Service::all();
-        return view('service.index',compact('serv'));
+        $services = Service::simplePaginate(5);
+        return view('admin.service.index',compact('services'));
     }
 
     public function create()
     {
-        $serv = new Service;
-        return view('service.create',compact('serv'));
+        $service = new Service;
+        return view('admin.service.create',compact('service'));
     }
 
     public function store(ServiceReq $request)
     {
-        $serv = Service::create([
-            'libServ'=>$request->lib
+        $service = Service::create([
+            'lib'=>$request->lib
         ]);
-        Flashy::success(sprintf('Service %s créé avec succes',$serv->libServ));
-        return redirect(route('serv.show',$serv));
+        Flashy::success(sprintf('Service %s créé avec succes',$service->lib));
+        return redirect(route('service.index',$service));
     }
 
-    public function show(Service $serv)
+    public function show(Service $service)
     {
-        return view('service.show',compact('serv'));
+        return view('admin.service.show',compact('service'));
     }
 
-    public function edit(Service $serv)
+    public function edit(Service $service)
     {
-        return view('service.edit',compact('serv'));
+        return view('admin.service.edit',compact('service'));
     }
 
-    public function update(ServiceReq $request, Service $serv)
+    public function update(ServiceReq $request, Service $service)
     {
-        $serv->update([
-            'libServ'=>$request->lib
+        $service->update([
+            'lib'=>$request->lib
         ]);
-        Flashy::success(sprintf('Serve %s mis à jour avec succes',$serv->libServ));
-        return redirect(route('serv.show',$serv));
+        Flashy::success(sprintf('service %s mis à jour avec succes',$service->lib));
+        return redirect(route('service.show',$service));
     }
 
-    public function destroy(Service $serv)
+    public function destroy(Service $service)
     {
-        $serv->delete();
-        Flashy::warning(sprintf('Serve %s supprimé avec succes',$serv->libServ));
-        return redirect(route('serv.index'));
+        $service->delete();
+        Flashy::warning(sprintf('service %s supprimé avec succes',$service->lib));
+        return redirect(route('service.index'));
     }
 }

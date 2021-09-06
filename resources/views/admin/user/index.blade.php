@@ -31,7 +31,10 @@
                     </td>
                 </tr>
             @empty
-                <span>Pas salarié enrégistré</span>
+            <tr>
+                <td colspan="3" style="text-align: center">Pas salarié enrégistré</td>
+                <td><a href="{{ route('user.create') }}" class="btn btn-primary">Ajouter un nouveau Salarié</a></td>    
+            </tr>
             @endforelse
         </tbody>
     </table>

@@ -12,7 +12,7 @@ class UserReq extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
+     *a
      * @return bool
      */
     public function authorize()

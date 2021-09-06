@@ -24,7 +24,7 @@ class ServiceReq extends FormRequest
     public function rules()
     {
         return [
-            'lib'=>['required','unique:services,libServ','min:5','max:35']
+            'lib'=>['required','unique:services,lib','min:5','max:35']
         ];
     }
 }

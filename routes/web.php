@@ -29,3 +29,4 @@ Route::get('/search', 'UserController@search')->name('user.search');
 
 Route::resource('user', 'UserController');
 Route::resource('admin', 'AdminController');
+Route::resource('service', 'ServiceController');
