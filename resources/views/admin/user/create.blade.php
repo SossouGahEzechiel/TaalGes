@@ -1,4 +1,4 @@
-@extends('admin.default')
+@extends('default')
 @section('content')
     @foreach ($errors->all() as $message)
         {{ $message }}

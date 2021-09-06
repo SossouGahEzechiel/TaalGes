@@ -1,4 +1,4 @@
-@extends('admin.default')
+@extends('default')
 @section('content')
     <h1 style="text-align: center;">Liste des Salariés</h1> <br>
     <table class="table">

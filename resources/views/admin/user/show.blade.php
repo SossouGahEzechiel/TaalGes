@@ -1,4 +1,4 @@
-@extends('admin.default')
+@extends('default')
 <code hidden>
     @if ($user->sexe = 'M')
         {{$sexe = "Masculin"}} 
@@ -81,5 +81,7 @@
         </div>
     </div>
 
-    <a href="{{ route('admin.edit', [$user->id]) }}" class="btn btn-primary">Faire des modifications</a>
+    <div class="d-grid gap-2 col-6 mx-auto mt-1">
+        <a href="{{ route('admin.edit', [$user->id]) }}" class="btn btn-primary">Faire des modifications</a>
+    </div>
 @endsection

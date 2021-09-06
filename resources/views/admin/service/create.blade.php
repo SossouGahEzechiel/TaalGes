@@ -1,4 +1,4 @@
-@extends('admin.default')
+@extends('default')
 @section('content')
 <h1>Ajouter un nouveau service</h1><br>
     <form action="{{ route('service.store') }}" method="POST">

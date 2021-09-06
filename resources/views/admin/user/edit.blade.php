@@ -1,5 +1,4 @@
-  
-@extends('admin.default')
+  @extends('default')
         
 @section('content') 
     <form method="POST" action="{{ route('user.update',$user->id) }}">

@@ -1,4 +1,4 @@
-@extends('user.default')
+@extends('default')
 <code hidden>
     @if ($user->sexe = 'M')
         {{$sexe = "Masculin"}} 

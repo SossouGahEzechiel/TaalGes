@@ -1,4 +1,4 @@
-@extends('admin.default')
+@extends('default')
 @section('content')
     @if ($users->count() == 1)
         <h1 style="text-align: center">1 résultat trouvé </h1>

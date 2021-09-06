@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DemandeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +27,9 @@ require __DIR__.'/auth.php';
 
 Route::get('/logout', 'Auth\AuthenticatedSessionController@destroy')->name('logout');
 Route::get('/search', 'UserController@search')->name('user.search');
+Route::get('/mesdemandes', 'UserController@profil')->name('user.profil')->middleware(['auth','user']);
 
 Route::resource('user', 'UserController');
 Route::resource('admin', 'AdminController');
 Route::resource('service', 'ServiceController');
+Route::resource('demande', 'DemandeController');

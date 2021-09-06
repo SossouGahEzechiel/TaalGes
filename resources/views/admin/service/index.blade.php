@@ -1,4 +1,4 @@
-@extends('admin.default')
+@extends('default')
 @section('content')
     {{-- @dd($service) --}}
     <h1 style="text-align: center;">Liste des différents services</h1><hr>

@@ -1,4 +1,4 @@
-@extends('admin.default')
+@extends('default')
 @section('content')
     <h1>Service : {{$service->lib}}</h1>
     <div class="form-floating mb-3">

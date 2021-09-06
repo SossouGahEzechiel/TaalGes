@@ -33,7 +33,7 @@ class DemandeController extends Controller
         ]);
 
         Flashy::success("Votre demande a été envoyé avec succès");
-        return redirect(route('dem.show',$dem->id));
+        return redirect(route('demande.show',$dem->id));
     }
 
     public function show(Demande $dem)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchReq;
 use App\Http\Requests\UserReq;
+use App\Models\Demande;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -14,10 +15,7 @@ use MercurySeries\Flashy\Flashy;
 class UserController extends Controller
 {
     public function __construct() {
-        // $this->middleware(['auth','admin']);
-        // dump(231);
-        // dd($this);
-        $this->middleware(['user'])->only(['show','edit','update']);
+        $this->middleware(['auth']);
     }
     /**
      * Display a listing of the resource.
@@ -153,5 +151,10 @@ class UserController extends Controller
         $users = User::where('nom','like',"%$request->search%")
             ->orWhere('prenom','like',"%$request->search%")->get();
         return view('admin.user.search',compact('users','request'));
+    }
+    public function profil()
+    {
+        $demandes = Demande::where('user_id',Auth::user()->id);
+        return view('user.demande.index',compact('demandes'));
     }
 }
