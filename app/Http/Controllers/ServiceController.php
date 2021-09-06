@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchReq;
 use App\Http\Requests\ServiceReq;
 use App\Models\Service;
 use MercurySeries\Flashy\Flashy;
@@ -58,5 +59,11 @@ class ServiceController extends Controller
         $service->delete();
         Flashy::warning(sprintf('service %s supprimé avec succes',$service->lib));
         return redirect(route('service.index'));
+    }
+
+    public function search(SearchReq $request)
+    {
+        $services = Service::where('lib','like',"%$request->search%")->get();
+        return view('admin.service.search',compact('services','request'));
     }
 }

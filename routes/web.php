@@ -26,7 +26,8 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 Route::get('/logout', 'Auth\AuthenticatedSessionController@destroy')->name('logout');
-Route::get('/search', 'UserController@search')->name('user.search');
+Route::get('/user_search', 'UserController@search')->name('user.search');
+Route::get('/service_search', 'ServiceController@search')->name('service.search');
 Route::get('/mesdemandes', 'UserController@profil')->name('user.profil')->middleware(['auth','user']);
 
 Route::resource('user', 'UserController');

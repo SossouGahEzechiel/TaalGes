@@ -1,7 +1,11 @@
 @extends('default')
 @section('content')
-    {{-- @dd($service) --}}
-    <h1 style="text-align: center;">Liste des différents services</h1><br>
+    @if ($services->count() >= 1)
+        <h1>Résultat correspondant à "{{$request->search}}"</h1>
+    @else
+        <h1> {{$services->count()}} Résultats pour "{{$request->search}}"</h1>
+    @endif
+    <br>
     <table class="table">
         <thead>
             <tr>
@@ -31,12 +35,10 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="3" style="text-align: center">Pas Service enrégistré</td>
-                    <td><a href="{{ route('service.create') }}" class="btn btn-primary">Ajouter un nouveau service</a></td>    
+                    <td colspan="4" style="text-align: center">Aucune correspondance à cette recherche</td> 
                 </tr>
             @endforelse
         </tbody>
     </table>
-    {{$services->links()}}
         <br>
 @endsection

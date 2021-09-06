@@ -7,7 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>SB Admin - Start Bootstrap Template</title>
+  <title>TAAL | {{$title = Auth::user()->nom}}_profil </title>
+  <link rel="icon" href="{{ asset('favicon.ico') }}" />
   <!-- Bootstrap core CSS-->
   <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
   <!-- Custom fonts for this template-->
@@ -141,7 +142,7 @@
             
             @else
               {{-- Profil --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mon profil">
                 <a class="nav-link" href="{{ route('user.show',Auth::user()->id) }}">
                   <i class="fa fa-user" aria-hidden="true"></i>
                   <span class="nav-link-text">Mon profil</span>
@@ -149,7 +150,7 @@
               </li>
               
               {{-- Demandes --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mes demandes">
                 <a class="nav-link" href="{{ route('user.profil') }}">
                   <i class="fa fa-list-ul" aria-hidden="true"></i>
                   <span class="nav-link-text">Mes demandes</span>
@@ -157,7 +158,7 @@
               </li>
               
               {{-- Nouvelle demande --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Nouvelle demande">
                 <a class="nav-link" href="{{ route('demande.create') }}">
                   <i class="fa fa-plus" aria-hidden="true"></i>
                   <span class="nav-link-text">Faire une demande</span>
@@ -176,7 +177,38 @@
           <li class="nav-item">
             <form class="form-inline my-2 my-lg-0 mr-lg-2" action="{{ route('user.search') }}">
               <div class="input-group">
-                <input class="form-control" type="text" name="search" placeholder="Rechercher un salarié" value="{{request()->search ?? ''}}">
+                <input class="form-control" type="text" name="search" placeholder="Rechercher un salarié" value="{{request()->search ?? ''}}" autofocus>
+                <span class="input-group-btn">
+                  <button class="btn btn-primary" type="submit">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </form>
+          </li>
+        @endif
+        
+        
+        {{-- @if (Route::is('user.index') or Route::is('user.search'))
+          <li class="nav-item">
+            <form class="form-inline my-2 my-lg-0 mr-lg-2" action="{{ route('user.search') }}">
+              <div class="input-group">
+                <input class="form-control" type="text" name="search" placeholder="Rechercher un salarié" value="{{request()->search ?? ''}}" autofocus>
+                <span class="input-group-btn">
+                  <button class="btn btn-primary" type="submit">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </form>
+          </li>
+        @endif --}}
+        
+        @if (Route::is('service.index') or Route::is('service.search'))
+          <li class="nav-item">
+            <form class="form-inline my-2 my-lg-0 mr-lg-2" action="{{ route('service.search') }}">
+              <div class="input-group">
+                <input class="form-control" type="text" name="search" placeholder="Rechercher un service" value="{{request()->search ?? ''}}" autofocus>
                 <span class="input-group-btn">
                   <button class="btn btn-primary" type="submit">
                     <i class="fa fa-search"></i>
