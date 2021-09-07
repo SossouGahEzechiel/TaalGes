@@ -13,7 +13,11 @@
     @endif
 </code>
 @section('content')
-    <h1 style="text-align: center">Informations supplémentaires sur {{$user->nom}}</h1>
+    @if (Auth::user()->fonction === "admin")
+        <h1>Informations supplémentaires sur {{$user->nom}}</h1>
+    @else
+        <h1>Mon profil</h1>
+    @endif
     <div class="row">
         <div class="col-6">
             <div class="form-floating mb-3">
@@ -80,6 +84,7 @@
             </div> 
         </div>
     </div>
-
-    <a href="{{ route('user.edit', [$user->id]) }}" class="btn btn-primary">Faire des modifications</a>
+    <div class="d-grid gap-2 col-6 mx-auto mt-1">
+        <a href="{{ route('admin.edit', [$user->id]) }}" class="btn btn-primary">Faire des modifications</a>
+    </div>
 @endsection

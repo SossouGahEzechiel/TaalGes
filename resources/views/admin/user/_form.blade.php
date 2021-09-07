@@ -74,63 +74,65 @@
     </div>
 </div>
 
-<!-- Date d'embauche --><!-- Nature du contrat -->
-<div class="row">
-    <div class="col-6">
-        <!-- Date d'embauche -->
-        <div class="form-floating mb-3">
-            <input type="Date" class="form-control @error('dateEmb') is-invalid @enderror " id="dateEmb" name="dateEmb" placeholder="dateEmb" value="{{date($user->dateEmb) ?? old('dateEmbauche')}}" required autofocus>
-            <label for="dateEmb">Date d'embauche</label>
+@if (Auth::user()->fonction === "admin" and Route::is('user.edit'))
+    <!-- Date d'embauche --><!-- Nature du contrat -->
+    <div class="row">
+        <div class="col-6">
+            <!-- Date d'embauche -->
+            <div class="form-floating mb-3">
+                <input type="Date" class="form-control @error('dateEmb') is-invalid @enderror " id="dateEmb" name="dateEmb" placeholder="dateEmb" value="{{date($user->dateEmb) ?? old('dateEmbauche')}}" required autofocus>
+                <label for="dateEmb">Date d'embauche</label>
+            </div>
+            @error('dateEmb')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
         </div>
-        @error('dateEmb')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-    </div>
-    
-    <div class="col-6">
-        <!-- Nature du contrat -->
-        <div class="form-floating">
-            <select class="form-select @error('natContat') is-invalid @enderror " id="natCont" name="natCont" aria-label="Floating label select example">
-                <option value="CDD">CDD</option>
-                <option value="CDI">CDI</option>
-            </select>
-            <label for="natCont">Nature du contrat</label>
+        
+        <div class="col-6">
+            <!-- Nature du contrat -->
+            <div class="form-floating">
+                <select class="form-select @error('natContat') is-invalid @enderror " id="natCont" name="natCont" aria-label="Floating label select example">
+                    <option value="CDD">CDD</option>
+                    <option value="CDI">CDI</option>
+                </select>
+                <label for="natCont">Nature du contrat</label>
+            </div>
+            @error('natCont')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
         </div>
-        @error('natCont')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
     </div>
-</div>
 
-<div class="row">
-    <div class="col-6">
-        <!-- Fonction -->
-        <div class="form-floating">
-            <select class="form-select @error('fonction') is-invalid @enderror " id="fonction" name="fonction" aria-label="Floating label select example">
-                <option value="user">Simple utilisateur</option>
-                <option value="admin">Administrateur</option>
-            </select>
-            <label for="fonction">Fonction</label>
+    <div class="row">
+        <div class="col-6">
+            <!-- Fonction -->
+            <div class="form-floating">
+                <select class="form-select @error('fonction') is-invalid @enderror " id="fonction" name="fonction" aria-label="Floating label select example">
+                    <option value="user">Simple utilisateur</option>
+                    <option value="admin">Administrateur</option>
+                </select>
+                <label for="fonction">Fonction</label>
+            </div>
+            @error('fonction')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
         </div>
-        @error('fonction')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
-    </div>
-    
-    <div class="col-6">
-        <!-- Service -->
-        <div class="form-floating">
-            <select class="form-select @error('service') is-invalid @enderror " id="service" name="service" aria-label="Floating label select example">
-                @forelse ($services as $service)
-                    <option value="{{$service->id}}">{{$service->lib}}</option>
-                @empty
-                    <p class="alert alert-danger">Pas de service dans la base de données. Vous devez en ajouter d'abord!!</p>
-                @endforelse
-            </select>
-            <label for="service">Service</label>
+        
+        <div class="col-6">
+            <!-- Service -->
+            <div class="form-floating">
+                <select class="form-select @error('service') is-invalid @enderror " id="service" name="service" aria-label="Floating label select example">
+                    @forelse ($services as $service)
+                        <option value="{{$service->id}}">{{$service->lib}}</option>
+                    @empty
+                        <p class="alert alert-danger">Pas de service dans la base de données. Vous devez en ajouter d'abord!!</p>
+                    @endforelse
+                </select>
+                <label for="service">Service</label>
+            </div>
+            @error('service')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
         </div>
-        @error('service')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
     </div>
-</div>
+@endif

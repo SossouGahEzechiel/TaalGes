@@ -14,6 +14,7 @@
 </code>
 @section('content')
     <h1 style="text-align: center">Informations supplémentaires sur {{$user->nom}}</h1>
+    {{-- Nom et prénom --}}
     <div class="row">
         <div class="col-6">
             <div class="form-floating mb-3">
@@ -30,15 +31,8 @@
             </div>
         </div>
     </div>
-    
+    {{-- Sexe et adresse --}}
     <div class="row">
-        <div class="col-6">
-            <!-- Telephone -->
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control @error('tel') is-invalid @enderror " id="tel" name="tel" placeholder="tel" value="{{$user->tel}}" readonly>
-                <label for="tel">Téléphone</label>
-            </div>
-        </div>
         <!-- Sexe -->
         <div class="col-6">
             <div class="form-floating mb-3">
@@ -46,11 +40,41 @@
                 <label for="sexe">Sexe</label>
             </div>
         </div>
+        <!-- Adresse -->
+        <div class="col-6">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="adresse" name="adresse" placeholder="adresse" value="{{$user->adresse}}" readonly>
+                <label for="adresse">Adresse</label>
+            </div>
+        </div>
     </div> 
-
-    <!-- Adresse --><!-- Email Address --><!-- Telephone -->
+    <!-- Email Address --><!-- Telephone -->
+    <div class="row">
+        <div class="col-6">
+            <!-- Email -->
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control id="email" name="email" placeholder="email" value="{{$user->email}}" readonly>
+                <label for="email">Email</label>
+            </div>
+        </div>
+        <div class="col-6">
+            <!-- Telephone -->
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control id="tel" name="tel" placeholder="tel" value="{{$user->tel}}" readonly>
+                <label for="tel">Téléphone</label>
+            </div>
+        </div>
+        
+    </div>
     <!-- Date d'embauche --><!-- Nature du contrat --><!-- Service --><!-- Fonction -->
     <div class="row">
+        <div class="col-6">
+            <!-- Date d'embauche -->
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="dateEmbauche" name="dateEmbauche" placeholder="dateEmbauche" value="{{$user->dateEmb->format('l \l\e d F Y')}}" readonly>
+                <label for="dateEmbauche">Date d'embauche</label>
+            </div>
+        </div>
         <div class="col-6">
             <!-- Nature du contrat -->
             <div class="form-floating">
@@ -58,12 +82,14 @@
                 <label for="natCont">Nature du contrat</label>
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="col-6">
-            <!-- Date d'embauche -->
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="dateEmbauche" name="dateEmbauche" placeholder="dateEmbauche" value="{{$user->dateEmb}}" readonly>
-                <label for="dateEmbauche">Date d'embauche</label>
-            </div>
+            <!-- Fonction -->
+            <div class="form-floating">
+                <input type="text" class="form-control" id="fonction" name="fonction" value="{{$fonction }}" readonly>
+                <label for="fonction">Fonction</label>
+            </div> 
         </div>
         <div class="col-6">
             <!-- Service -->
@@ -71,13 +97,6 @@
                 <input type="text" class="form-control" id="tel" name="tel" placeholder="tel" value="{{$user->service->lib}}" readonly>
                 <label for="tel">Service</label>
             </div>
-        </div>
-        <div class="col-6">
-            <!-- Fonction -->
-            <div class="form-floating">
-                <input type="text" class="form-control" id="fonction" name="fonction" value="{{$fonction }}" readonly>
-                <label for="fonction">Fonction</label>
-            </div> 
         </div>
     </div>
 

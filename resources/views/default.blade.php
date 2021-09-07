@@ -23,14 +23,19 @@
   <style>
     h1{
       text-align: center;
+      margin-bottom: 3mm;
     }
   </style>
+  {{-- <script> 
+    window.addEventListener('beforeunload', function (e) { 
+      sessionStorage.clear;
+      e.preventDefault(); 
+      e.returnValue = ''; 
+    }); 
+  </script>  --}}
+
 </head>
-
-<code>
-
-</code>
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+<body class="fixed-nav sticky-footer bg-dark" id="page-top" onpagehide="alert('ciao')">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a class="navbar-brand" href="{{ route('logout') }}">{{Auth::user()->nom}} {{Auth::user()->prenom}} </a>
@@ -227,14 +232,14 @@
   </nav>
   <!--  Body-->
   <div class="content-wrapper">
-    <div class="mt-4 ml-5 mr-5">
+    <div class="mt-2 ml-5 mr-5">
       @yield('content')
       <script src="//code.jquery.com/jquery.js"></script>
       @include('flashy::message')
     <br>
     </div>
     <footer class="sticky-footer">
-      <div class="container">
+      <div class="container fixed h-10">
         <div class="text-center">
           <small class="btn btn-link">Plateforme de gestion administrative du personnel de la TAAL</small>
         </div>
@@ -258,6 +263,9 @@
     <!-- Custom scripts for this page-->
     <script src="js/sb-admin-datatables.min.js"></script>
     <script src="js/sb-admin-charts.min.js"></script>
+    <script>
+
+    </script>
   </div>
 </body>
 
