@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchReq;
 use App\Http\Requests\UserReq;
+use App\Mail\TestMail;
+use App\Mail\UserRegisterMail;
 use App\Models\Demande;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use MercurySeries\Flashy\Flashy;
 
 class UserController extends Controller
@@ -63,6 +66,9 @@ class UserController extends Controller
         ]);
         
         event(new Registered($user));
+
+        Mail::to($user->email)->send(new UserRegisterMail($user,$request->password));
+
         $admin = Auth::user();
         Auth::login($user);
         Auth::logout($user);
@@ -75,7 +81,9 @@ class UserController extends Controller
                 return "ajoutée";
             }
         }
+    
         Flashy::success(sprintf("Salarié %s %s avec succès",$user->nom,message($user)));
+        Flashy::success(sprintf("Mail envoyé avec succès à %s",$user->nom));
         return redirect(route('user.show',$user));
     }
 
@@ -156,5 +164,11 @@ class UserController extends Controller
     {
         $demandes = Demande::where('user_id',Auth::user()->id);
         return view('user.demande.index',compact('demandes'));
+    }
+
+    public function mail()
+    {
+        // Flashy::success("Mail envoyé avec succés");
+        return Mail::to('ezecsossougah@gmail.com')->send(new TestMail(Auth::user(),'Ma première demande'));
     }
 }

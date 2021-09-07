@@ -79,7 +79,7 @@
     <div class="col-6">
         <!-- Date d'embauche -->
         <div class="form-floating mb-3">
-            <input type="Date" class="form-control @error('dateEmb') is-invalid @enderror " id="dateEmb" name="dateEmb" placeholder="dateEmb" value="{{$user->dateEmb ?? old('dateEmbauche')}}" required autofocus>
+            <input type="Date" class="form-control @error('dateEmb') is-invalid @enderror " id="dateEmb" name="dateEmb" placeholder="dateEmb" value="{{date($user->dateEmb) ?? old('dateEmbauche')}}" required autofocus>
             <label for="dateEmb">Date d'embauche</label>
         </div>
         @error('dateEmb')
