@@ -47,7 +47,6 @@ class AdminController extends Controller
     public function update(Request $request, $id)
     {  
         return abort(403,"mauvais appel d\'action");
-        dd('null','mauvais appel d\'action',$id);
         // return redirect(route('user.update',[$id,$request]));
     }
 

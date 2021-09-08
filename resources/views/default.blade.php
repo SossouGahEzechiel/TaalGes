@@ -27,15 +27,19 @@
     }
   </style>
   {{-- <script> 
-    window.addEventListener('beforeunload', function (e) { 
-      sessionStorage.clear;
-      e.preventDefault(); 
-      e.returnValue = ''; 
-    }); 
+    i = 0
+    while(i <=1)
+    {
+      function secure ()
+      {
+        locaion.reload(true);
+        return stop();
+      }
+    }
   </script>  --}}
 
 </head>
-<body class="fixed-nav sticky-footer bg-dark" id="page-top" onpagehide="alert('ciao')">
+<body class="fixed-nav sticky-footer bg-dark" id="page-top" onload="secure()">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a class="navbar-brand" href="{{ route('logout') }}">{{Auth::user()->nom}} {{Auth::user()->prenom}} </a>
@@ -172,9 +176,6 @@
             @endif
         @endauth
         
-        
-        
-        
       </ul>
       {{-- Navbar --}}
       <ul class="navbar-nav ml-auto">
@@ -236,7 +237,7 @@
       @yield('content')
       <script src="//code.jquery.com/jquery.js"></script>
       @include('flashy::message')
-    <br>
+      <br>
     </div>
     <footer class="sticky-footer">
       <div class="container fixed h-10">
@@ -250,19 +251,19 @@
       <i class="fa fa-angle-up"></i>
     </a>
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
     <!-- Page level plugin JavaScript-->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/datatables/jquery.dataTables.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+    {{-- <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script> --}}
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables/dataTables.bootstrap4.js')}}"></script>
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin.min.js"></script>
+    {{-- <script src="{{asset('js/sb-admin.min.js')}}"></script> --}}
     <!-- Custom scripts for this page-->
-    <script src="js/sb-admin-datatables.min.js"></script>
-    <script src="js/sb-admin-charts.min.js"></script>
+    <script src="{{asset('js/sb-admin-datatables.min.js')}}"></script>
+    {{-- <script src="{{asset('js/sb-admin-charts.min.js')}}"></script> --}}
     <script>
 
     </script>

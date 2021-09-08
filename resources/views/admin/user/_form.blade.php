@@ -3,7 +3,7 @@
     <!-- Nom -->
     <div class="col-6">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control @error('nom') is-invalid @enderror " id="nom" name="nom" placeholder="nom" value="{{$user->nom ??old('nom')}}" required autofocus>
+            <input type="text" class="form-control @error('nom') is-invalid @enderror " id="nom" name="nom" placeholder="nom" value="{{old('nom') ?? $user->nom}}" required autofocus>
             <label for="nom">Nom</label>
         </div>
         @error('nom')
@@ -14,7 +14,7 @@
     <!-- Prénom -->
     <div class="col-6">
         <div class="form-floating mb-3">
-            <input type="text" class="form-control @error('prenom') is-invalid @enderror " id="prenom" name="prenom" placeholder="prenom" value="{{$user->prenom ?? old('prenom')}}" required autofocus>
+            <input type="text" class="form-control @error('prenom') is-invalid @enderror " id="prenom" name="prenom" placeholder="prenom" value="{{old('prenom') ?? $user->prenom }}" required autofocus>
             <label for="prenom">Prénom</label>
         </div>
         @error('prenom')
@@ -42,7 +42,7 @@
     <div class="col-6">
         <!-- Adresse -->
         <div class="form-floating mb-3">
-            <input type="text" class="form-control @error('adresse') is-invalid @enderror " id="adresse" name="adresse" placeholder="adresse" value="{{$user->adresse ?? old('adresse')}}" required autofocus>
+            <input type="text" class="form-control @error('adresse') is-invalid @enderror " id="adresse" name="adresse" placeholder="adresse" value="{{old('adresse') ?? $user->adresse }}" required autofocus>
             <label for="adresse">Adresse</label>
         </div>
         @error('adresse')
@@ -55,7 +55,7 @@
     <div class="col-6">
         <!-- Email Address -->
         <div class="form-floating mb-3">    
-            <input type="text" class="form-control @error('email') is-invalid @enderror " id="email" name="email" placeholder="email" value="{{$user->email ?? old('email')}}" required autofocus>
+            <input type="text" class="form-control @error('email') is-invalid @enderror " id="email" name="email" placeholder="email" value="{{old('email') ?? $user->email }}" required autofocus>
             <label for="email">Email</label>
         </div>
         @error('email')
@@ -65,7 +65,7 @@
     <div class="col-6">
         <!-- Telephone -->
         <div class="form-floating mb-3">
-            <input type="tel" class="form-control @error('tel') is-invalid @enderror " id="tel" name="tel" placeholder="tel" value="{{$user->tel ?? old('tel')}}" required autofocus>
+            <input type="tel" class="form-control @error('tel') is-invalid @enderror " id="tel" name="tel" placeholder="tel" value="{{old('tel')?? $user->tel }} " required autofocus>
             <label for="tel">Téléphone</label>
         </div>
         @error('tel')
@@ -80,7 +80,7 @@
         <div class="col-6">
             <!-- Date d'embauche -->
             <div class="form-floating mb-3">
-                <input type="Date" class="form-control @error('dateEmb') is-invalid @enderror " id="dateEmb" name="dateEmb" placeholder="dateEmb" value="{{date($user->dateEmb) ?? old('dateEmbauche')}}" required autofocus>
+                <input type="Date" class="form-control @error('dateEmb') is-invalid @enderror " id="dateEmb" name="dateEmb" placeholder="dateEmb" value="{{old('dateEmbauche') ?? date($user->dateEmb)}}" required autofocus>
                 <label for="dateEmb">Date d'embauche</label>
             </div>
             @error('dateEmb')

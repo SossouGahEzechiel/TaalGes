@@ -26,16 +26,12 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 Route::get('/logout', 'Auth\AuthenticatedSessionController@destroy')->name('logout');
-Route::get('/user_search', 'UserController@search')->name('user.search');
-
-// Route::get('/user/{$id}', 'UserController@show')->name('user.show')->middleware(['auth','user']);
+Route::get('/user_search', 'UserController@search')->name('user.search')->middleware(['auth','admin']);
 
 Route::get('/user_mail', 'UserController@mail')->name('user.mail')->middleware(['auth','user']);
 
 Route::get('/service_search', 'ServiceController@search')->name('service.search');
 Route::get('/mesdemandes', 'UserController@profil')->name('user.profil')->middleware(['auth','user']);
-
-
 
 Route::resource('user', 'UserController');
 Route::resource('admin', 'AdminController');

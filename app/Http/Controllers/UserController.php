@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SearchReq;
-use App\Http\Requests\UserReq;
+use App\Models\User;
 use App\Mail\TestMail;
-use App\Mail\UserRegisterMail;
 use App\Models\Demande;
 use App\Models\Service;
-use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+use App\Http\Requests\UserReq;
+use App\Mail\UserRegisterMail;
+use Illuminate\Validation\Rule;
+use App\Http\Requests\SearchReq;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
+use MercurySeries\Flashy\Flashy;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use MercurySeries\Flashy\Flashy;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UserController extends Controller
 {
@@ -121,23 +125,80 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(UserReq $request, User $user)
+    public function update(Request $request, User $user)
     {
-        $user->update([
-            'nom'           =>      $request->nom,
-            'prenom'        =>      $request->prenom,
-            'adresse'       =>      $request->adresse,
-            'tel'           =>      $request->tel,
-            'email'         =>      $request->email,
-            'password'      =>      Hash::make($request->password),
-            'sexe'          =>      $request->sexe,
-            'dateEmb'       =>      $request->dateEmb,
-            'natCont'       =>      $request->natCont,
-            'fonction'      =>      $request->fonction,
-            'service_id'    =>      $request->service,
-        ]);
+        $old = $user;
+
+        if (Auth::user()->fonction === "user") {
+            $request->validate([
+                'nom' => ['required', 'string', 'max:255','min:3'],
+                'prenom' => ['required', 'string', 'max:255','min:3'],
+                'sexe' => ['required'],
+                'adresse' => ['required', 'string', 'max:255','min:3'],
+                'email' => ['required', 'string', 'email', 'max:255',
+                    Rule::unique('users','email')
+                    ->where(function($query){
+                        return ($query->where('email',Auth::user()->id));
+                    })             
+                ],
+                'tel' => ['required', 'string', 'max:15','min:8',
+                    Rule::unique('users','tel')
+                    ->where(function($query){
+                        return $query->whereTel(Auth::user()->id);
+                    })    
+                ],       
+            ]);
+
+            $user->update([
+                'nom'           =>      $request->nom,
+                'prenom'        =>      $request->prenom,
+                'adresse'       =>      $request->adresse,
+                'tel'           =>      $request->tel,
+                'email'         =>      $request->email,
+                'sexe'          =>      $request->sexe,
+            ]);
+            Flashy::success(sprintf("Vos données ont été mises à jour avec succès",$user->nom));
+        } else {
+            $request->validate([
+                'nom' => ['required', 'string', 'max:255','min:3'],
+                'prenom' => ['required', 'string', 'max:255','min:3'],
+                'sexe' => ['required'],
+                'natCont' => ['required'],
+                'adresse' => ['required', 'string', 'max:255','min:3'],
+                'email' => ['required', 'string', 'email', 'max:255',
+                    Rule::unique('users','email')
+                    ->where(function($query){
+                        return ($query->where('email',Auth::user()->id));
+                    })             
+                ],
+                'tel' => ['required', 'string', 'max:15','min:8',
+                    Rule::unique('users','tel')
+                    ->where(function($query){
+                        return $query->whereTel(Auth::user()->id);
+                    })    
+                ],
+                'dateEmb' => ['required', 'date','before_or_equal:now'],
+                'service' => ['required'],
+                'fonction' => ['required'],
+            ]);
+
+            $user->update([
+                'nom'           =>      $request->nom,
+                'prenom'        =>      $request->prenom,
+                'adresse'       =>      $request->adresse,
+                'tel'           =>      $request->tel,
+                'email'         =>      $request->email,
+                'password'      =>      Hash::make($request->password),
+                'sexe'          =>      $request->sexe,
+                'dateEmb'       =>      $request->dateEmb,
+                'natCont'       =>      $request->natCont,
+                'fonction'      =>      $request->fonction,
+                'service_id'    =>      $request->service,
+            ]);
+            Flashy::success(sprintf("Les modifications des données du salarié %s ont été mises à jour avec succès",$user->nom));
+        }
         
-        Flashy::success(sprintf("Données du salarié %s ont été mises à jour avec succès",$user->nom));
+        
         return redirect(route('user.show',$user));
     }
 
