@@ -61,10 +61,13 @@ class DemandeController extends Controller
         $demande->update([
             'decision' => 'Accordé'
         ]);
-        
         $user = User::whereId($demande->user_id)->first();
-        Mail::to('email@gmail.com')->send(new DemandeValideMail($demande,$user));
-        dd();
+        $user->update([
+            'reserve' => $user->reserve -= $demande->duree
+        ]);
+        // dd($user->email);
+        // Mail::to($user->['email'])->send(new DemandeValideMail($demande,$user));
+        Mail::to($user->email)->send(new DemandeValideMail($demande,$user));
         Flashy::success('Acceptation de demande confirmé');
         return redirect(route('demande.index'));
     }

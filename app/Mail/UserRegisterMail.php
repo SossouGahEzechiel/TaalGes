@@ -55,7 +55,7 @@ class UserRegisterMail extends Mailable
      */
     public function build()
     {
-        return $this->from('hsossougah@gmail.com')
+        return $this->from('taalcorp@gmail.com')
             ->subject('Mail de communication des indentifiants')
             ->markdown('user.self.registerMail');
     }
