@@ -75,6 +75,47 @@
 </div>
 
 @if (Auth::user()->fonction === "admin" and Route::is('user.edit'))
+
+{{-- <div class="row mb-3">
+    <div class="col-3">
+        <div class="form-floating">
+            <select class="form-select @error('natCont') is-invalid @enderror" id="natCont" name="natCont" aria-label="Floating label select example">
+                <option value="CDD">CDD</option>
+                <option value="CDI">CDI</option>
+            </select>
+            <label for="natCont">Contrat</label>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="form-floating ">
+            <input type="date" class="form-control @error('dateEmb') is-invalid @enderror " id="dateEmb" name="dateEmb" placeholder="nom" value="{{old('dateEmb') ?? $user->dateEmb}}" required autofocus>
+            <label for="dateEmb">Date d'embauche</label>
+        </div>
+        @error('dateEmb')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
+    </div>
+    <div class="col-3">
+        <div class="form-floating">
+            <select class="form-select @error('fonction') is-invalid @enderror" id="fonction" name="fonction" aria-label="Floating label select example">
+                <option value="user">Simple salarié</option>
+                <option value="admin">Administrateur</option>
+            </select>
+            <label for="fonction">Accréditation</label>
+        </div>
+    </div>
+    
+    <div class="col-3">
+        <div class="form-floating">
+            <select class="form-select @error('service') is-invalid @enderror" id="service" name="service" aria-label="Floating label select example">
+                @foreach ($services as $service)
+                    <option value="{{$service->id}}">{{$service->lib}}</option>
+                @endforeach
+            </select>
+            <label for="service">Service</label>
+        </div>
+    </div>
+</div> --}}
     <!-- Date d'embauche --><!-- Nature du contrat -->
     <div class="row">
         <div class="col-6">

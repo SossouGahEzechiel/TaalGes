@@ -11,13 +11,11 @@ use App\Mail\UserRegisterMail;
 use Illuminate\Validation\Rule;
 use App\Http\Requests\SearchReq;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rules;
 use MercurySeries\Flashy\Flashy;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Http\FormRequest;
 
 class UserController extends Controller
 {
@@ -54,7 +52,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(UserReq $request)
-    {
+    {   
         $user = User::create([
             'nom'           =>      $request->nom,
             'prenom'        =>      $request->prenom,
@@ -198,7 +196,6 @@ class UserController extends Controller
             Flashy::success(sprintf("Les modifications des données du salarié %s ont été mises à jour avec succès",$user->nom));
         }
         
-        
         return redirect(route('user.show',$user));
     }
 
@@ -223,7 +220,7 @@ class UserController extends Controller
     }
     public function profil()
     {
-        $demandes = Demande::where('user_id',Auth::user()->id);
+        $demandes = Demande::where('user_id',Auth::user()->id)->get();
         return view('user.demande.index',compact('demandes'));
     }
 

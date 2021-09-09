@@ -26,12 +26,18 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 Route::get('/logout', 'Auth\AuthenticatedSessionController@destroy')->name('logout');
-Route::get('/user_search', 'UserController@search')->name('user.search')->middleware(['auth','admin']);
+//Route de recherche
+Route::get('/user_search', 'UserController@search')->name('user.search')->middleware(['auth','admin']); //Route de recherche des utlisateurs
+Route::get('/service_search', 'ServiceController@search')->name('service.search'); //Route de recherche d'un service
+Route::get('/demande/search', 'DemandeController@search')->name('demande.search'); //Route de recherche de l'auteur d'une demande
 
 Route::get('/user_mail', 'UserController@mail')->name('user.mail')->middleware(['auth','user']);
 
-Route::get('/service_search', 'ServiceController@search')->name('service.search');
-Route::get('/mesdemandes', 'UserController@profil')->name('user.profil')->middleware(['auth','user']);
+Route::get('/demande/en_attente', 'DemandeController@attente')->name('demande.attente')->middleware(['auth','admin']);
+Route::get('/demande/accorde', 'DemandeController@accorde')->name('demande.accorde')->middleware(['auth','admin']);
+Route::get('/demande/refuse', 'DemandeController@refuse')->name('demande.refuse')->middleware(['auth','admin']);
+
+Route::get('/mesdemandes', 'UserController@profil')->name('user.profil')->middleware(['auth']);
 
 Route::resource('user', 'UserController');
 Route::resource('admin', 'AdminController');

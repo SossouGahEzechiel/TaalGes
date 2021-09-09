@@ -33,24 +33,9 @@ class UserReq extends FormRequest
             'sexe' => ['required'],
             'natCont' => ['required'],
             'adresse' => ['required', 'string', 'max:255','min:3'],
-            'email' => ['required', 'string', 'email', 'max:255',
-                Rule::unique('users','email')
-                ->where(function($query){
-                    return ($query->where('email',Auth::user()->id));
-                })             
-            ],
-            'tel' => ['required', 'string', 'max:15','min:8',
-                Rule::unique('users','tel')
-                ->where(function($query){
-                    return $query->whereTel(Auth::user()->id);
-                })    
-            ],            
-            'password' => ['required', 'confirmed', Rules\Password::defaults(),
-                Rule::unique('users','password')
-                ->where(function($query){
-                    return $query->wherePassword(Auth::user()->id);
-                }) 
-            ],
+            'email' => ['required', 'string', 'email', 'max:255','unique:users,email'],
+            'tel' => ['required', 'string', 'max:15','min:8','unique:users,tel'],            
+            'password' => ['required', 'confirmed', Rules\Password::defaults(),'unique:users,password'],
             'dateEmb' => ['required', 'date','before_or_equal:now'],
             'service' => ['required'],
             'fonction' => ['required'],

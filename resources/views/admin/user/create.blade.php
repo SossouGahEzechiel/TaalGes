@@ -1,9 +1,13 @@
 @extends('default')
 @section('content')
-    <form action="{{ route('user.store') }}" method="POST">
+    @foreach ($errors as $error)
+        @dump($error)
+    @endforeach
+    <h1>Formulaire d'enrégistrement d'un nouveau salarié</h1>
+    <form action="{{ route('user.store') }}" method="POST" class="mt">
         @csrf
         @include('admin.user._form')
-        <div class="row mt-3">
+        <div class="row mt-1">
             <!-- Password -->
             <div class="col-6">
                 <div class="form-floating mb-3">

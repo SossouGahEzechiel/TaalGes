@@ -1,10 +1,10 @@
 @component('mail::message')
-# Mail de confirmation
+# Introduction
 
 {{$msg}}
 
-@component('mail::button', ['url' => route('dashboard')])
-Button Text
+@component('mail::button', ['url' => route('demande.show',$id)])
+Plus de détails
 @endcomponent
 
 Thanks,<br>

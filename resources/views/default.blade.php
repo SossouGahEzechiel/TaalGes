@@ -21,7 +21,7 @@
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 
   <style>
-    h1{
+    h1 h2{
       text-align: center;
       margin-bottom: 3mm;
     }
@@ -42,7 +42,7 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top" onload="secure()">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="{{ route('logout') }}">{{Auth::user()->nom}} {{Auth::user()->prenom}} </a>
+    <a class="navbar-brand" href="">{{Auth::user()->nom}} {{Auth::user()->prenom}} </a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -61,7 +61,7 @@
               </li>
 
               {{-- Employés --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des employés">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
                   <i class="fa fa-fw fa-wrench"></i>
                   <span class="nav-link-text">Gestion des employés</span>
@@ -77,19 +77,23 @@
               </li>
 
               {{-- gestion des demandes --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des demandes">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#demande" data-parent="#exampleAccordion">
                   <i class="fa fa-fw fa-file"></i>
                   <span class="nav-link-text">Gestion des demandes</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="demande">
                   <li>
-                    <a href="login.html">Login Page</a>
+                    <a href="{{ route('demande.index') }}">Liste des demandes</a>
                   </li>
                   <li>
-                    <a href="register.html">Registration Page</a>
+                    <a href="{{ route('demande.attente') }}">Liste des demandes en attente</a>
                   </li>
-                  
+                  <li>
+                    <a href="{{ route('demande.refuse') }}">Liste des demandes refusées</a>
+                  </li><li>
+                    <a href="{{ route('demande.accorde') }}">Liste des demandes acceptées</a>
+                  </li>                  
                 </ul>
               </li>
 
@@ -110,7 +114,7 @@
               </li>
 
               {{-- Statistiques --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Qui était là, et qui n'était pas là ??">
                 <a class="nav-link" href="#">
                   <i class="fa fa-fw fa-link"></i>
                   <span class="nav-link-text">Statistiques</span>
@@ -195,9 +199,9 @@
         @endif
         
         
-        {{-- @if (Route::is('user.index') or Route::is('user.search'))
+        @if (Route::is('demande.index') or Route::is('demande.search') or Route::is('demande.attente') or Route::is('demande.refuse') or Route::is('demande.accorde') )
           <li class="nav-item">
-            <form class="form-inline my-2 my-lg-0 mr-lg-2" action="{{ route('user.search') }}">
+            <form class="form-inline my-2 my-lg-0 mr-lg-2" action="{{ route('demande.search') }}">
               <div class="input-group">
                 <input class="form-control" type="text" name="search" placeholder="Rechercher un salarié" value="{{request()->search ?? ''}}" autofocus>
                 <span class="input-group-btn">
@@ -208,7 +212,7 @@
               </div>
             </form>
           </li>
-        @endif --}}
+        @endif
         
         @if (Route::is('service.index') or Route::is('service.search'))
           <li class="nav-item">

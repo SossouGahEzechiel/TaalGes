@@ -11,6 +11,7 @@ class Demande extends Model
 
     public $timestamps = false;
     protected $guarded = [];
+    protected $dates = ['dateDeb','dateDem'];
 
     public function user()
     {
