@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DemandeRequest;
 use App\Http\Requests\SearchReq;
-use App\Mail\DemandeSentMail;
-use App\Mail\DemandeValideMail;
 use App\Models\Demande;
 use App\Models\User;
+use App\Notifications\DemanadeSentNotification;
+use App\Notifications\DemanadeValideNotification;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use MercurySeries\Flashy\Flashy;
 
 class DemandeController extends Controller
@@ -40,14 +42,16 @@ class DemandeController extends Controller
             'decision' => 'Refusé',
             'user_id'=> Auth::user()->id
         ]);
-        
-        Mail::to('taalcorp@gmail.com')->send(new DemandeSentMail($demande));
+        Notification::send(User::whereFonction('admin')->get(),new DemanadeSentNotification($demande));
+        // $demande->user->notify(new DemanadeSentNotification($demande));
+        // Mail::to('taalcorp@gmail.com')->send(new DemandeSentMail($demande));
         Flashy::success("Votre demande a été envoyé avec succès");
-        return redirect(route('demande.show',$demande->id));
+        return redirect(route('user.show',$demande->user->id));
     }
 
     public function show(Demande $demande)
     {
+        // $demande->markAsRead();
         return view('admin.demande.show',compact('demande'));
     }
 
@@ -65,9 +69,8 @@ class DemandeController extends Controller
         $user->update([
             'reserve' => $user->reserve -= $demande->duree
         ]);
-        // dd($user->email);
-        // Mail::to($user->['email'])->send(new DemandeValideMail($demande,$user));
-        Mail::to($user->email)->send(new DemandeValideMail($demande,$user));
+        $user->notify(new DemanadeValideNotification($demande,$user));
+        // Mail::to($user->email)->send(new DemandeValideMail($demande,$user));
         Flashy::success('Acceptation de demande confirmé');
         return redirect(route('demande.index'));
     }
@@ -102,5 +105,15 @@ class DemandeController extends Controller
     {
         $demandes = Demande::whereRelation('user','nom','like',"%$request->search%")->get();
         return view('admin.demande.serach',compact('demandes','request'));
+    }
+
+    public function read(DatabaseNotification $notification,$id)
+    {
+        // dump(DatabaseNotification::all(),$id,$notification->read_at);
+        // dump($notif = DatabaseNotification::whereRead_at($notification->read_at)->first());
+        $notification->markAsRead();
+        // dump($notification->read_at);
+        // dd($notif = DatabaseNotification::whereRead_at($notification->read_at)->get('read_at'));
+        return redirect(route('demande.show',$id));
     }
 }

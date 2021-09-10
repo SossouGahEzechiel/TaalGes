@@ -39,18 +39,15 @@
   </script>  --}}
 
 </head>
-<body class="fixed-nav sticky-footer bg-dark" id="page-top" onload="secure()">
+<body class="fixed-nav bg-primary" id="page-top">
   <!-- Navigation-->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+  <nav class="navbar navbar-expand-lg bg-warning fixed-top" id="mainNav">
     <a class="navbar-brand" href="">{{Auth::user()->nom}} {{Auth::user()->prenom}} </a>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       {{-- Side bar --}}
-      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+      <ul class="navbar-nav navbar-sidenav bg-warning" id="exampleAccordion">
         @auth
-        {{-- @dd(Auth::user()->fontion) --}}
+          {{-- @dd(Auth::user()->fontion) --}}
             @if (Auth::user()->fonction == "admin")
               {{-- Dashboard --}}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
@@ -63,10 +60,10 @@
               {{-- Employés --}}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des employés">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
-                  <i class="fa fa-fw fa-wrench"></i>
+                  <i class="fa fa-fw fa-user-circle-o"></i>
                   <span class="nav-link-text">Gestion des employés</span>
                 </a>
-                <ul class="sidenav-second-level collapse" id="collapseComponents">
+                <ul class="sidenav-second-level collapse bg-gradient" id="collapseComponents">
                   <li>
                     <a href="{{route('admin.index') }}">Liste des employés</a>
                   </li>
@@ -79,10 +76,10 @@
               {{-- gestion des demandes --}}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des demandes">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#demande" data-parent="#exampleAccordion">
-                  <i class="fa fa-fw fa-file"></i>
+                  <i class="fa fa-fw fa-list-alt"></i>
                   <span class="nav-link-text">Gestion des demandes</span>
                 </a>
-                <ul class="sidenav-second-level collapse" id="demande">
+                <ul class="sidenav-second-level collapse bg-gradient" id="demande">
                   <li>
                     <a href="{{ route('demande.index') }}">Liste des demandes</a>
                   </li>
@@ -100,10 +97,10 @@
               {{-- gestion des Services --}}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#service" data-parent="#exampleAccordion">
-                  <i class="fa fa-fw fa-file"></i>
+                  <i class="fa fa-fw fa-server"></i>
                   <span class="nav-link-text">Gestion des Services</span>
                 </a>
-                <ul class="sidenav-second-level collapse" id="service">
+                <ul class="sidenav-second-level collapse bg-gradient" id="service">
                   <li>
                     <a href="{{ route('service.index') }}">Tout les services</a>
                   </li>
@@ -177,12 +174,80 @@
                   <span class="nav-link-text">Faire une demande</span>
                 </a>
               </li>
-            @endif
+              @endif
         @endauth
-        
+              
       </ul>
       {{-- Navbar --}}
+      {{-- Mails --}}
       <ul class="navbar-nav ml-auto">
+        {{-- Notification des administrateurs  --}}
+        @if (Auth::user()->fonction === "admin" and Auth::user()->unreadNotifications->count()>0)
+          {{-- Sonnette --}}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
+              <span class="translate-middle badge bg-primary">{{Auth::user()->unreadNotifications->count()}}</span>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="alertsDropdown">
+              @if (Auth::user()->unreadNotifications->count() == 1)
+                <h6 class="dropdown-header">Une nouvelle notification</h6>
+              @else
+                <h6 class="dropdown-header">{{Auth::user()->unreadNotifications->count() }} Nouvelles notifications</h6>
+              @endif
+              <div class="dropdown-divider"></div>
+              @forelse (Auth::user()->unreadNotifications as $notification)
+              <a class="dropdown-item" href="{{ route('demande.read',[$notification->id,$notification->data["id"]]) }}" >
+                <span class="text-success"> 
+                <strong>Mail de {{$notification->data['nom']}}</strong>
+                </span>
+                <span class="small float-right text-muted">11:21 AM</span>
+                <div class="dropdown-message small">{{Str::limit($notification->data['objet'])}}</div>
+              </a>
+              <div class="dropdown-divider"></div>
+              @empty
+              <a class="dropdown-item small text-warning" href="#">Aucune nouvelle notification</a>
+              @endforelse
+              @if (Auth::user()->unreadNotifications->count()> 1) 
+                <a class="dropdown-item small" href="#">View all alerts</a>
+              @endif
+            </div>
+          </li>
+        @endif
+        
+        {{-- Notification des salariées --}}
+        @if (Auth::user()->fonction === "user" and Auth::user()->unreadNotifications->count()>0 )
+          {{-- Sonnette --}}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
+              <span class="translate-middle badge bg-primary">{{Auth::user()->unreadNotifications->count()}}</span>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="alertsDropdown">
+              @if (Auth::user()->unreadNotifications->count() == 1)
+                <h6 class="dropdown-header">Une nouvelle notification</h6>
+              @else
+                <h6 class="dropdown-header">{{Auth::user()->unreadNotifications->count() }} Nouvelles notifications</h6>
+              @endif
+              <div class="dropdown-divider"></div>
+              @forelse (Auth::user()->unreadNotifications as $notification)
+                <a class="dropdown-item" href="{{ route('demande.show',$notification->data["id"]) }}">
+                  <span class="text-success"> 
+                  <strong>Mail de taalcorp@gmail.com</strong>
+                  </span>
+                  <span class="small float-right text-muted">11:21 AM</span>
+                  <div class="dropdown-message small">Votre demande envoyée le {{$notification->data['date']}}</div>
+                </a>
+                <div class="dropdown-divider"></div>
+              @empty
+                <a class="dropdown-item small text-warning" href="#">Aucune nouvelle notification</a>
+              @endforelse
+              @if (Auth::user()->unreadNotifications->count()> 1) 
+                <a class="dropdown-item small" href="#">View all alerts</a>
+              @endif
+            </div>
+          </li>
+        @endif
         @if (Route::is('user.index') or Route::is('user.search'))
           <li class="nav-item">
             <form class="form-inline my-2 my-lg-0 mr-lg-2" action="{{ route('user.search') }}">
@@ -196,9 +261,7 @@
               </div>
             </form>
           </li>
-        @endif
-        
-        
+        @endif        
         @if (Route::is('demande.index') or Route::is('demande.search') or Route::is('demande.attente') or Route::is('demande.refuse') or Route::is('demande.accorde') )
           <li class="nav-item">
             <form class="form-inline my-2 my-lg-0 mr-lg-2" action="{{ route('demande.search') }}">
@@ -213,7 +276,7 @@
             </form>
           </li>
         @endif
-        
+  
         @if (Route::is('service.index') or Route::is('service.search'))
           <li class="nav-item">
             <form class="form-inline my-2 my-lg-0 mr-lg-2" action="{{ route('service.search') }}">
@@ -228,6 +291,7 @@
             </form>
           </li>
         @endif
+
         <li class="nav-item">
           <a class="nav-link" href="{{ route('logout') }}">
             <i class="fa fa-fw fa-sign-out"></i>Se déconnecter</a>
