@@ -138,15 +138,6 @@
                             name="password_confirmation" required />
         </div>
 
-        <!-- Mode -->
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="mode" id="user" value="user">
-            <label class="form-check-label" for="user">Utilisateur</label>
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="mode" id="admin" value="admin">
-            <label class="form-check-label" for="admin">Administrateur</label>
-        </div>
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
                 {{ __('Already registered?') }}

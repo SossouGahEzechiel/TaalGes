@@ -4,18 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DemandeRequest;
 use App\Http\Requests\SearchReq;
+use App\Mail\DemandeAvorteMail;
+use App\Mail\DemandeSentMail;
+use App\Mail\DemandeValideMail;
 use App\Models\Demande;
 use App\Models\User;
 use App\Notifications\DemanadeSentNotification;
 use App\Notifications\DemanadeValideNotification;
+use App\Notifications\DemandeAvorteNotification;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use MercurySeries\Flashy\Flashy;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 
 class DemandeController extends Controller
 {
+    // use Notifiable;
     public function __construct() {
         $this->middleware('auth');
     }
@@ -33,20 +39,27 @@ class DemandeController extends Controller
 
     public function store(DemandeRequest $request)
     {
-        $demande = Demande::create([
-            'typeDem'=>$request->typeDem,
-            'dateDem'=>now(),
-            'dateDeb'=>$request->dateDeb,
-            'duree'=>$request->duree,
-            'objet' => $request->objet,
-            'decision' => 'Refusé',
-            'user_id'=> Auth::user()->id
-        ]);
-        Notification::send(User::whereFonction('admin')->get(),new DemanadeSentNotification($demande));
-        // $demande->user->notify(new DemanadeSentNotification($demande));
-        // Mail::to('taalcorp@gmail.com')->send(new DemandeSentMail($demande));
-        Flashy::success("Votre demande a été envoyé avec succès");
-        return redirect(route('user.show',$demande->user->id));
+        //Vérifie si l'utilisateur est en mesure de faire une nouvelle demande
+        if (Auth::user()->reserve > 0) {
+            $demande = Demande::create([
+                'typeDem'=>$request->typeDem,
+                'dateDem'=>now(),
+                'dateDeb'=>$request->dateDeb,
+                'duree'=>$request->duree,
+                'objet' => $request->objet,
+                'decision' => 'Refusé',
+                'user_id'=> Auth::user()->id
+            ]);
+            Notification::send(User::whereFonction('admin')->get(),new DemanadeSentNotification($demande));
+            Mail::to('taalcorp@gmail.com')->send(new DemandeSentMail($demande,Auth::user()));
+            Flashy::success("Votre demande a été envoyée avec succès");
+            return redirect(route('user.show',$demande->user->id));
+        }
+        // Auth::user()->notify(new DemandeAvorteNotification(Auth::user(),$request));
+        Mail::to(Auth::user()->email)->send(new DemandeAvorteMail(Auth::user()));
+        Flashy::error("Un problème s'est posé avec votre demande");
+        return back();
+        // Auth::user()->notify(new DemandeAvorteNotification()); À complèter 
     }
 
     public function show(Demande $demande)
@@ -70,7 +83,7 @@ class DemandeController extends Controller
             'reserve' => $user->reserve -= $demande->duree
         ]);
         $user->notify(new DemanadeValideNotification($demande,$user));
-        // Mail::to($user->email)->send(new DemandeValideMail($demande,$user));
+        Mail::to($user->email)->send(new DemandeValideMail($demande,$user));
         Flashy::success('Acceptation de demande confirmé');
         return redirect(route('demande.index'));
     }
@@ -109,11 +122,7 @@ class DemandeController extends Controller
 
     public function read(DatabaseNotification $notification,$id)
     {
-        // dump(DatabaseNotification::all(),$id,$notification->read_at);
-        // dump($notif = DatabaseNotification::whereRead_at($notification->read_at)->first());
         $notification->markAsRead();
-        // dump($notification->read_at);
-        // dd($notif = DatabaseNotification::whereRead_at($notification->read_at)->get('read_at'));
         return redirect(route('demande.show',$id));
     }
 }

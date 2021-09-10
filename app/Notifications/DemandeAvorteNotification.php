@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Mail\DemandeValideMail;
+use App\Http\Requests\DemandeRequest;
 use App\Models\Demande;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -10,21 +10,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class DemanadeValideNotification extends Notification
+class DemandeAvorteNotification extends Notification
 {
     use Queueable;
-
-    public $demande;
     public $user;
+    public $request;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Demande $demande,User $user)
+    public function __construct(User $user,DemandeRequest $request)
     {
-        $this->demande = $demande;
         $this->user = $user;
+        $this->request = $request;
     }
 
     /**
@@ -35,7 +34,7 @@ class DemanadeValideNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail','database'];
+        return ['database'];
     }
 
     /**
@@ -46,7 +45,10 @@ class DemanadeValideNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new DemandeValideMail($this->demande,$this->user));
+        return (new MailMessage)
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
     }
 
     /**
@@ -58,10 +60,9 @@ class DemanadeValideNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'date'=>$this->demande->dateDem->format('d/m/y'),
+            'date'=>$this->request->dateDem->format('d/m/y'),
             'type'=>$this->demande->typeDem,
-            'id'=>$this->demande->id,
-            'objet'=>'Mail de validation'
+            'objet'=>'Mail d\'information'
         ];
     }
 }

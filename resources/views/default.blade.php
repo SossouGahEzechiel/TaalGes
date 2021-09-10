@@ -21,22 +21,11 @@
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 
   <style>
-    h1 h2{
+    h1,h2{
       text-align: center;
       margin-bottom: 3mm;
     }
   </style>
-  {{-- <script> 
-    i = 0
-    while(i <=1)
-    {
-      function secure ()
-      {
-        locaion.reload(true);
-        return stop();
-      }
-    }
-  </script>  --}}
 
 </head>
 <body class="fixed-nav bg-primary" id="page-top">
@@ -199,9 +188,9 @@
               @forelse (Auth::user()->unreadNotifications as $notification)
               <a class="dropdown-item" href="{{ route('demande.read',[$notification->id,$notification->data["id"]]) }}" >
                 <span class="text-success"> 
-                <strong>Mail de {{$notification->data['nom']}}</strong>
+                <strong>Mail de {{$notification->data['de']}}</strong>
                 </span>
-                <span class="small float-right text-muted">11:21 AM</span>
+                <span class="small float-right text-muted">{{$notification->created_at->format('d/m')}} à {{$notification->created_at->format('G:i')}}</span>
                 <div class="dropdown-message small">{{Str::limit($notification->data['objet'])}}</div>
               </a>
               <div class="dropdown-divider"></div>
@@ -209,7 +198,7 @@
               <a class="dropdown-item small text-warning" href="#">Aucune nouvelle notification</a>
               @endforelse
               @if (Auth::user()->unreadNotifications->count()> 1) 
-                <a class="dropdown-item small" href="#">View all alerts</a>
+                <a class="dropdown-item small" href="#">Voir toutes les notifications</a>
               @endif
             </div>
           </li>
@@ -231,19 +220,19 @@
               @endif
               <div class="dropdown-divider"></div>
               @forelse (Auth::user()->unreadNotifications as $notification)
-                <a class="dropdown-item" href="{{ route('demande.show',$notification->data["id"]) }}">
+                <a class="dropdown-item" href="{{ route('demande.read',[$notification,$notification->data["id"]]) }}">
                   <span class="text-success"> 
                   <strong>Mail de taalcorp@gmail.com</strong>
                   </span>
-                  <span class="small float-right text-muted">11:21 AM</span>
-                  <div class="dropdown-message small">Votre demande envoyée le {{$notification->data['date']}}</div>
+                  <span class="small float-right text-muted">{{$notification->created_at->format('d/m')}} à {{$notification->created_at->format('G:i')}}</span>
+                  <div class="dropdown-message small">{{Str::limit("Votre demande envoyée le".$notification->data['date'],22)}}</div>
                 </a>
                 <div class="dropdown-divider"></div>
               @empty
                 <a class="dropdown-item small text-warning" href="#">Aucune nouvelle notification</a>
               @endforelse
               @if (Auth::user()->unreadNotifications->count()> 1) 
-                <a class="dropdown-item small" href="#">View all alerts</a>
+                <a class="dropdown-item small" href="#">Voir toutes les notifications</a>
               @endif
             </div>
           </li>
@@ -307,7 +296,7 @@
       @include('flashy::message')
       <br>
     </div>
-    <footer class="sticky-footer">
+    <footer class="sticky-footer ">
       <div class="container fixed h-10">
         <div class="text-center">
           <small class="btn btn-link">Plateforme de gestion administrative du personnel de la TAAL</small>

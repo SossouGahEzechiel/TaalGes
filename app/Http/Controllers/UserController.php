@@ -220,7 +220,7 @@ class UserController extends Controller
     }
     public function profil()
     {
-        $demandes = Demande::where('user_id',Auth::user()->id)->get();
+        $demandes = Demande::where('user_id',Auth::user()->id)->simplePaginate(9);
         return view('user.demande.index',compact('demandes'));
     }
 

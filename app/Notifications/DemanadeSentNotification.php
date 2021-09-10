@@ -3,11 +3,11 @@
 namespace App\Notifications;
 
 use App\Mail\DemandeSentMail;
+use App\Mail\TestMail;
 use App\Models\Demande;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 
 class DemanadeSentNotification extends Notification
 {
@@ -32,7 +32,7 @@ class DemanadeSentNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database','mail'];
+        return ['database'];
     }
 
     /**
@@ -43,7 +43,8 @@ class DemanadeSentNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new DemandeSentMail($this->demande));
+        new TestMail(Auth::user(),"message de test");
+        return (new DemandeSentMail($this->demande,$notifiable));
     }
 
     /**
@@ -55,7 +56,9 @@ class DemanadeSentNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'nom'=>$this->demande->user->nom,
+            'de'=>$notifiable->email,
+            'nom'=>$notifiable->nom,
+            'a'=>'taalcorp@gmail.com',
             'objet'=>$this->demande->objet,
             'id'=>$this->demande->id,
         ];

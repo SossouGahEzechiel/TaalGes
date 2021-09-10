@@ -31,23 +31,8 @@ class RegisterReq extends FormRequest
             'natCont' => ['required'],
             'adresse' => ['required', 'string', 'max:255','min:3'],
             'email' => ['required', 'string', 'email', 'max:255','unique:users,email'],
-            //     Rule::unique('users','email')
-            //     ->where(function($query){
-            //         $query->whereEmail($request->input('email'));
-            //     })             
-            // ],
-            'tel' => ['required', 'string', 'max:15','min:8','unique:users,tel'],
-                // Rule::unique('users','tel')
-                // ->where(function($query){
-                //     $query->whereTel($request->email);
-                // })    
-            // ],            
-            'password' => ['required', 'confirmed', Rules\Password::defaults(),'unique:users,password'
-                // Rule::unique('users','password')
-                // ->where(function($query){
-                //     $query->whereTel($request->password);
-                // }) 
-            ],
+            'tel' => ['required', 'string', 'max:15','min:8','unique:users,tel'],    
+            'password' => ['required', 'confirmed', Rules\Password::defaults(),'unique:users,password'],
             'dateEmbauche' => ['required', 'date','before_or_equal:now'],
             'service' => ['required'],
             'fonction' => ['required'],

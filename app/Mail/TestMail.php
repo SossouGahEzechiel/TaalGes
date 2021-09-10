@@ -24,7 +24,6 @@ class TestMail extends Mailable
     public function __construct(User $user,string $mess)
     {
         $this->email = $user->email;
-        $li = "\n\t";
         $this->mess = $mess;
     }
 

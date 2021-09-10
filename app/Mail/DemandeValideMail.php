@@ -3,11 +3,13 @@
 namespace App\Mail;
 
 use App\Models\Demande;
+use App\Models\Mail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 
 class DemandeValideMail extends Mailable
 {
@@ -21,6 +23,7 @@ class DemandeValideMail extends Mailable
     public $de;
     public $id;
     public $dateSoum;
+    public $celui;
     
     /**
      * Create a new message instance.
@@ -29,6 +32,7 @@ class DemandeValideMail extends Mailable
      */
     public function __construct(Demande $demande, User $user)
     {
+        $this->celui = $demande->user->id;
         $this->nom = $user->nom;
         $this->lib = $demande->typeDem;
         $this->prenom = $user->prenom;
@@ -38,7 +42,7 @@ class DemandeValideMail extends Mailable
         $this->dateSoum = $demande->dateDem->format('d/m/y');
         $this->msg = "Bravo ".$this->sexe($user)." ".$this->nom.". Votre demande de ".$this->lib." envoyée le ".$this->dateDeb." 
         a été accetptée. Cliquez sur ce boutton pour voir plus de détails.";
-        
+        $this->createMonMail($this->msg,$this->celui);
     }
     
     function sexe($user) 
@@ -48,6 +52,15 @@ class DemandeValideMail extends Mailable
         } else {
             return $this->sexe = "Madame";
         }
+    }
+    function createMonMail($msg,$celui)
+    {
+        $mail = Mail::create([
+            'message'=>$msg,
+            'auteur' => Auth::user()->id
+        ]);
+        //Le mail est attaché au destinataire
+        $mail->users()->attach($celui);
     }
     
 
