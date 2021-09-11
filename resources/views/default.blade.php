@@ -28,28 +28,28 @@
   </style>
 
 </head>
-<body class="fixed-nav bg-primary" id="page-top">
+<body class="fixed-nav bg-light" id="page-top">
   <!-- Navigation-->
-  <nav class="navbar navbar-expand-lg bg-warning fixed-top" id="mainNav">
-    <a class="navbar-brand" href="">{{Auth::user()->nom}} {{Auth::user()->prenom}} </a>
+  <nav class="navbar navbar-expand-lg bg-secondary fixed-top" id="mainNav">
+    <a class="navbar-brand text-light" href="" style="font-style: italic">{{Auth::user()->nom}} {{Auth::user()->prenom}} </a>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       {{-- Side bar --}}
-      <ul class="navbar-nav navbar-sidenav bg-warning" id="exampleAccordion">
+      <ul class="navbar-nav navbar-sidenav bg-secondary" id="exampleAccordion">
         @auth
           {{-- @dd(Auth::user()->fontion) --}}
             @if (Auth::user()->fonction == "admin")
               {{-- Dashboard --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+              <li class="nav-item " data-toggle="tooltip" data-placement="right" title="Dashboard">
                 <a class="nav-link" href="{{ route('admin.index') }}">
-                  <i class="fa fa-fw fa-dashboard"></i>
-                  <span class="nav-link-text">Dashboard</span>
+                  <i class="fa fa-fw fa-dashboard" style="color: white;"></i>
+                  <span class="nav-link-text text-light" style="font-style:;">Dashboard</span>
                 </a>
               </li>
 
               {{-- Employés --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des employés">
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
-                  <i class="fa fa-fw fa-user-circle-o"></i>
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des employés" >
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion" style="color: white;">
+                  <i class="fa fa-fw fa-user-circle"></i>
                   <span class="nav-link-text">Gestion des employés</span>
                 </a>
                 <ul class="sidenav-second-level collapse bg-gradient" id="collapseComponents">
@@ -63,10 +63,10 @@
               </li>
 
               {{-- gestion des demandes --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des demandes">
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#demande" data-parent="#exampleAccordion">
-                  <i class="fa fa-fw fa-list-alt"></i>
-                  <span class="nav-link-text">Gestion des demandes</span>
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des demandes"> 
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#demande" data-parent="#exampleAccordion" style="color: white;">
+                  <i class="fa fa-list" aria-hidden="true"></i>
+                  <span class="nav-link-text" >Gestion des demandes</span>
                 </a>
                 <ul class="sidenav-second-level collapse bg-gradient" id="demande">
                   <li>
@@ -85,7 +85,7 @@
 
               {{-- gestion des Services --}}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#service" data-parent="#exampleAccordion">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#service" data-parent="#exampleAccordion" style="color: white;">
                   <i class="fa fa-fw fa-server"></i>
                   <span class="nav-link-text">Gestion des Services</span>
                 </a>
@@ -100,10 +100,10 @@
               </li>
 
               {{-- Statistiques --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Qui était là, et qui n'était pas là ??">
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Qui était là, et qui n'était pas là ??" >
                 <a class="nav-link" href="#">
-                  <i class="fa fa-fw fa-link"></i>
-                  <span class="nav-link-text">Statistiques</span>
+                  <i class="fa fa-fw fa-link" style="color: white;"></i>
+                  <span class="nav-link-text" style="color: white;">Statistiques</span>
                 </a>
               </li>
 
@@ -239,7 +239,7 @@
         @endif
         @if (Route::is('user.index') or Route::is('user.search'))
           <li class="nav-item">
-            <form class="form-inline my-2 my-lg-0 mr-lg-2" action="{{ route('user.search') }}">
+            <form class="form-inline my-2 my-lg-0 mr-lg-2" action="{{ route('user.search') }}" style="color: white">
               <div class="input-group">
                 <input class="form-control" type="text" name="search" placeholder="Rechercher un salarié" value="{{request()->search ?? ''}}" autofocus>
                 <span class="input-group-btn">
@@ -281,9 +281,11 @@
           </li>
         @endif
 
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('logout') }}">
-            <i class="fa fa-fw fa-sign-out"></i>Se déconnecter</a>
+        <li class="nav-item" >
+          <a class="nav-link" href="{{ route('logout') }}" style="color: white;">
+            <i class="fa fa-power-off" aria-hidden="true"></i>
+          </i>Se déconnecter
+          </a>
         </li>
       </ul>
     </div>
@@ -296,10 +298,10 @@
       @include('flashy::message')
       <br>
     </div>
-    <footer class="sticky-footer ">
+    <footer class="sticky-footer bg-secondary" >
       <div class="container fixed h-10">
         <div class="text-center">
-          <small class="btn btn-link">Plateforme de gestion administrative du personnel de la TAAL</small>
+          <small class="btn btn-link" style="color: white">Plateforme de gestion administrative du personnel de la TAAL</small>
         </div>
       </div>
     </footer>
