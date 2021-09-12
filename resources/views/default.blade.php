@@ -47,17 +47,17 @@
               </li>
 
               {{-- Employés --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des employés" >
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des employés">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion" style="color: white;">
                   <i class="fa fa-fw fa-user-circle"></i>
                   <span class="nav-link-text">Gestion des employés</span>
                 </a>
                 <ul class="sidenav-second-level collapse bg-gradient" id="collapseComponents">
                   <li>
-                    <a href="{{route('admin.index') }}">Liste des employés</a>
+                    <a href="{{route('admin.index') }}" style="color: white">Liste des employés</a>
                   </li>
                   <li>
-                    <a href="{{ route('user.create') }}">Nouvel employé</a>
+                    <a href="{{ route('user.create') }}" style="color: white">Nouvel employé</a>
                   </li>
                 </ul>
               </li>
@@ -70,31 +70,31 @@
                 </a>
                 <ul class="sidenav-second-level collapse bg-gradient" id="demande">
                   <li>
-                    <a href="{{ route('demande.index') }}">Liste des demandes</a>
+                    <a href="{{ route('demande.index') }}" style="color: white">Liste des demandes</a>
                   </li>
                   <li>
-                    <a href="{{ route('demande.attente') }}">Liste des demandes en attente</a>
+                    <a href="{{ route('demande.attente') }}" style="color: white">Liste des demandes en attente</a>
                   </li>
                   <li>
-                    <a href="{{ route('demande.refuse') }}">Liste des demandes refusées</a>
+                    <a href="{{ route('demande.refuse') }}" style="color: white">Liste des demandes refusées</a>
                   </li><li>
-                    <a href="{{ route('demande.accorde') }}">Liste des demandes acceptées</a>
+                    <a href="{{ route('demande.accorde') }}" style="color: white">Liste des demandes acceptées</a>
                   </li>                  
                 </ul>
               </li>
 
               {{-- gestion des Services --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des services">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#service" data-parent="#exampleAccordion" style="color: white;">
                   <i class="fa fa-fw fa-server"></i>
                   <span class="nav-link-text">Gestion des Services</span>
                 </a>
                 <ul class="sidenav-second-level collapse bg-gradient" id="service">
                   <li>
-                    <a href="{{ route('service.index') }}">Tout les services</a>
+                    <a href="{{ route('service.index') }}" style="color: white">Tout les services</a>
                   </li>
                   <li>
-                    <a href="{{ route('service.create') }}">Nouveau service</a>
+                    <a href="{{ route('service.create') }}" style="color: white">Nouveau service</a>
                   </li>
                 </ul>
               </li>
@@ -105,6 +105,25 @@
                   <i class="fa fa-fw fa-link" style="color: white;"></i>
                   <span class="nav-link-text" style="color: white;">Statistiques</span>
                 </a>
+              </li>
+              
+              {{-- About me --}}
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mon compte">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#self" data-parent="#exampleAccordion" style="color: white;">
+                  <i class="fa fa-fw fa-server"></i>
+                  <span class="nav-link-text">Mon compte</span>
+                </a>
+                <ul class="sidenav-second-level collapse bg-gradient" id="self">
+                  <li>
+                    <a href="{{ route('user.show',Auth::user()->id) }}" style="color: white">Mon compte</a>
+                  </li>
+                  <li>
+                    <a href="{{ route('user.profil') }}" style="color: white">Mes demandes</a>
+                  </li>
+                  <li>
+                    <a href="{{ route('demande.create') }}" style="color: white">Faire une demande</a>
+                  </li>
+                </ul>
               </li>
 
             {{-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
@@ -142,7 +161,7 @@
             @else
               {{-- Profil --}}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mon profil">
-                <a class="nav-link" href="{{ route('user.show',Auth::user()->id) }}">
+                <a class="nav-link" href="{{ route('user.show',Auth::user()->id) }}" style="color: white">
                   <i class="fa fa-user" aria-hidden="true"></i>
                   <span class="nav-link-text">Mon profil</span>
                 </a>
@@ -150,7 +169,7 @@
               
               {{-- Demandes --}}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mes demandes">
-                <a class="nav-link" href="{{ route('user.profil') }}">
+                <a class="nav-link" href="{{ route('user.profil') }}" style="color: white">
                   <i class="fa fa-list-ul" aria-hidden="true"></i>
                   <span class="nav-link-text">Mes demandes</span>
                 </a>
@@ -158,14 +177,13 @@
               
               {{-- Nouvelle demande --}}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Nouvelle demande">
-                <a class="nav-link" href="{{ route('demande.create') }}">
+                <a class="nav-link" href="{{ route('demande.create') }}" style="color: white">
                   <i class="fa fa-plus" aria-hidden="true"></i>
                   <span class="nav-link-text">Faire une demande</span>
                 </a>
               </li>
               @endif
         @endauth
-              
       </ul>
       {{-- Navbar --}}
       {{-- Mails --}}
@@ -174,7 +192,7 @@
         @if (Auth::user()->fonction === "admin" and Auth::user()->unreadNotifications->count()>0)
           {{-- Sonnette --}}
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white">
               <i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
               <span class="translate-middle badge bg-primary">{{Auth::user()->unreadNotifications->count()}}</span>
             </a>
@@ -208,7 +226,7 @@
         @if (Auth::user()->fonction === "user" and Auth::user()->unreadNotifications->count()>0 )
           {{-- Sonnette --}}
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  style="color: white">
               <i class="fa fa-bell-o fa-lg" aria-hidden="true"></i>
               <span class="translate-middle badge bg-primary">{{Auth::user()->unreadNotifications->count()}}</span>
             </a>
@@ -281,12 +299,13 @@
           </li>
         @endif
 
-        <li class="nav-item" >
-          <a class="nav-link" href="{{ route('logout') }}" style="color: white;">
+        <li class="nav-item" onclick="vient();">
+          <a class="nav-link"  style="color: white;">
             <i class="fa fa-power-off" aria-hidden="true"></i>
           </i>Se déconnecter
           </a>
         </li>
+        
       </ul>
     </div>
   </nav>
@@ -309,6 +328,52 @@
     <a class="scroll-to-top rounded" href="#page-top">
       <i class="fa fa-angle-up"></i>
     </a>
+
+    {{-- Deconnexion --}}
+    <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" name="pop" aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Fermeture de session</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <a class="btn btn-secondary" type="button" data-dismiss="modal" ><i class="fa fa-times"
+                onclick="bye();" aria-hidden="true">
+              </i></a>
+            </button>
+          </div>
+          <div class="modal-body" style="text-align: center">Voulez-vous vraiment vous déconnecter ?</div>
+          <div class="modal-footer">
+            <a class="btn btn-secondary" onclick="bye();" type="button" data-dismiss="modal" >Cancel</a>
+            <a class="btn btn-primary" href="{{ route('logout') }}">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {{-- Suppression --}}
+    {{-- <div class="modal fade show" id="suppression" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Fermeture de session</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close" id="fermerPopUp">
+              <a class="btn btn-secondary" type="button" data-dismiss="modal" ><i class="fa fa-times"
+                onclick="function non() {return false;}" aria-hidden="true">
+              </i></a>
+            </button>
+          </div>
+          <div class="modal-body" style="text-align: center">Voulez-vous vraiment vous déconnecter ?</div>
+          <div class="modal-footer">
+            <a class="btn btn-secondary" onclick="function non() {return false;}" type="button" data-dismiss="modal" >Annuler</a>
+            <a class="btn btn-danger" onclick="function oui() {return true;}">Retier le salarié</a>
+          </div>
+        </div>
+      </div>
+    </div> --}}
+
+
+
+
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -324,7 +389,12 @@
     <script src="{{asset('js/sb-admin-datatables.min.js')}}"></script>
     {{-- <script src="{{asset('js/sb-admin-charts.min.js')}}"></script> --}}
     <script>
-
+      function bye(){
+        return document.getElementById('exampleModal').style.display = "none";
+      }
+      function vient(){
+        return document.getElementById('exampleModal').style.display = "block";
+      }
     </script>
   </div>
 </body>

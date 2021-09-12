@@ -16,4 +16,10 @@ class Service extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function boss()
+    {
+        $id = $this->directeur_id;
+        return $boss = User::whereId($id)->first();        
+    }
 }

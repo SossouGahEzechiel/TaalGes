@@ -7,10 +7,27 @@
     </div>
     
     <div class="form-floating mb-3">
-        <input type="text" class="form-control" style="font-size: 2pc" id="dir" name="dir" placeholder="dir" value="null" readonly>
+        <input type="text" class="form-control" style="font-size:" id="dir" name="dir" placeholder="dir" value="{{$service->boss()->nom}} {{$service->boss()->prenom}}" readonly>
         <label for="dir">Nom du directeur de service</label>
     </div>
-    <div><h1>Liste de ses salariés </h1> <h6 style="text-align: center">({{$service->salaries->count()}})</h6></div>
+
+
+    {{-- <p>
+        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+          Link with href
+        </a>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+          Button with data-bs-target
+        </button>
+    </p>
+      <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+          Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+        </div>
+    </div> --}}
+
+
+    <div><h2>Liste de ses salariés </h2> <h6 style="text-align: center">({{$service->salaries->count()}})</h6></div>
     <table class="table">
         <thead>
             <tr>
@@ -37,17 +54,17 @@
                     </td>
                 </tr>
             @empty
-                <span>Pas salarié enrégistré</span>
+                <tr class="alert alert-warning">
+                    <td colspan="3" style="text-align: center"><span>Pas salarié enrégistré dans ce service</span></td>
+                </tr>
             @endforelse
         </tbody>
     </table>
-    <div class="d-grid gap-1 col-6 mx-auto">
-        <a href="{{ route('service.edit', [$service->id]) }}" class=" btn btn-warning">Modifier le libellé du service</a>
-        <form action="{{ route('service.destroy',[$service]) }}" class="btn  method="POST"
-            onsubmit="return confirm('Voulez-vous vraiment retirer ce service ?? \n cette action effacera aussi tout les salariés qui y sont enrégistrés et sera irréversible')">
-            @csrf
-            @method('delete')
-            <button type="submit" class="btn btn-danger btn-block"">Supprimer le service</button>
-        </form>
-    </div>
+    <a href="{{ route('service.edit', [$service->id]) }}" class=" btn btn-warning">Modifier le libellé du service</a>
+    <form action="{{ route('service.destroy',[$service]) }}" class="btn  method="POST"
+        onsubmit="return confirm('Voulez-vous vraiment retirer ce service ?? \n cette action effacera aussi tout les salariés qui y sont enrégistrés et sera irréversible')">
+        @csrf
+        @method('delete')
+        <button type="submit" class="btn btn-danger btn-block"">Supprimer le service</button>
+    </form>
     @endsection

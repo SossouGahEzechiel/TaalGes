@@ -16,7 +16,7 @@
                 <tr class="">
                     {{-- @dd($service->salaries->count()) --}}
                     <th scope="row">{{$service->lib}}</th>
-                    <td>null</td>
+                    <td>{{$service->boss()->nom}} {{$service->boss()->prenom}}</td>
                     <td>{{$service->salaries->count()}}</td>
                     <td>
                         <a href="{{ route('service.show', [$service->id]) }}" class="btn btn-secondary">Plus de détails</a>   &nbsp;&nbsp; 

@@ -38,6 +38,7 @@ class UserReq extends FormRequest
             'password' => ['required', 'confirmed', Rules\Password::defaults(),'unique:users,password'],
             'dateEmb' => ['required', 'date','before_or_equal:now'],
             'service' => ['required'],
+            'dureCont' =>['required_if:natCont,==,CDI'],
             'fonction' => ['required'],
         ];
     }

@@ -19,10 +19,10 @@ class CreateDemandesTable extends Migration
             $table->enum('typeDem',['congé','permission']);
             $table->date('dateDem');
             $table->date('dateDeb');
-            $table->integer('duree')
-                ->default(1);
+            $table->integer('duree');
             $table->string('objet',128);
-            $table->enum('decision',['Accordé','Refusé'])->default('Refusé');
+            $table->enum('decision',['Accordé','Refusé'])
+                ->nullable();
             $table->foreignIdFor(User::class)
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

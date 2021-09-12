@@ -17,13 +17,22 @@
         <tbody>         
             @forelse ($demandes as $demande)
                 <code hidden>
-                    @if ($demande->decision === "Refusé")
-                        {{$col = "table-light"}}
-                        {{$btn = '' }}
-                    @else
-                        {{$col = "table-success"}}
-                        {{$btn = "disabled"}}
-                    @endif
+                    @switch($demande->decision)
+                        @case("Refusé")
+                            {{$col = "table-light"}}
+                            {{$btn = '' }}
+                            @break
+                        @case("Accordé")
+                            {{$col = "table-success"}}
+                            {{$btn = "disabled"}}
+                            @break
+                        @case(null)
+                            {{$col = "table-info"}}
+                            {{$btn = ""}} 
+                            @break
+                        @default
+                        
+                    @endswitch
                 </code>
                 <tr class="{{$col}}">
                     <th scope="row">{{$demande->user->nom}}</th>
@@ -31,7 +40,13 @@
                     <td>{{$demande->dateDeb->format('d/m/y')}}</td>
                     <td>{{$demande->duree}}</td>
                     <td>{{Str::limit($demande->objet,40)}}</td>
-                    <td>{{$demande->decision}}</td>
+                    <td>
+                        @if ($demande->decision == null)
+                            En attente
+                        @else
+                            {{$demande->decision}}
+                        @endif
+                    </td>
                     <td>
                         <a href="{{ route('demande.show', [$demande->id]) }}" class="btn btn-primary">Plus</a>
                         <form action="{{ route('demande.update', [$demande->id]) }}" method="POST" class="btn"

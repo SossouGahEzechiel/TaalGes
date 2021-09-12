@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SearchReq;
 use App\Http\Requests\ServiceReq;
 use App\Models\Service;
+use App\Models\User;
 use MercurySeries\Flashy\Flashy;
 
 class ServiceController extends Controller
@@ -22,14 +23,16 @@ class ServiceController extends Controller
 
     public function create()
     {
+        $admins = User::whereFonction('admin')->get();
         $service = new Service;
-        return view('admin.service.create',compact('service'));
+        return view('admin.service.create',compact('service','admins'));
     }
 
     public function store(ServiceReq $request)
     {
         $service = Service::create([
-            'lib'=>$request->lib
+            'lib'=>$request->lib,
+            'directeur_id'=>$request->boss
         ]);
         Flashy::success(sprintf('Service %s créé avec succes',$service->lib));
         return redirect(route('service.index',$service));
@@ -37,7 +40,8 @@ class ServiceController extends Controller
 
     public function show(Service $service)
     {
-        return view('admin.service.show',compact('service'));
+        $admins = User::whereFonction('admin')->get();
+        return view('admin.service.show',compact('service','admins'));
     }
 
     public function edit(Service $service)

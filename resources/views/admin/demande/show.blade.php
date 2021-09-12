@@ -23,7 +23,7 @@
             @case("Refusé")
                 {{$text = "Demande rejetée"}}
                 {{$class = "text-danger"}}
-            @case("")
+            @case(null)
                 {{$text = "Demande en attente"}}
                 {{$class = "text-info"}}
             @break

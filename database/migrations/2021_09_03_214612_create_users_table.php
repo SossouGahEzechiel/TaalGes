@@ -26,6 +26,8 @@ class CreateUsersTable extends Migration
             $table->dateTime('dateEmb');
             $table->enum('natCont',['CDD','CDI'])
                 ->default('CDD');
+            $table->integer('dureCont')
+                ->nullable();
             $table->integer('reserve')
                 ->default(30);
             $table->enum('fonction',['admin','user'])->default('user');

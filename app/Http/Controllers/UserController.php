@@ -19,6 +19,7 @@ use Illuminate\Auth\Events\Registered;
 
 class UserController extends Controller
 {
+    public $old;
     public function __construct() {
         $this->middleware(['auth']);
     }
@@ -52,7 +53,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(UserReq $request)
-    {   
+    {
         $user = User::create([
             'nom'           =>      $request->nom,
             'prenom'        =>      $request->prenom,
@@ -63,6 +64,7 @@ class UserController extends Controller
             'sexe'          =>      $request->sexe,
             'dateEmb'       =>      $request->dateEmb,
             'natCont'       =>      $request->natCont,
+            'dureCont'       =>      $request->dureCont,
             'fonction'      =>      $request->fonction,
             'service_id'    =>      $request->service,
         ]);
@@ -125,7 +127,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $old = $user;
+        $this->old = $user->id;
 
         if (Auth::user()->fonction === "user") {
             $request->validate([
@@ -166,18 +168,19 @@ class UserController extends Controller
                 'email' => ['required', 'string', 'email', 'max:255',
                     Rule::unique('users','email')
                     ->where(function($query){
-                        return ($query->where('email',Auth::user()->id));
+                        return ($query->where('email',$this->old));
                     })             
                 ],
                 'tel' => ['required', 'string', 'max:15','min:8',
                     Rule::unique('users','tel')
                     ->where(function($query){
-                        return $query->whereTel(Auth::user()->id);
+                        return $query->whereTel($this->old);
                     })    
                 ],
                 'dateEmb' => ['required', 'date','before_or_equal:now'],
                 'service' => ['required'],
                 'fonction' => ['required'],
+                'dureCont' =>['required_if:natCont,CDD']
             ]);
 
             $user->update([

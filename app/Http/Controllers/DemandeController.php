@@ -47,7 +47,7 @@ class DemandeController extends Controller
                 'dateDeb'=>$request->dateDeb,
                 'duree'=>$request->duree,
                 'objet' => $request->objet,
-                'decision' => 'Refusé',
+                'decision' => null,
                 'user_id'=> Auth::user()->id
             ]);
             Notification::send(User::whereFonction('admin')->get(),new DemanadeSentNotification($demande));
@@ -85,33 +85,33 @@ class DemandeController extends Controller
         $user->notify(new DemanadeValideNotification($demande,$user));
         Mail::to($user->email)->send(new DemandeValideMail($demande,$user));
         Flashy::success('Acceptation de demande confirmé');
-        return redirect(route('demande.index'));
+        return back();
     }
 
     public function destroy(Demande $dem)
     {
         $dem->delete();
         Flashy::danger('Demande supprimée avec succès');
-        return redirect(route('dem.index'));
+        return redirect(route('demande.index'));
     }
 
     public function attente()
     {
-        $demandes = Demande::whereDecision('')->simplePaginate(6);
-        return view('admin.demande.attente',compact('demandes'));
+        $demandes = Demande::whereDecision(null)->simplePaginate(6);
+        return view('admin.demande.etat',compact('demandes'));
     }
     
     //Mes actions
     public function refuse()
     {
         $demandes = Demande::whereDecision('Refusé')->simplePaginate(6);
-        return view('admin.demande.attente',compact('demandes'));
+        return view('admin.demande.etat',compact('demandes'));
     }
     
     public function accorde()
     {
         $demandes = Demande::whereDecision('Accordé')->simplePaginate(6);
-        return view('admin.demande.attente',compact('demandes'));
+        return view('admin.demande.etat',compact('demandes'));
     }
 
     public function search(SearchReq $request)
