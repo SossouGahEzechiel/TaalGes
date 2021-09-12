@@ -100,7 +100,13 @@
         </div>
     </div>
 
-    <div class="d-grid gap-2 col-6 mx-auto mt-1">
-        <a href="{{ route('admin.edit', [$user->id]) }}" class="btn btn-primary">Faire des modifications</a>
-    </div>
+    @if ($user->id == Auth::user()->id)
+        <div class="d-grid gap-2 col-6 mx-auto mt-1">
+            <a class="btn btn-primary" disabled onclick="vient()">Faire des modifications</a>
+        </div>
+    @else
+        <div class="d-grid gap-2 col-6 mx-auto mt-1">
+            <a href="{{ route('admin.edit', [$user->id]) }}" class="btn btn-primary">Faire des modifications</a>
+        </div>
+    @endif
 @endsection

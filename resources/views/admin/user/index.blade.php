@@ -22,12 +22,17 @@
                     </td>
                     <td>
                         <a class="btn" href="{{ route('admin.show',$user->id) }}" style="background-color: rgb(221, 218, 12)">Plus de détails</a>   &nbsp;&nbsp; 
-                        <a class="btn btn-info" href="{{ route('admin.edit',$user->id) }}">Modifier</a>    
-                        <form action="{{ route('user.destroy',$user->id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment retirer cet salarie ?? \n cette action sera irréversible')" class="btn">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-danger">Supprimer</button>
-                        </form>                          
+                        @if ($user->id == Auth::user()->id)
+                            <a class="btn btn-info" onclick="vient();" aria-disabled="true">Modifier</a>    &nbsp;&nbsp;
+                            <button type="submit" class="btn btn-danger" onclick="vient();">Supprimer</button>
+                        @else
+                            <a class="btn btn-info" href="{{ route('admin.edit',$user->id) }}">Modifier</a>    
+                            <form action="{{ route('user.destroy',$user->id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment retirer cet salarie ?? \n cette action sera irréversible')" class="btn">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </form>
+                        @endif                          
                     </td>
                 </tr>
             @empty

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>TAAL | {{$title = Auth::user()->nom}}_profil </title>
+  <title>TAAL / {{Auth::user()->nom}}</title>
   <link rel="icon" href="{{ asset('favicon.ico') }}" />
   <!-- Bootstrap core CSS-->
   <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -299,7 +299,7 @@
           </li>
         @endif
 
-        <li class="nav-item" onclick="vient();">
+        <li class="nav-item" onclick="vient1();">
           <a class="nav-link"  style="color: white;">
             <i class="fa fa-power-off" aria-hidden="true"></i>
           </i>Se déconnecter
@@ -330,7 +330,7 @@
     </a>
 
     {{-- Deconnexion --}}
-    <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" name="pop" aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
+    <div class="modal fade show" id="deconnexion" tabindex="-1" role="dialog" name="pop" aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -350,26 +350,20 @@
       </div>
     </div>
     
-    {{-- Suppression --}}
-    {{-- <div class="modal fade show" id="suppression" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
+    {{-- Action non-autorisée --}}
+    <div class="modal fade show" id="nonAuto" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Fermeture de session</h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close" id="fermerPopUp">
-              <a class="btn btn-secondary" type="button" data-dismiss="modal" ><i class="fa fa-times"
-                onclick="function non() {return false;}" aria-hidden="true">
-              </i></a>
-            </button>
+            <h5 class="modal-title text-warning" id="exampleModalLabel">ATTENTION</h5>
           </div>
-          <div class="modal-body" style="text-align: center">Voulez-vous vraiment vous déconnecter ?</div>
+          <div class="modal-body" style="text-align: center">Vous n'êtes pas autorisé à effectuer cette action sur votre propre compte</div>
           <div class="modal-footer">
-            <a class="btn btn-secondary" onclick="function non() {return false;}" type="button" data-dismiss="modal" >Annuler</a>
-            <a class="btn btn-danger" onclick="function oui() {return true;}">Retier le salarié</a>
+            <a class="btn btn-primary" onclick="" type="button" data-dismiss="modal" >OK</a>
           </div>
         </div>
       </div>
-    </div> --}}
+    </div>
 
 
 
@@ -389,11 +383,23 @@
     <script src="{{asset('js/sb-admin-datatables.min.js')}}"></script>
     {{-- <script src="{{asset('js/sb-admin-charts.min.js')}}"></script> --}}
     <script>
+      // COntrole sur les action non-autorier
       function bye(){
-        return document.getElementById('exampleModal').style.display = "none";
+        return document.getElementById('deconnexion').style.display = "none";
       }
       function vient(){
-        return document.getElementById('exampleModal').style.display = "block";
+        return document.getElementById('deconnexion').style.display = "block";
+      }
+      
+      function bye1(){
+        return document.getElementById('nonAuto').style.display = "none";
+      }
+      function vient(){
+        return document.getElementById('nonAuto').style.display = "block";
+      }
+      
+      function vient1(){
+        return document.getElementById('deconnexion').style.display = "block";
       }
     </script>
   </div>
