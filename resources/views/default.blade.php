@@ -26,6 +26,27 @@
       margin-bottom: 3mm;
     }
   </style>
+  <script>
+    function bye(){
+      return document.getElementById('exampleModal').style.display = "none";
+    }
+    function vient(){
+      return document.getElementById('exampleModal').style.display = "block";
+    }
+    function game(){
+      if(document.getElementById('monBody').style.display == "block")
+        {return document.getElementById('monBody').style.display = "none";}
+      else
+        {return document.getElementById('monBody').style.display = "block"; }      
+    }
+    
+    function jeux(){
+      if(document.getElementById('game').style.display == "block")
+        {return document.getElementById('game').style.display = "none";}
+      else
+        {return document.getElementById('game').style.display = "block"; }      
+    }
+  </script>
 
 </head>
 <body class="fixed-nav bg-light" id="page-top">
@@ -36,139 +57,136 @@
       {{-- Side bar --}}
       <ul class="navbar-nav navbar-sidenav bg-secondary" id="exampleAccordion">
         @auth
-          {{-- @dd(Auth::user()->fontion) --}}
-            @if (Auth::user()->fonction == "admin")
-              {{-- Dashboard --}}
-              <li class="nav-item " data-toggle="tooltip" data-placement="right" title="Dashboard">
-                <a class="nav-link" href="{{ route('admin.index') }}">
-                  <i class="fa fa-fw fa-dashboard" style="color: white;"></i>
-                  <span class="nav-link-text text-light" style="font-style:;">Dashboard</span>
-                </a>
-              </li>
+          @if (Auth::user()->fonction == "admin")
+            {{-- Dashboard --}}
+            <li class="nav-item " data-toggle="tooltip" data-placement="right" title="Dashboard">
+              <a class="nav-link" href="{{ route('admin.index') }}">
+                <i class="fa fa-fw fa-dashboard" style="color: white;"></i>
+                <span class="nav-link-text text-light" style="font-style:;">Dashboard</span>
+              </a>
+            </li>
 
-              {{-- Employés --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des employés">
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion" style="color: white;">
-                  <i class="fa fa-fw fa-user-circle"></i>
-                  <span class="nav-link-text">Gestion des employés</span>
-                </a>
-                <ul class="sidenav-second-level collapse bg-gradient" id="collapseComponents">
-                  <li>
-                    <a href="{{route('admin.index') }}" style="color: white">Liste des employés</a>
-                  </li>
-                  <li>
-                    <a href="{{ route('user.create') }}" style="color: white">Nouvel employé</a>
-                  </li>
-                </ul>
-              </li>
+            {{-- Employés --}}
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des employés">
+              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion" style="color: white;">
+                <i class="fa fa-users" aria-hidden="true"></i>
+                <span class="nav-link-text">Gestion des employés</span>
+              </a>
+              <ul class="sidenav-second-level collapse bg-gradient" id="collapseComponents">
+                <li>
+                  <a href="{{route('admin.index') }}" style="color: white">Liste des employés</a>
+                </li>
+                <li>
+                  <a href="{{ route('user.create') }}" style="color: white">Nouvel employé</a>
+                </li>
+              </ul>
+            </li>
 
-              {{-- gestion des demandes --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des demandes"> 
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#demande" data-parent="#exampleAccordion" style="color: white;">
-                  <i class="fa fa-list" aria-hidden="true"></i>
-                  <span class="nav-link-text" >Gestion des demandes</span>
-                </a>
-                <ul class="sidenav-second-level collapse bg-gradient" id="demande">
-                  <li>
-                    <a href="{{ route('demande.index') }}" style="color: white">Liste des demandes</a>
-                  </li>
-                  <li>
-                    <a href="{{ route('demande.attente') }}" style="color: white">Liste des demandes en attente</a>
-                  </li>
-                  <li>
-                    <a href="{{ route('demande.refuse') }}" style="color: white">Liste des demandes refusées</a>
-                  </li><li>
-                    <a href="{{ route('demande.accorde') }}" style="color: white">Liste des demandes acceptées</a>
-                  </li>                  
-                </ul>
-              </li>
+            {{-- gestion des demandes --}}
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des demandes"> 
+              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#demande" data-parent="#exampleAccordion" style="color: white;">
+                <i class="fa fa-list" aria-hidden="true"></i>
+                <span class="nav-link-text" >Gestion des demandes</span>
+              </a>
+              <ul class="sidenav-second-level collapse bg-gradient" id="demande">
+                <li>
+                  <a href="{{ route('demande.index') }}" style="color: white">Liste des demandes</a>
+                </li>
+                <li>
+                  <a href="{{ route('demande.attente') }}" style="color: white">Liste des demandes en attente</a>
+                </li>
+                <li>
+                  <a href="{{ route('demande.refuse') }}" style="color: white">Liste des demandes refusées</a>
+                </li><li>
+                  <a href="{{ route('demande.accorde') }}" style="color: white">Liste des demandes acceptées</a>
+                </li>                  
+              </ul>
+            </li>
 
-              {{-- gestion des Services --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des services">
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#service" data-parent="#exampleAccordion" style="color: white;">
-                  <i class="fa fa-fw fa-server"></i>
-                  <span class="nav-link-text">Gestion des Services</span>
-                </a>
-                <ul class="sidenav-second-level collapse bg-gradient" id="service">
-                  <li>
-                    <a href="{{ route('service.index') }}" style="color: white">Tout les services</a>
-                  </li>
-                  <li>
-                    <a href="{{ route('service.create') }}" style="color: white">Nouveau service</a>
-                  </li>
-                </ul>
-              </li>
-              
-              {{-- Statistiques --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu des statistiques">
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion" style="color: white">
-                  <i class="fa fa-line-chart" aria-hidden="true"></i>
-                  <span class="nav-link-text">Statistiques</span>
-                </a>
-                <ul class="sidenav-second-level collapse bg-gradient" id="collapseMulti" style="color: white">
-                  <li>
-                    <a href="#" style="color: white">Second Level Item</a>
-                  </li>
-                  <li>
-                    <a href="#" style="color: white">Second Level Item</a>
-                  </li>
-                  <li>
-                    <a href="#" style="color: white">Second Level Item</a>
-                  </li>
-                  <li>
-                    <a class="nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti2"  style="color: white">Third Level</a>
-                    <ul class="sidenav-third-level collapse bg-gradient" id="collapseMulti2">
-                      <li>
-                        <a href="#" style="color: white">Third Level Item</a>
-                      </li>
-                      <li>
-                        <a href="#" style="color: white">Third Level Item</a>
-                      </li>
-                      <li>
-                        <a href="#" style="color: white">Third Level Item</a>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-
-              {{-- About me --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mon compte">
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#self" data-parent="#exampleAccordion" style="color: white;">
-                  <i class="fa fa-user-md" aria-hidden="true"></i>
-                  <span class="nav-link-text">Mon compte</span>
-                </a>
-                <ul class="sidenav-second-level collapse bg-gradient" id="self">
-                  <li>
-                    <a href="{{ route('user.show',Auth::user()->id) }}" style="color: white">Mon compte</a>
-                  </li>
-                  <li>
-                    <a href="{{ route('user.profil') }}" style="color: white">Mes demandes</a>
-                  </li>
-                  <li>
-                    <a href="{{ route('demande.create') }}" style="color: white">Faire une demande</a>
-                  </li>
-                </ul>
-              </li>
-
+            {{-- gestion des Services --}}
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu de gestion des services">
+              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#service" data-parent="#exampleAccordion" style="color: white;">
+                <i class="fa fa-fw fa-server"></i>
+                <span class="nav-link-text">Gestion des Services</span>
+              </a>
+              <ul class="sidenav-second-level collapse bg-gradient" id="service">
+                <li>
+                  <a href="{{ route('service.index') }}" style="color: white">Tout les services</a>
+                </li>
+                <li>
+                  <a href="{{ route('service.create') }}" style="color: white">Nouveau service</a>
+                </li>
+              </ul>
+            </li>
             
-            @else
-              {{-- Profil --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mon profil">
-                <a class="nav-link" href="{{ route('user.show',Auth::user()->id) }}" style="color: white">
-                  <i class="fa fa-user" aria-hidden="true"></i>
-                  <span class="nav-link-text">Mon profil</span>
-                </a>
-              </li>
-              
-              {{-- Demandes --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mes demandes">
-                <a class="nav-link" href="{{ route('user.profil') }}" style="color: white">
-                  <i class="fa fa-list-ul" aria-hidden="true"></i>
-                  <span class="nav-link-text">Mes demandes</span>
-                </a>
-              </li>
-              
+            {{-- Statistiques --}}
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu des statistiques">
+              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion" style="color: white">
+                <i class="fa fa-line-chart" aria-hidden="true"></i>
+                <span class="nav-link-text">Statistiques</span>
+              </a>
+              <ul class="sidenav-second-level collapse bg-gradient" id="collapseMulti" style="color: white">
+                <li>
+                  <a href="{{ route('stat.avenir')}}" style="color: white">À venir</a>
+                </li>
+                <li>
+                  <a href="#" style="color: white">Second Level Item</a>
+                </li>
+                <li>
+                  <a href="#" style="color: white">Second Level Item</a>
+                </li>
+                <li>
+                  <a class="nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti2"  style="color: white">Third Level</a>
+                  <ul class="sidenav-third-level collapse bg-gradient" id="collapseMulti2">
+                    <li>
+                      <a href="#" style="color: white">Third Level Item</a>
+                    </li>
+                    <li>
+                      <a href="#" style="color: white">Third Level Item</a>
+                    </li>
+                    <li>
+                      <a href="#" style="color: white">Third Level Item</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+            {{-- About me --}}
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mon compte">
+              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#self" data-parent="#exampleAccordion" style="color: white;">
+                <i class="fa fa-user-md" aria-hidden="true"></i>
+                <span class="nav-link-text">Mon compte</span>
+              </a>
+              <ul class="sidenav-second-level collapse bg-gradient" id="self">
+                <li>
+                  <a href="{{ route('user.show',Auth::user()->id) }}" style="color: white">Mon compte</a>
+                </li>
+                <li>
+                  <a href="{{ route('user.profil') }}" style="color: white">Mes demandes</a>
+                </li>
+                <li>
+                  <a href="{{ route('demande.create') }}" style="color: white">Faire une demande</a>
+                </li>
+              </ul>
+            </li>
+         @else
+            {{-- Profil --}}
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mon profil">
+              <a class="nav-link" href="{{ route('user.show',Auth::user()->id) }}" style="color: white">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                <span class="nav-link-text">Mon profil</span>
+              </a>
+            </li>
+            
+            {{-- Demandes --}}
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mes demandes">
+              <a class="nav-link" href="{{ route('user.profil') }}" style="color: white">
+                <i class="fa fa-list-ul" aria-hidden="true"></i>
+                <span class="nav-link-text">Mes demandes</span>
+              </a>
+            </li>
+            
               {{-- Nouvelle demande --}}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Nouvelle demande">
                 <a class="nav-link" href="{{ route('demande.create') }}" style="color: white">
@@ -176,7 +194,13 @@
                   <span class="nav-link-text">Faire une demande</span>
                 </a>
               </li>
-              @endif
+            @endif
+            {{-- Game --}}
+            <li class="nav-item" data-toggle="tooltip"  data-placement="right" title="À quoi ça sert ?" >
+              <div class="ml-3" onclick="game();" id="game" style="display: none">
+                <i class="fa fa-gamepad" aria-hidden="true" style="color: white"></i>
+              </div>
+            </li>
         @endauth
       </ul>
       {{-- Navbar --}}
@@ -256,7 +280,7 @@
                 <input class="form-control" type="text" name="search" placeholder="Rechercher un salarié" value="{{request()->search ?? ''}}" autofocus>
                 <span class="input-group-btn">
                   <button class="btn btn-primary" type="submit">
-                    <i class="fa fa-search"></i>
+                    <i class="fa fa-search" aria-hidden="true"></i>
                   </button>
                 </span>
               </div>
@@ -270,7 +294,7 @@
                 <input class="form-control" type="text" name="search" placeholder="Rechercher un salarié" value="{{request()->search ?? ''}}" autofocus>
                 <span class="input-group-btn">
                   <button class="btn btn-primary" type="submit">
-                    <i class="fa fa-search"></i>
+                    <i class="fa fa-search" aria-hidden="true"></i>
                   </button>
                 </span>
               </div>
@@ -285,7 +309,7 @@
                 <input class="form-control" type="text" name="search" placeholder="Rechercher un service" value="{{request()->search ?? ''}}" autofocus>
                 <span class="input-group-btn">
                   <button class="btn btn-primary" type="submit">
-                    <i class="fa fa-search"></i>
+                    <i class="fa fa-search" aria-hidden="true"></i>
                   </button>
                 </span>
               </div>
@@ -305,9 +329,14 @@
   </nav>
   <!--  Body-->
   <div class="content-wrapper">
-    <div class="mt-2 ml-5 mr-5" id="monBody">
+    <div class="mt-0 ml-5 mr-5" id="monBody" style="display: ">
       @yield('content')
-      <a href="{{ url()->previous()}}" class="btn btn-success"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a>
+      {{-- <a href="{{ url()->previous()}}" class="btn btn-success mt-1"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a> <hr> --}}
+      <div class="sticky fixed-bottom bg-secondary" style="margin-left: 29ch; height: 15mm;">
+        <div class="text-center mt-1" ondblclick="jeux();">
+          <small class="btn btn-link" style="color: white" title='Bravo tu es au bon endroit quelle est la prochaine étape ?'>Plateforme de gestion administrative du personnel de la TAAL</small>
+        </div>
+      </div>
       <script src="//code.jquery.com/jquery.js"></script>
         @include('flashy::message')
       <br>
@@ -333,41 +362,32 @@
     </div>
     
     {{-- Suppression --}}
-    {{-- <div class="modal fade show" id="supp" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-body text-danger" style="text-align: center; font-size: 2em">Voulez-vous vraiment vous retirer cet salarié ?</div>
-          <p style="padding-right: 45%""></p>
-          <div class="modal-footer">
-            <a class="btn btn-primary" onclick="return document.getElementById('supp').style.display = 'none';" type="button" data-dismiss="modal" >Annuler</a>
-            <form action="{{ route('user.destroy',$user->id) }}" method="POST" class="btn">
-              @csrf
-              @method('delete')
-              <button type="submit" class="btn btn-danger">Supprimer</button>
-            </form>
+    @if (url()->current() ==route('user.index'))
+      <div class="modal fade show" id="supp" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body text-danger" style="text-align: center; font-size: 2em">Voulez-vous vraiment vous retirer cet salarié ?</div>
+            <p style="padding-right: 45%""></p>
+            <div class="modal-footer">
+              <a class="btn btn-primary" onclick="return document.getElementById('supp').style.display = 'none';" type="button" data-dismiss="modal" >Annuler</a>
+              <form action="{{ route('user.destroy',$user->id) }}" method="POST" class="btn">
+                @csrf
+                @method('delete')
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div> --}}
+    @endif
 
-
-
-
-    <script>
-      function bye(){
-        return document.getElementById('exampleModal').style.display = "none";
-      }
-      function vient(){
-        return document.getElementById('exampleModal').style.display = "block";
-      }
-    </script>
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Core plugin JavaScript-->
     <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
     <!-- Page level plugin JavaScript-->
-    {{-- <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script> --}}
+    <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script>
     <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
     <script src="{{asset('vendor/datatables/dataTables.bootstrap4.js')}}"></script>
     <!-- Custom scripts for all pages-->
@@ -376,13 +396,7 @@
     <script src="{{asset('js/sb-admin-datatables.min.js')}}"></script>
     {{-- <script src="{{asset('js/sb-admin-charts.min.js')}}"></script> --}}
   </div>
-  <footer class="sticky-footer bg-secondary" >
-    <div class="container fixed h-10">
-      <div class="text-center">
-        <small class="btn btn-link" style="color: white">Plateforme de gestion administrative du personnel de la TAAL</small>
-      </div>
-    </div>
-  </footer>
+  
 </body>
 
 </html>

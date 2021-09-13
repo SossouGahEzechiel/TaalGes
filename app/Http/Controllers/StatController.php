@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\models\Demande;
+use Illuminate\Support\Carbon;
 
 class StatController extends Controller
 {
     public function aVenir()
     {
-        return "welcome";
+        dd($this->travel(5)->milliseconds());
+        dd(Demande::where('dateDeb','>',now())
+            ->orWhere('dateDeb','<',now())
+            ->get())
+        ;
     }
 }

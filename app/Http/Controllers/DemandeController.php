@@ -2,22 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DemandeRequest;
-use App\Http\Requests\SearchReq;
-use App\Mail\DemandeAvorteMail;
+use App\Models\User;
+use App\Models\Demande;
 use App\Mail\DemandeSentMail;
 use App\Mail\DemandeValideMail;
-use App\Models\Demande;
-use App\Models\User;
+use App\Mail\DemandeAvorteMail;
+use App\Http\Requests\SearchReq;
+use MercurySeries\Flashy\Flashy;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\DemandeRequest;
+use Illuminate\Support\Facades\Notification;
 use App\Notifications\DemanadeSentNotification;
 use App\Notifications\DemanadeValideNotification;
-use App\Notifications\DemandeAvorteNotification;
 use Illuminate\Notifications\DatabaseNotification;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Notification;
-use MercurySeries\Flashy\Flashy;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Mail;
 
 class DemandeController extends Controller
 {
@@ -95,13 +93,13 @@ class DemandeController extends Controller
         return redirect(route('demande.index'));
     }
 
+    //Mes actions
     public function attente()
     {
         $demandes = Demande::whereDecision(null)->simplePaginate(6);
         return view('admin.demande.etat',compact('demandes'));
     }
     
-    //Mes actions
     public function refuse()
     {
         $demandes = Demande::whereDecision('Refusé')->simplePaginate(6);
@@ -116,7 +114,7 @@ class DemandeController extends Controller
 
     public function search(SearchReq $request)
     {
-        $demandes = Demande::whereRelation('user','nom','like',"%$request->search%")->get();
+        $demandes = Demande::with('user')->whereRelation('user','nom','like',"%$request->search%")->get();
         return view('admin.demande.serach',compact('demandes','request'));
     }
 

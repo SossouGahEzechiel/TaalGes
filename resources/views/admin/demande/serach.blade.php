@@ -28,13 +28,33 @@
         <tbody>         
             @forelse ($demandes as $demande)
                 <code hidden>
-                    @if ($demande->decision === "Refusé")
-                        {{$col = "table-light"}}
-                        {{$btn = '' }}
+
+                    <code hidden>
+                    @if ($demande->user_id == Auth::user()->id)
+                        {{$self = "disabled"}}
                     @else
-                        {{$col = "table-success"}}
-                        {{$btn = "disabled"}}
+                        {{$self = ""}}
                     @endif
+                    @switch($demande->decision)
+                        @case("Refusé")
+                            {{$col = "table-light"}}
+                            {{$btn = '' }}
+                            {{$decision = "Refusée"}}
+                            @break
+                        @case("Accordé")
+                            {{$col = "table-success"}}
+                            {{$btn = "disabled"}}
+                            {{$decision = "Accordée"}}
+                            @break
+                        @case(null)
+                            {{$col = "table-info"}}
+                            {{$btn = ""}} 
+                            {{$decision = "En attente"}}
+                            @break
+                        @default
+                        
+                    @endswitch
+                </code>
                 </code>
                 <tr class="{{$col}}">
                     <th scope="row">{{$demande->user->nom}}</th>
@@ -42,7 +62,7 @@
                     <td>{{$demande->dateDeb->format('d/m/y')}}</td>
                     <td>{{$demande->duree}}</td>
                     <td>{{Str::limit($demande->objet,40)}}</td>
-                    <td>{{$demande->decision}}</td>
+                    <td>{{$decision}}</td>
                     <td>
                         <a href="{{ route('demande.show', [$demande->id]) }}" class="btn btn-primary">Plus</a>
                         <form action="{{ route('demande.update', [$demande->id]) }}" method="POST" class="btn"
@@ -54,7 +74,9 @@
                     </td>
                 </tr>
             @empty
-                <p>Vous n'avez addressé aucune demande</p>
+                <tr>
+                    <td colspan="7" style="text-align: center" class="alert alert-danger">Vous n'avez addressé aucune demande</td>
+                </tr>
             @endforelse
         </tbody>
     </table>

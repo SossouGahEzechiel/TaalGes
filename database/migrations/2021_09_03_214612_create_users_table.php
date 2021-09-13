@@ -33,9 +33,10 @@ class CreateUsersTable extends Migration
             $table->enum('fonction',['admin','user'])->default('user');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
-            $table->foreignIdFor(Service::class)
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+            $table->foreignId('service_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 
