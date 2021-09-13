@@ -19,7 +19,6 @@ class Service extends Model
 
     public function boss()
     {
-        $id = $this->directeur_id;
-        return $boss = User::whereId($id)->first();        
+        return User::whereId($this->directeur_id)->first();
     }
 }

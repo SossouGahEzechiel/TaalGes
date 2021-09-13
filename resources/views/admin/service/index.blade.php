@@ -14,7 +14,7 @@
         <tbody>
             @forelse ($services as $service)
                 <tr class="">
-                    {{-- @dd($service->salaries->count()) --}}
+                    {{-- @dd($service->boss()) --}}
                     <th scope="row">{{$service->lib}}</th>
                     <td>{{$service->boss()->nom}} {{$service->boss()->prenom}}</td>
                     <td>{{$service->salaries->count()}}</td>

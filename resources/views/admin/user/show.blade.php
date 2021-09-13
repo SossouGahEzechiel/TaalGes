@@ -71,33 +71,81 @@
         <div class="col-6">
             <!-- Date d'embauche -->
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="dateEmbauche" name="dateEmbauche" placeholder="dateEmbauche" value="{{$user->dateEmb->format('l \l\e d F Y')}}" readonly>
+                <input type="text" class="form-control" id="dateEmbauche" name="dateEmbauche" placeholder="dateEmbauche" value="{{$user->dateEmb->format('d/m/y')}}" readonly>
                 <label for="dateEmbauche">Date d'embauche</label>
             </div>
         </div>
-        <div class="col-6">
-            <!-- Nature du contrat -->
-            <div class="form-floating">
-                <input type="text" class="form-control" id="natCont" name="natCont" value="{{$user->natCont}}" readonly>
-                <label for="natCont">Nature du contrat</label>
+        @if ($user->natCont === "CDD")
+            <div class="col-4">
+                <!-- Nature du contrat -->
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="natCont" name="natCont" value="{{$user->natCont}}" readonly>
+                    <label for="natCont">Nature du contrat</label>
+                </div>
             </div>
-        </div>
+            <div class="col-2">
+                <!-- Nature du contrat -->
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="dureCont" name="dureCont" value="{{$user->dureCont}}" readonly>
+                    <label for="dureCont">Durée du contrat</label>
+                </div>
+            </div>
+        @else
+            <div class="col-6">
+                <!-- Nature du contrat -->
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="natCont" name="natCont" value="{{$user->natCont}}" readonly>
+                    <label for="natCont">Nature du contrat</label>
+                </div>
+            </div>
+        @endif
     </div>
     <div class="row">
-        <div class="col-6">
-            <!-- Fonction -->
-            <div class="form-floating">
-                <input type="text" class="form-control" id="fonction" name="fonction" value="{{$fonction }}" readonly>
-                <label for="fonction">Fonction</label>
-            </div> 
-        </div>
-        <div class="col-6">
+        @if ($departement)
+            <div class="col-3">
+                <!-- Fonction -->
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="fonction" name="fonction" value="{{$departement->lib }}" readonly>
+                    <label for="fonction">Département</label>
+                </div> 
+            </div>
+        @else
+            <div class="col-3">
+                <!-- Fonction -->
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="fonction" name="fonction" value="Salarié" readonly>
+                    <label for="fonction">Fonction</label>
+                </div> 
+            </div>
+        @endif
+        <div class="col-3">
             <!-- Service -->
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="tel" name="tel" placeholder="tel" value="{{$user->service->lib}}" readonly>
-                <label for="tel">Service</label>
+                <input type="text" class="form-control" id="service" name="service" placeholder="service" value="{{$user->service->lib}}" readonly>
+                <label for="service">Service</label>
             </div>
         </div>
+        <div class="col-3">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="tel" name="tel" placeholder="tel" value="{{$user->reserve}}" readonly>
+                <label for="tel">Reserve</label>
+            </div>
+        </div>
+        @if ($last)
+            <div class="col-3">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" id="last" name="last" placeholder="last" value="{{$last}}" readonly>
+                    <label for="last">Dernière permission en date</label>
+                </div>
+            </div>
+        @else
+            <div class="col-3">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="last" name="last" placeholder="last" value="N/A" readonly>
+                    <label for="last">Dernière permission en date</label>
+                </div>
+            </div>
+        @endif
     </div>
 
     <div class="d-grid gap-2 col-6 mx-auto mt-1">

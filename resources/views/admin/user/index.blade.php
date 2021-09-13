@@ -22,8 +22,8 @@
                     </td>
                     <td>
                         <a class="btn" href="{{ route('admin.show',$user->id) }}" style="background-color: rgb(221, 218, 12)">Plus de détails</a>   &nbsp;&nbsp; 
-                        <a class="btn btn-info" href="{{ route('admin.edit',$user->id) }}">Modifier</a>    
-                        <form action="{{ route('user.destroy',$user->id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment retirer cet salarie ?? \n cette action sera irréversible')" class="btn">
+                        <a class="btn btn-info" href="{{ route('admin.edit',$user->id) }}">Modifier</a>    &nbsp;&nbsp; 
+                        <form action="{{ route('user.destroy',$user->id) }}" method="POST" class="btn" onsubmit="return confirm('Vouoez-vous vraiment retirer ce salarié ?')">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger">Supprimer</button>
@@ -40,4 +40,5 @@
     </table>
     {{$users->links()}}
     <br>
+    
 @endsection

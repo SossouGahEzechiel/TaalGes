@@ -6,11 +6,11 @@ use App\Models\User;
 use App\Mail\TestMail;
 use App\Models\Demande;
 use App\Models\Service;
+use Illuminate\Http\Request;
 use App\Http\Requests\UserReq;
 use App\Mail\UserRegisterMail;
 use Illuminate\Validation\Rule;
 use App\Http\Requests\SearchReq;
-use Illuminate\Http\Request;
 use MercurySeries\Flashy\Flashy;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -70,13 +70,13 @@ class UserController extends Controller
         ]);
         
         event(new Registered($user));
-
-        Mail::to($user->email)->send(new UserRegisterMail($user,$request->password));
-
+        
         $admin = Auth::user();
         Auth::login($user);
         Auth::logout($user);
         Auth::login($admin);
+
+        Mail::to($user->email)->send(new UserRegisterMail($user,$request->password));
         function message($user)
         {
             if ($user->sexe == "M") {
@@ -99,11 +99,12 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        
+        $departement = Service::whereDirecteur_id($user->is)->first();
+        $last = Demande::whereUser_id($user->id)->max('dateDeb');
         if (Auth::user()->fonction == "user") {
-            return view('user.self.show',compact('user'));
+            return view('user.self.show',compact('user','last','departement'));
         }
-        return view('admin.user.show',compact('user'));
+        return view('admin.user.show',compact('user','last','departement'));
     }
 
     /**
@@ -199,7 +200,7 @@ class UserController extends Controller
             Flashy::success(sprintf("Les modifications des données du salarié %s ont été mises à jour avec succès",$user->nom));
         }
         
-        return redirect(route('user.show',$user));
+        return redirect(route('user.show',$user->id));
     }
 
     /**

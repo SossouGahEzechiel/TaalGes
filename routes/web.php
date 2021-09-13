@@ -42,9 +42,15 @@ Route::get('/demande/accorde', 'DemandeController@accorde')->name('demande.accor
 Route::get('/demande/refuse', 'DemandeController@refuse')->name('demande.refuse')->middleware(['auth','admin']); //Afficher les demandes non-accordées
 Route::get('/demande/read/{notification}/{id}', 'DemandeController@read')->name('demande.read')->middleware(['auth']); //Marquer une notification comme lue
 
+// Route de consultation de ses demandes
 Route::get('/mesdemandes', 'UserController@profil')->name('user.profil')->middleware(['auth']);
 
+// Mes resources
 Route::resource('user', 'UserController');
 Route::resource('admin', 'AdminController');
 Route::resource('service', 'ServiceController');
 Route::resource('demande', 'DemandeController');
+
+Route::middleware(['auth','admin'])->group(function () {
+    Route::get('/stat/a_venir','StatController@aVenir')->name('stat.avenir');
+});
