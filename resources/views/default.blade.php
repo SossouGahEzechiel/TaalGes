@@ -98,19 +98,44 @@
                   </li>
                 </ul>
               </li>
-
-              {{-- Statistiques --}}
-              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Qui était là, et qui n'était pas là ??" >
-                <a class="nav-link" href="#">
-                  <i class="fa fa-fw fa-link" style="color: white;"></i>
-                  <span class="nav-link-text" style="color: white;">Statistiques</span>
-                </a>
-              </li>
               
+              {{-- Statistiques --}}
+              <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu des statistiques">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion" style="color: white">
+                  <i class="fa fa-line-chart" aria-hidden="true"></i>
+                  <span class="nav-link-text">Statistiques</span>
+                </a>
+                <ul class="sidenav-second-level collapse bg-gradient" id="collapseMulti" style="color: white">
+                  <li>
+                    <a href="#" style="color: white">Second Level Item</a>
+                  </li>
+                  <li>
+                    <a href="#" style="color: white">Second Level Item</a>
+                  </li>
+                  <li>
+                    <a href="#" style="color: white">Second Level Item</a>
+                  </li>
+                  <li>
+                    <a class="nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti2"  style="color: white">Third Level</a>
+                    <ul class="sidenav-third-level collapse bg-gradient" id="collapseMulti2">
+                      <li>
+                        <a href="#" style="color: white">Third Level Item</a>
+                      </li>
+                      <li>
+                        <a href="#" style="color: white">Third Level Item</a>
+                      </li>
+                      <li>
+                        <a href="#" style="color: white">Third Level Item</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+
               {{-- About me --}}
               <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mon compte">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#self" data-parent="#exampleAccordion" style="color: white;">
-                  <i class="fa fa-fw fa-server"></i>
+                  <i class="fa fa-user-md" aria-hidden="true"></i>
                   <span class="nav-link-text">Mon compte</span>
                 </a>
                 <ul class="sidenav-second-level collapse bg-gradient" id="self">
@@ -126,37 +151,6 @@
                 </ul>
               </li>
 
-            {{-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Menu Levels">
-              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
-                <i class="fa fa-fw fa-sitemap"></i>
-                <span class="nav-link-text">Menu Levels</span>
-              </a>
-              <ul class="sidenav-second-level collapse" id="collapseMulti">
-                <li>
-                  <a href="#">Second Level Item</a>
-                </li>
-                <li>
-                  <a href="#">Second Level Item</a>
-                </li>
-                <li>
-                  <a href="#">Second Level Item</a>
-                </li>
-                <li>
-                  <a class="nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti2">Third Level</a>
-                  <ul class="sidenav-third-level collapse" id="collapseMulti2">
-                    <li>
-                      <a href="#">Third Level Item</a>
-                    </li>
-                    <li>
-                      <a href="#">Third Level Item</a>
-                    </li>
-                    <li>
-                      <a href="#">Third Level Item</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li> --}}
             
             @else
               {{-- Profil --}}
@@ -311,19 +305,14 @@
   </nav>
   <!--  Body-->
   <div class="content-wrapper">
-    <div class="mt-2 ml-5 mr-5">
+    <div class="mt-2 ml-5 mr-5" id="monBody">
       @yield('content')
+      <a href="{{ url()->previous()}}" class="btn btn-success"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a>
       <script src="//code.jquery.com/jquery.js"></script>
-      @include('flashy::message')
+        @include('flashy::message')
       <br>
     </div>
-    <footer class="sticky-footer bg-secondary" >
-      <div class="container fixed h-10">
-        <div class="text-center">
-          <small class="btn btn-link" style="color: white">Plateforme de gestion administrative du personnel de la TAAL</small>
-        </div>
-      </div>
-    </footer>
+    
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
       <i class="fa fa-angle-up"></i>
@@ -333,18 +322,11 @@
     <div class="modal fade show" id="deconnexion" tabindex="-1" role="dialog" name="pop" aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Fermeture de session</h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <a class="btn btn-secondary" type="button" data-dismiss="modal" ><i class="fa fa-times"
-                onclick="bye();" aria-hidden="true">
-              </i></a>
-            </button>
-          </div>
-          <div class="modal-body" style="text-align: center">Voulez-vous vraiment vous déconnecter ?</div>
+          <div class="modal-body" style="text-align: center;">Voulez-vous vraiment vous déconnecter ?</div>
           <div class="modal-footer">
-            <a class="btn btn-secondary" onclick="bye();" type="button" data-dismiss="modal" >Cancel</a>
-            <a class="btn btn-primary" href="{{ route('logout') }}">Logout</a>
+            <a class="btn btn-primary" onclick="bye();">Annuler</a>
+            <p style="padding-right: 45%"></p>
+            <a class="btn btn-danger ml-3" href="{{ route('logout') }}">Me déconnecter</a>
           </div>
         </div>
       </div>
@@ -368,9 +350,17 @@
 
 
 
+    <script>
+      function bye(){
+        return document.getElementById('exampleModal').style.display = "none";
+      }
+      function vient(){
+        return document.getElementById('exampleModal').style.display = "block";
+      }
+    </script>
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- Core plugin JavaScript-->
     <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
     <!-- Page level plugin JavaScript-->
@@ -403,6 +393,13 @@
       }
     </script>
   </div>
+  <footer class="sticky-footer bg-secondary" >
+    <div class="container fixed h-10">
+      <div class="text-center">
+        <small class="btn btn-link" style="color: white">Plateforme de gestion administrative du personnel de la TAAL</small>
+      </div>
+    </div>
+  </footer>
 </body>
 
 </html>

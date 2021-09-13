@@ -80,7 +80,7 @@
             <!-- Date d'embauche -->
             <div class="form-floating mb-3">
                 <input type="date" class="form-control @error('dateEmb') is-invalid @enderror " id="dateEmb" name="dateEmb" placeholder="dateEmb" value="{{old('dateEmb') ?? $user->dateEmb}}" required autofocus>
-                <label for="dateEmb">Date d'embauche</label>
+                <label for="dateEmb">{{$user->dateEmb ? $user->dateEmb->format('d/m/y') : 'Date d\'embauche'}}</label>
             </div>
             @error('dateEmb')
                 <div class="alert alert-danger">{{ $message }}</div>

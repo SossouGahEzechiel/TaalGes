@@ -17,6 +17,11 @@
         <tbody>         
             @forelse ($demandes as $demande)
                 <code hidden>
+                    @if ($demande->user_id == Auth::user()->id)
+                        {{$self = "disabled"}}
+                    @else
+                        {{$self = ""}}
+                    @endif
                     @switch($demande->decision)
                         @case("Refusé")
                             {{$col = "table-light"}}
@@ -53,12 +58,14 @@
                             onsubmit="return confirm('Voulez-vous vraiment confirmer cette demande ??')">
                             @csrf
                             @method('put')
-                            <button type="submit" class="btn btn-success {{$btn}} ">Accepter</button>
+                            <button type="submit" class="btn btn-success {{$btn}} " {{$self}}>Accepter</button>
                         </form>
                     </td>
                 </tr>
             @empty
-                <p>Vous n'avez addressé aucune demande</p>
+                <tr>
+                    <td colspan="7" style="text-align: center">Aucune demande n'a encore été faite</td>
+                </tr>
             @endforelse
         </tbody>
     </table>

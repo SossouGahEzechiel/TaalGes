@@ -17,7 +17,7 @@ class CreateMailsTable extends Migration
             $table->id();
             $table->text('message');
             $table->bigInteger('auteur');
-            $table->foreign('auteur')->references('id')->on('users');
+            $table->foreign('auteur')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         }); 
     }

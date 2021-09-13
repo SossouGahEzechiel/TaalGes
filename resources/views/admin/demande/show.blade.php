@@ -29,7 +29,11 @@
             @break
             @default
         @endswitch
-        
+        @if ($demande->user_id == Auth::user()->id)
+            {{$self = "disabled"}}
+        @else
+            {{$self = ""}}
+        @endif
     </code>
     <h1>Demande de {{$demande->user->nom}} {{$demande->user->prenom}}</h1>
     <div class=" col-8 container">
@@ -72,7 +76,7 @@
         @if (Auth::user()->fonction === "admin" and $demande->decision != "Accordé")
             <form action="{{ route('demande.update', [$demande->id]) }}" method="POST">
                 @csrf @method('put')
-                <button type="submit" class="btn btn-success">Accepter</button>
+                <button type="submit" class="btn btn-success" {{$self}}>Accepter</button>
             </form>
         @endif
         <div class="{{$class}} text-center">{{$text}}</div>

@@ -40,8 +40,8 @@ class ServiceController extends Controller
 
     public function show(Service $service)
     {
-        $admins = User::whereFonction('admin')->get();
-        return view('admin.service.show',compact('service','admins'));
+        // dd($admin);
+        return view('admin.service.show',compact('service'));
     }
 
     public function edit(Service $service)

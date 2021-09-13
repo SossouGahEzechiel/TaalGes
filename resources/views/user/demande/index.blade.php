@@ -47,7 +47,7 @@
                     <td><a href="{{ route('demande.show', [$demande->id]) }}" class="btn btn-primary">Détails</a></td>
                 </tr>
             @empty
-                <p>Vous n'avez addressé aucune demande</p>
+                <tr><td colspan="7" style="text-align: center">Vous n'avez addressé aucune demande</td></tr>
             @endforelse
         </tbody>
     </table>
