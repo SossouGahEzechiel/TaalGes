@@ -11,9 +11,12 @@
         <label for="dir">Nom du directeur de service</label>
     </div>
 
-    <p>
-        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-target="#salarieList" aria-expanded="false" aria-controls="salarieList">
+    <p class="col-3 mx-auto">
+        {{-- <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-target="#salarieList" aria-expanded="false" aria-controls="salarieList">
           Afficher ses salariés
+        </button> --}}
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#salarieList" aria-expanded="false" aria-controls="salarieList">
+            Afficher ses salariés
         </button>
     </p>
     <div class="collapse" id="salarieList">

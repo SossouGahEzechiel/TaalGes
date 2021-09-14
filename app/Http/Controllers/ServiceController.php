@@ -45,8 +45,9 @@ class ServiceController extends Controller
     }
 
     public function edit(Service $service)
-    {
-        return view('admin.service.edit',compact('service'));
+    {   $admins = User::whereFonction('admin')->get();
+        // dd(User::all());
+        return view('admin.service.edit',compact('service','admins'));
     }
 
     public function update(ServiceReq $request, Service $service)

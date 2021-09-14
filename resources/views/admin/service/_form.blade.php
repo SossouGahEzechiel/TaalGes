@@ -7,7 +7,7 @@
     
     <div class="form-floating mb-3">
         <div class="form-floating">
-            <select class="form-select @error('boss') is-invalid @enderror " id="boss" name="boss" aria-label="Floating label select example">
+            <select class="form-select @error('boss') is-invalid @enderror " id="boss" aria-valuetext="{{old('boss')}}" name="boss" aria-label="Floating label select example">
                 @foreach ($admins as $admin)
                 <option value="{{$admin->id}}">{{$admin->nom}} {{$admin->prenom}}</option>
                 @endforeach
@@ -15,7 +15,7 @@
             <label for="boss">Directeur du service</label>
         </div> 
     </div> 
-        @error('lib')<div class="alert alert-danger">{{$message}}</div>@enderror
+        @error('boss')<div class="alert alert-danger">{{$message}}</div>@enderror
     <div class="d-grid gap-2 col-6 mx-auto mt-3">
         <button type="submit" class="btn btn-success">{{$action}}</button>
     </div>  

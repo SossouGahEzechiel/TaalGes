@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ServiceReq extends FormRequest
 {
@@ -24,7 +25,11 @@ class ServiceReq extends FormRequest
     public function rules()
     {
         return [
-            'lib'=>['required','unique:services,lib','min:5','max:35']
+            'lib'=>['required','min:5','max:35',
+                Rule::unique('services')->where(function($query){
+                    return $query->where('id',1);
+                })
+            ]
         ];
     }
 }

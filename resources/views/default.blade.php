@@ -20,6 +20,20 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" 
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" 
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+
   <style>
     h1,h2{
       text-align: center;
@@ -127,10 +141,10 @@
               </a>
               <ul class="sidenav-second-level collapse bg-gradient" id="collapseMulti" style="color: white">
                 <li>
-                  <a href="{{ route('stat.avenir')}}" style="color: white">À venir</a>
+                  <a href="{{ route('stat.parService')}}" style="color: white" title="Par service 🦺">Regroupement des données par service</a>
                 </li>
                 <li>
-                  <a href="#" style="color: white">Second Level Item</a>
+                  <a href="{{ route('stat.parIntervalle')}}" style="color: white" title="[t1,t2]">Regroupement des données par intervalle de temps</a>
                 </li>
                 <li>
                   <a href="#" style="color: white">Second Level Item</a>
@@ -330,15 +344,13 @@
   <!--  Body-->
   <div class="content-wrapper">
     <div class="mt-0 ml-5 mr-5" id="monBody" style="display: ">
-      @yield('content')
-      {{-- <a href="{{ url()->previous()}}" class="btn btn-success mt-1"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a> <hr> --}}
+      @yield('content')@include('flashy::message')
       <div class="sticky fixed-bottom bg-secondary" style="margin-left: 29ch; height: 15mm;">
         <div class="text-center mt-1" ondblclick="jeux();">
           <small class="btn btn-link" style="color: white" title='Bravo tu es au bon endroit quelle est la prochaine étape ?'>Plateforme de gestion administrative du personnel de la TAAL</small>
         </div>
       </div>
       <script src="//code.jquery.com/jquery.js"></script>
-        @include('flashy::message')
       <br>
     </div>
     
@@ -381,6 +393,8 @@
       </div>
     @endif
 
+
+    
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -391,7 +405,7 @@
     <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
     <script src="{{asset('vendor/datatables/dataTables.bootstrap4.js')}}"></script>
     <!-- Custom scripts for all pages-->
-    {{-- <script src="{{asset('js/sb-admin.min.js')}}"></script> --}}
+    <script src="{{asset('js/sb-admin.min.js')}}"></script>
     <!-- Custom scripts for this page-->
     <script src="{{asset('js/sb-admin-datatables.min.js')}}"></script>
     {{-- <script src="{{asset('js/sb-admin-charts.min.js')}}"></script> --}}

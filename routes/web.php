@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\DemandeController;
+use App\Models\Demande;
+use App\Models\Service;
+use Carbon\Carbon;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +55,56 @@ Route::resource('admin', 'AdminController');
 Route::resource('service', 'ServiceController');
 Route::resource('demande', 'DemandeController');
 
-Route::middleware(['auth','admin'])->group(function () {
-    Route::get('/stat/a_venir','StatController@aVenir')->name('stat.avenir');
+Route::middleware(['auth','admin'])->prefix('/stat')->group(function () {
+    // Route::post('/stat/a_venir','StatController@futur')->name('stat.futur.response');
+    Route::get('/par-service',function(){
+        $last = new Carbon();
+        $last = Demande::all(); 
+        $last = $last->last();
+        $services = Service::all();
+        $nb = 0;
+        $data = [];
+        foreach ($services as $service ) {
+            $nb = 0;
+            foreach($service->salaries as $user){
+                $nb += $user->demandes->count();
+            }
+            $data['service'][] = $service->lib;
+            $data['nb'][] = $nb;
+        }
+        $data['final'] = json_encode($data);
+        return view('stat.parService',compact('data','last'));
+        // dump($data['final'] = json_encode($data));
+        // $demandes = Demande::all()->groupBy('user_id');
+        // // dd($demandes);
+        // foreach ($demandes as $demande) {
+        //     // echo $demandes;
+        //     foreach ($demande as $dem ) {
+        //         dump($dem->user->service->lib,$dem->user->nom,);
+        //     }
+        // }
+        // foreach ($services as $service) {
+        //     foreach($service->salaries as $user){
+        //         dump($user->demandes->count().' demandes addressées par '.$user->nom.' étant sous les ordres de '.$service->boss()->nom.' '.$service->lib);
+        //         foreach($user->demandes as $demande){
+        //             dump($demande->dateDeb->month.' de '.$user->nom.' du service de: '.$user->service->boss()->nom.' chef de: '.$service->lib);
+        //         }
+        //     }
+        // }
+        // die();
+    })->name('stat.parService');
+    Route::get('/par-intervalle', function(){
+
+    })->name('stat.parIntervalle');
 });
+
+// Route pour marquer toutes notifications comme lues ☣⚡
+// Route::get('/toutLire', function(){
+//     $notifs = DatabaseNotification::whereRead_at(null)->get();
+//     foreach ($notifs as $notif ) {
+//         $notif->update([
+//             'read_at'=>now()
+//         ]);
+//     }
+//     return "ok C'set bon";
+// })->name('toutLire');

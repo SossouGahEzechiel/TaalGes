@@ -51,7 +51,8 @@ class DemandeController extends Controller
             Notification::send(User::whereFonction('admin')->get(),new DemanadeSentNotification($demande));
             Mail::to('taalcorp@gmail.com')->send(new DemandeSentMail($demande,Auth::user()));
             Flashy::success("Votre demande a été envoyée avec succès");
-            return redirect(route('user.show',$demande->user->id));
+            return back();
+            // return redirect(route('user.show',$demande->user->id));
         }
         // Auth::user()->notify(new DemandeAvorteNotification(Auth::user(),$request));
         Mail::to(Auth::user()->email)->send(new DemandeAvorteMail(Auth::user()));
@@ -123,4 +124,5 @@ class DemandeController extends Controller
         $notification->markAsRead();
         return redirect(route('demande.show',$id));
     }
+
 }

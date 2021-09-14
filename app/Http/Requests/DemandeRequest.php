@@ -26,7 +26,7 @@ class DemandeRequest extends FormRequest
         return [
             'typeDem'=>['required'],
             'objet'=>['required','max:128','min:5'],
-            'dateDeb'=>['required','date',"after_or_equal:tomorrow"],
+            'dateDeb'=>['required','date'],
             'duree'=>['integer']
         ];
     }

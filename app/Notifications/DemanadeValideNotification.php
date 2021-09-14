@@ -61,7 +61,8 @@ class DemanadeValideNotification extends Notification
             'date'=>$this->demande->dateDem->format('d/m/y'),
             'type'=>$this->demande->typeDem,
             'id'=>$this->demande->id,
-            'objet'=>'Mail de validation'
+            'objet'=>'Mail de validation',
+            'de' => 'taalcorp@gmail.com'
         ];
     }
 }
