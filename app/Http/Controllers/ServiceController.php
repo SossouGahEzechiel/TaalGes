@@ -17,6 +17,7 @@ class ServiceController extends Controller
 
     public function index()
     {
+    
         $services = Service::simplePaginate(5);
         return view('admin.service.index',compact('services'));
     }

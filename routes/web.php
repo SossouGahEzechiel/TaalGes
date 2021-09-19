@@ -62,8 +62,10 @@ Route::middleware(['auth','admin'])->prefix('/stat')->group(function () {
         $last = Demande::all(); 
         $last = $last->last();
         $services = Service::all();
-        $nb = 0;
         $data = [];
+        $nb2=0;
+        $nb3=0;
+        $nb4=0;
         foreach ($services as $service ) {
             $nb = 0;
             foreach($service->salaries as $user){
@@ -72,8 +74,44 @@ Route::middleware(['auth','admin'])->prefix('/stat')->group(function () {
             $data['service'][] = $service->lib;
             $data['nb'][] = $nb;
         }
+        
+        $data2 = []; //Pour receuillir les demandes en attente
+        $data3 = []; //Pour receuillir les demandes accrodées 
+        $data4 = []; //Pour receuillir les demandes non-accrodées
+        foreach ($services as $service ) {
+            $nb = 0;
+            foreach($service->salaries as $user){
+                $null=0;
+                $acc=0;
+                $ref=0;
+                foreach($user->demandes as $demande){
+                    if($demande->decision == null){
+                        $null++;
+                    }
+                    if($demande->decision === 'Réfusé'){
+                        $ref++;
+                    }
+                    if($demande->decision === "Accordé"){
+                        $acc++;
+                    }
+                }
+                $nb2 += $null;
+                $nb3 += $acc;
+                $nb4 += $ref;
+            }
+            $data2['service'][] = $service->lib;
+            $data4['service'][] = $service->lib;
+            $data3['service'][] = $service->lib;
+            $data2['nb'][] = $nb2;
+            $data3['nb'][] = $nb3;
+            $data4['nb'][] = $nb4;
+        } 
         $data['final'] = json_encode($data);
-        return view('stat.parService',compact('data','last'));
+        $data2['final'] = json_encode($data2);
+        $data3['final'] = json_encode($data3);
+        $data4['final'] = json_encode($data4);
+        // dd($data2['final']);
+        return view('stat.parService',compact('data','data2','data3','data4','last'));
         // dump($data['final'] = json_encode($data));
         // $demandes = Demande::all()->groupBy('user_id');
         // // dd($demandes);
@@ -94,7 +132,12 @@ Route::middleware(['auth','admin'])->prefix('/stat')->group(function () {
         // die();
     })->name('stat.parService');
     Route::get('/par-intervalle', function(){
-
+        dd(
+            Demande::whereDatedem(now())
+                ->orWhere('dateDeb',Carbon::tomorrow())
+                ->get()
+        );
+        return 'nous y sommes';
     })->name('stat.parIntervalle');
 });
 

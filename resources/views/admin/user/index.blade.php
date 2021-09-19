@@ -1,6 +1,6 @@
 @extends('default')
 @section('content')
-    <h1 style="text-align: center;">Liste des Salariés</h1> <br>
+    <h1 class="mb-0">Liste des Salariés</h1> <br>
     <table class="table">
         <thead>
             <tr>

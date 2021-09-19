@@ -48,6 +48,9 @@ class DemandeController extends Controller
                 'decision' => null,
                 'user_id'=> Auth::user()->id
             ]);
+            
+            
+            
             Notification::send(User::whereFonction('admin')->get(),new DemanadeSentNotification($demande));
             Mail::to('taalcorp@gmail.com')->send(new DemandeSentMail($demande,Auth::user()));
             Flashy::success("Votre demande a été envoyée avec succès");
