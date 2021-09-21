@@ -14,17 +14,25 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- Nom -->
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="nom" name="nom" placeholder="nom" value="{{old('nom')}}" required autofocus>
-            <label for="nom">Nom</label>
+        <div class="row">
+            <div class="col-6">
+                <!-- Nom -->
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="nom" name="nom" placeholder="nom" value="{{old('nom')}}" required autofocus>
+                    <label for="nom">Nom</label>
+                </div>
+            </div>
+            <div class="col-6">
+            <!-- Prénom -->
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="prenom" name="prenom" placeholder="prenom" value="{{old('prenom')}}" required autofocus>
+                    <label for="prenom">Prénom</label>
+                </div>
+            </div>
         </div>
+        
 
-        <!-- Prénom -->
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="prenom" name="prenom" placeholder="prenom" value="{{old('prenom')}}" required autofocus>
-            <label for="prenom">Prénom</label>
-        </div>
+        
 
         <!-- Sexe --><!-- Civilité -->
         <div class="row">
@@ -39,38 +47,36 @@
                     <label for="sexe">Sexe</label>
                 </div>
             </div>
-
-            <!-- Civilité -->
+            <!-- Adresse -->
             <div class="col-6">
-                <div class="form-floating">
-                    <select class="form-select" id="civilite" name="civilite" aria-label="Floating label select example">
-                        {{-- <option hidden value=""></option> --}}
-                        <option value="Monsieur">Monsieur</option>
-                        <option value="Madame">Madame</option>
-                        <option value="Mademoiselle">Mademoiselle   </option>
-                    </select>
-                    <label for="civilite">Civilité</label>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="adresse" name="adresse" placeholder="adresse" value="{{old('adresse')}}" required autofocus>
+                    <label for="adresse">Adresse</label>
                 </div>
             </div>
-        </div><br>
-
-        <!-- Adresse -->
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="adresse" name="adresse" placeholder="adresse" value="{{old('adresse')}}" required autofocus>
-            <label for="adresse">Adresse</label>
         </div>
-
-        <!-- Email Address -->
-        <div class="form-floating mb-3">    
-            <input type="text" class="form-control" id="email" name="email" placeholder="email" value="{{old('email')}}" required autofocus>
-            <label for="email">Email</label>
+        <div class="row">
+            <div class="col-6">
+                <!-- Email Address -->
+                <div class="form-floating mb-3">    
+                    <input type="text" class="form-control" id="email" name="email" placeholder="email" value="{{old('email')}}" required autofocus>
+                    <label for="email">Email</label>
+                </div>
+            </div>
+            <!-- Telephone -->
+            <div class="col-6">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="tel" name="tel" placeholder="tel" value="{{old('tel')}}" required autofocus>
+                    <label for="tel">Téléphone</label>
+                </div>
+            </div>
         </div>
+        
 
-        <!-- Telephone -->
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="tel" name="tel" placeholder="tel" value="{{old('tel')}}" required autofocus>
-            <label for="tel">Téléphone</label>
-        </div>
+        
+
+        
+        
         <!-- Date d'embauche --><!-- Nature du contrat -->
         <div class="row">
             <div class="col-6">
@@ -85,8 +91,8 @@
                 <div class="form-floating">
                     <select class="form-select" id="natCont" name="natCont" aria-label="Floating label select example">
                         {{-- <option hidden value=""></option> --}}
-                        <option value="CDD">CDD</option>
                         <option value="CDI">CDI</option>
+                        <option value="CDD">CDD</option>
                     </select>
                     <label for="natCont">Nature du contrat</label>
                 </div>
@@ -111,32 +117,39 @@
                 <div class="form-floating">
                     <select class="form-select" id="service" name="service" aria-label="Floating label select example">
                         {{-- <option hidden value=""></option> --}}
-                        <option value="1">Comptabilité</option>
-                        <option value="2">Ressources humaines</option>
+                        <option value="1">Ressources humaines</option>
                     </select>
                     <label for="service">Service</label>
                 </div>
             </div>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-label for="password" :value="__('Password')" />
+        <div class="row">
+            <div class="col-6">
+                <!-- Password -->
+                <div class="mt-4">
+                    <x-label for="password" :value="__('Password')" />
 
-            <x-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+                    <x-input id="password" class="block mt-1 w-full"
+                                    type="password"
+                                    name="password"
+                                    required autocomplete="new-password" />
+                </div>
+            </div>
+            <div class="col-6">
+                <!-- Confirm Password -->
+                <div class="mt-4">
+                    <x-label for="password_confirmation" :value="__('Confirm Password')" />
+
+                    <x-input id="password_confirmation" class="block mt-1 w-full"
+                                    type="password"
+                                    name="password_confirmation" required />
+                </div>
+            </div>
         </div>
+        
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required />
-        </div>
+        
 
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">

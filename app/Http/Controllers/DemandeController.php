@@ -2,22 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DemandeRequest;
-use App\Http\Requests\SearchReq;
-use App\Mail\DemandeAvorteMail;
+use App\Models\User;
+use App\Models\Demande;
 use App\Mail\DemandeSentMail;
 use App\Mail\DemandeValideMail;
-use App\Models\Demande;
-use App\Models\User;
+use App\Mail\DemandeAvorteMail;
+use App\Http\Requests\SearchReq;
+use MercurySeries\Flashy\Flashy;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\DemandeRequest;
+use Illuminate\Support\Facades\Notification;
 use App\Notifications\DemanadeSentNotification;
 use App\Notifications\DemanadeValideNotification;
-use App\Notifications\DemandeAvorteNotification;
 use Illuminate\Notifications\DatabaseNotification;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Notification;
-use MercurySeries\Flashy\Flashy;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Mail;
 
 class DemandeController extends Controller
 {
@@ -27,7 +25,7 @@ class DemandeController extends Controller
     }
     public function index()
     {
-        $demandes = Demande::simplePaginate(6);
+        $demandes = Demande::simplePaginate(15);
         return view('admin.demande.index',compact('demandes'));
     }
 
@@ -50,10 +48,14 @@ class DemandeController extends Controller
                 'decision' => null,
                 'user_id'=> Auth::user()->id
             ]);
+            
+            
+            
             Notification::send(User::whereFonction('admin')->get(),new DemanadeSentNotification($demande));
             Mail::to('taalcorp@gmail.com')->send(new DemandeSentMail($demande,Auth::user()));
             Flashy::success("Votre demande a été envoyée avec succès");
-            return redirect(route('user.show',$demande->user->id));
+            return back();
+            // return redirect(route('user.show',$demande->user->id));
         }
         // Auth::user()->notify(new DemandeAvorteNotification(Auth::user(),$request));
         Mail::to(Auth::user()->email)->send(new DemandeAvorteMail(Auth::user()));
@@ -95,34 +97,35 @@ class DemandeController extends Controller
         return redirect(route('demande.index'));
     }
 
+    //Mes actions
     public function attente()
     {
-        $demandes = Demande::whereDecision(null)->simplePaginate(6);
+        $demandes = Demande::whereDecision(null)->simplePaginate(15);
         return view('admin.demande.etat',compact('demandes'));
     }
     
-    //Mes actions
     public function refuse()
     {
-        $demandes = Demande::whereDecision('Refusé')->simplePaginate(6);
+        $demandes = Demande::whereDecision('Refusé')->simplePaginate(15);
         return view('admin.demande.etat',compact('demandes'));
     }
     
     public function accorde()
     {
-        $demandes = Demande::whereDecision('Accordé')->simplePaginate(6);
+        $demandes = Demande::whereDecision('Accordé')->simplePaginate(15);
         return view('admin.demande.etat',compact('demandes'));
     }
 
     public function search(SearchReq $request)
     {
-        $demandes = Demande::whereRelation('user','nom','like',"%$request->search%")->get();
+        $demandes = Demande::with('user')->whereRelation('user','nom','like',"%$request->search%")->get();
         return view('admin.demande.serach',compact('demandes','request'));
     }
 
-    public function read(DatabaseNotification $notification,$id)
+    public function read(DatabaseNotification $notification,int $id)
     {
         $notification->markAsRead();
         return redirect(route('demande.show',$id));
     }
+
 }

@@ -9,7 +9,6 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
     
-    public $timestamps = false;
     protected $guarded = [];
 
     protected $dates = ['dateEmb'];

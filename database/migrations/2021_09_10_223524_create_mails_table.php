@@ -16,8 +16,10 @@ class CreateMailsTable extends Migration
         Schema::create('mails', function (Blueprint $table) {
             $table->id();
             $table->text('message');
-            $table->bigInteger('auteur');
-            $table->foreign('auteur')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('auteur')
+                ->constrained('users','id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
         }); 
     }

@@ -1,6 +1,6 @@
 @extends('default')
 @section('content')
-    <h1 style="text-align: center;">Liste des Salariés</h1> <br>
+    <h1 class="mb-0">Liste des Salariés</h1> <br>
     <table class="table">
         <thead>
             <tr>
@@ -22,17 +22,8 @@
                     </td>
                     <td>
                         <a class="btn" href="{{ route('admin.show',$user->id) }}" style="background-color: rgb(221, 218, 12)">Plus de détails</a>   &nbsp;&nbsp; 
-                        @if ($user->id == Auth::user()->id)
-                            <a class="btn btn-info" onclick="vient();" aria-disabled="true">Modifier</a>    &nbsp;&nbsp;
-                            <button type="submit" class="btn btn-danger" onclick="vient();">Supprimer</button>
-                        @else
-                            <a class="btn btn-info" href="{{ route('admin.edit',$user->id) }}">Modifier</a>    
-                            <form action="{{ route('user.destroy',$user->id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment retirer cet salarie ?? \n cette action sera irréversible')" class="btn">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger">Supprimer</button>
-                            </form>
-                        @endif                          
+                        <a class="btn btn-info" href="{{ route('admin.edit',$user->id) }}">Modifier</a>    &nbsp;&nbsp; 
+                        <button class="btn btn-danger" onclick="return document.getElementById('supp').style.display = 'block';">Retirer</button>                   
                     </td>
                 </tr>
             @empty

@@ -16,10 +16,10 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('nom',30);
-            $table->string('prenom',35);
-            $table->string('adresse',35);
-            $table->string('tel',15);
+            $table->string('nom',60);
+            $table->string('prenom',60);
+            $table->string('adresse',60);
+            $table->string('tel',60);
             $table->string('email',60);
             $table->string('password',60);
             $table->enum('sexe',['M','F']);
@@ -33,9 +33,11 @@ class CreateUsersTable extends Migration
             $table->enum('fonction',['admin','user'])->default('user');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
-            $table->foreignIdFor(Service::class)
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+            $table->foreignId('service_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->timestamps(); 
         });
     }
 

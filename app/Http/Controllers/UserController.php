@@ -30,7 +30,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::simplePaginate(7);
+        $users = User::simplePaginate(15);
         return view('admin.user.index',compact('users'));
     }
 
@@ -64,7 +64,7 @@ class UserController extends Controller
             'sexe'          =>      $request->sexe,
             'dateEmb'       =>      $request->dateEmb,
             'natCont'       =>      $request->natCont,
-            'dureCont'       =>      $request->dureCont,
+            'dureCont'       =>     $request->dureCont,
             'fonction'      =>      $request->fonction,
             'service_id'    =>      $request->service,
         ]);
@@ -142,7 +142,7 @@ class UserController extends Controller
                         return ($query->where('email',Auth::user()->id));
                     })             
                 ],
-                'tel' => ['required', 'string', 'max:15','min:8',
+                'tel' => ['required', 'string','min:8',
                     Rule::unique('users','tel')
                     ->where(function($query){
                         return $query->whereTel(Auth::user()->id);
@@ -172,7 +172,7 @@ class UserController extends Controller
                         return ($query->where('email',$this->old));
                     })             
                 ],
-                'tel' => ['required', 'string', 'max:15','min:8',
+                'tel' => ['required', 'string','min:8',
                     Rule::unique('users','tel')
                     ->where(function($query){
                         return $query->whereTel($this->old);

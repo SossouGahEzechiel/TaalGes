@@ -1,26 +1,12 @@
 @extends('default')
 @section('content')
     <code hidden>
-        <?php $fin = array(
-                'jour' => $demande->dateDeb->format('d')+$demande->duree,
-                'mois' => $demande->dateDeb->format('m'),
-                'annee' => $demande->dateDeb->format('y'),
-            );   
-            if ($fin['jour']> 30) {
-                $fin['jour'] =1;
-                $fin['mois'] +=1;               
-            }
-            if ($fin['mois']> 12) {
-                $fin['mois'] =01;
-                $fin['annee'] +=1;               
-            }
-        ?>
         @switch($demande->decision)
-            @case("Accordé")
+            @case("Accorde")
                 {{$text = "Demande déjà acceptée"}}
                 {{$class = "text-success"}}
             @break
-            @case("Refusé")
+            @case("Refuse")
                 {{$text = "Demande rejetée"}}
                 {{$class = "text-danger"}}
             @case(null)
@@ -38,11 +24,20 @@
     <h1>Demande de {{$demande->user->nom}} {{$demande->user->prenom}}</h1>
     <div class=" col-8 container">
         <div class="mb-3">
-            <div class="row-auto">
-                <!-- Type de dzmande -->
-                <div class="form-floating">
-                    <input type="text" class="form-control" name="typeDem" id="typeDem" placeholder="typeDem" readonly value="{{$demande->typeDem}}">
-                    <label for="natCont">Type de demande</label>
+            <div class="row">
+                <!-- Type de demande -->
+                <div class="col-8">
+
+                    <div class="form-floating">
+                        <input type="text" class="form-control" name="typeDem" id="typeDem" placeholder="typeDem" readonly value="{{$demande->typeDem}}">
+                        <label for="natCont">Type de demande</label>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" name="typeDem" id="typeDem" placeholder="typeDem" readonly value="{{$demande->created_at->format('i:m')}}">
+                        <label for="natCont">Date de soumission</label>
+                    </div>
                 </div>
             </div>
             <div class="row gx-6 mt-3">
@@ -60,7 +55,7 @@
                 </div>
                 <div class="col">
                     <div class="form-floating">
-                        <input type="text" class="form-control" name="dateFin" id="dateFin" value="{{$fin['jour']}}/{{$fin['mois']}}/{{$fin['annee']}}" readonly>
+                        <input type="text" class="form-control" name="dateFin" id="dateFin" value="{{($demande->dateDeb->addDays($demande->duree))->locale('fr')->calendar() }}" readonly>
                         <label for="dateFin">Date de fin</label>
                     </div>
                 </div>
@@ -73,7 +68,7 @@
                 <label for="objet">Objet de la demande</label>
             </div>
         </div>
-        @if (Auth::user()->fonction === "admin" and $demande->decision != "Accordé")
+        @if (Auth::user()->fonction === "admin" and $demande->decision != "Accorde")
             <form action="{{ route('demande.update', [$demande->id]) }}" method="POST">
                 @csrf @method('put')
                 <button type="submit" class="btn btn-success" {{$self}}>Accepter</button>

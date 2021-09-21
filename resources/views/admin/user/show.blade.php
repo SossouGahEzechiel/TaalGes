@@ -1,6 +1,6 @@
 @extends('default')
 <code hidden>
-    @if ($user->sexe = 'M')
+    @if ($user->sexe === 'M')
         {{$sexe = "Masculin"}} 
     @else
         {{$sexe = "Féminin"}}
@@ -87,7 +87,7 @@
                 <!-- Nature du contrat -->
                 <div class="form-floating">
                     <input type="text" class="form-control" id="dureCont" name="dureCont" value="{{$user->dureCont}}" readonly>
-                    <label for="dureCont">Durée du contrat</label>
+                    <label for="dureCont">Durée (en mois)</label>
                 </div>
             </div>
         @else
@@ -147,14 +147,14 @@
             </div>
         @endif
     </div>
-
-    @if ($user->id == Auth::user()->id)
+    @if (Auth::user()->fonction === 'admin' && Auth::user()->id == $user->id)
         <div class="d-grid gap-2 col-6 mx-auto mt-1">
-            <a class="btn btn-primary" disabled onclick="vient()">Faire des modifications</a>
+            <a href="{{ route('admin.edit', [$user->id]) }}" class="btn btn-primary disabled">Faire des modifications</a>
         </div>
     @else
         <div class="d-grid gap-2 col-6 mx-auto mt-1">
             <a href="{{ route('admin.edit', [$user->id]) }}" class="btn btn-primary">Faire des modifications</a>
         </div>
     @endif
+    
 @endsection

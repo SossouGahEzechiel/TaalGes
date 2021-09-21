@@ -36,6 +36,30 @@
                         $fin['annee'] +=1;               
                     }
                 ?>
+                    @if ($demande->user_id == Auth::user()->id)
+                        {{$self = "disabled"}}
+                    @else
+                        {{$self = ""}}
+                    @endif
+                    @switch($demande->decision)
+                        @case("Refusé")
+                            {{$col = "table-light"}}
+                            {{$btn = '' }}
+                            {{$decision = 'Refusée'}}
+                            @break
+                        @case("Accordé")
+                            {{$col = "table-success"}}
+                            {{$btn = "disabled"}}
+                            {{$decision = 'Accordée'}}
+                            @break
+                        @case(null)
+                            {{$col = "table-info"}}
+                            {{$btn = ""}}
+                            {{$decision = 'En attente'}} 
+                            @break
+                        @default
+                        
+                    @endswitch
             </code>
                 <tr class="{{$col}}">
                     <th scope="row">{{$demande->typeDem}}</th>
@@ -43,7 +67,7 @@
                     <td>{{$fin['jour']}}/{{$fin['mois']}}/{{$fin['annee']}}</td>
                     <td>{{$demande->duree}}</td>
                     <td>{{$demande->objet}}</td>
-                    <td>{{$demande->decision}}</td>
+                    <td>{{$decision}}</td>
                     <td><a href="{{ route('demande.show', [$demande->id]) }}" class="btn btn-primary">Détails</a></td>
                 </tr>
             @empty

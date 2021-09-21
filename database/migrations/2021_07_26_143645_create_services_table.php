@@ -17,7 +17,7 @@ class CreateServicesTable extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->id();            
             $table->string('lib',35)->unique();
-            $table->integer('directeur_id');            
+            $table->integer('directeur_id');         
         });
     }
 

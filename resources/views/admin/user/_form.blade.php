@@ -29,8 +29,8 @@
     <div class="col-6">
         <div class="form-floating">
             <select class="form-select @error('sexe') is-invalid @enderror" id="sexe" name="sexe" aria-label="Floating label select example">
-                <option value="M">Masculin</option>
                 <option value="F">Féminin</option>
+                <option value="M">Masculin</option>
             </select>
             <label for="sexe">Sexe</label>
         </div>
@@ -103,7 +103,7 @@
         <div class="col-2">
             <div class="form-floating mb-3">    
                 <input type="number" class="form-control @error('dureCont') is-invalid @enderror " id="dureCont" name="dureCont" placeholder="dureCont" value="{{old('dureCont') ?? $user->dureCont }}" autofocus>
-                <label for="dureCont">Durée du contrat</label>
+                <label for="dureCont">Durée (en mois)</label>
             </div>
             @error('dureCont')
                 <h6 class="alert alert-danger">La durée du contrat est obligatoire s'il s'agit d'un CDD</h6>
