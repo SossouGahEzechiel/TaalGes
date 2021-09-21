@@ -5,15 +5,15 @@
             @case("Accorde")
                 {{$text = "Demande déjà acceptée"}}
                 {{$class = "text-success"}}
-            @break
+                @break
             @case("Refuse")
                 {{$text = "Demande rejetée"}}
                 {{$class = "text-danger"}}
+                @break
             @case(null)
                 {{$text = "Demande en attente"}}
                 {{$class = "text-info"}}
             @break
-            @default
         @endswitch
         @if ($demande->user_id == Auth::user()->id)
             {{$self = "disabled"}}
@@ -68,7 +68,7 @@
                 <label for="objet">Objet de la demande</label>
             </div>
         </div>
-        @if (Auth::user()->fonction === "admin" and $demande->decision != "Accorde")
+        @if (Auth::user()->fonction === "admin" and $demande->decision == null)
             <form action="{{ route('demande.update', [$demande->id]) }}" method="POST">
                 @csrf @method('put')
                 <button type="submit" class="btn btn-success" {{$self}}>Accepter</button>

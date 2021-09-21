@@ -1,12 +1,8 @@
 <?php
 
-use App\Http\Controllers\DemandeController;
 use App\Models\Demande;
 use App\Models\Service;
-use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Notifications\DatabaseNotification;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,6 +41,8 @@ Route::get('/user_mail', 'UserController@mail')->name('user.mail')->middleware([
 Route::get('/demande/en_attente', 'DemandeController@attente')->name('demande.attente')->middleware(['auth','admin']); //Afficher les demandes en attente
 Route::get('/demande/accorde', 'DemandeController@accorde')->name('demande.accorde')->middleware(['auth','admin']); //Afficher les demandes accordées
 Route::get('/demande/refuse', 'DemandeController@refuse')->name('demande.refuse')->middleware(['auth','admin']); //Afficher les demandes non-accordées
+
+//Par rapport aux notifications 
 Route::get('/demande/read/{notification}/{id}', 'DemandeController@read')->name('demande.read')->middleware(['auth']); //Marquer une notification comme lue
 
 // Route de consultation de ses demandes
@@ -56,6 +54,8 @@ Route::resource('admin', 'AdminController');
 Route::resource('service', 'ServiceController');
 Route::resource('demande', 'DemandeController');
 
+
+// Les routes pour les statistiques
 Route::middleware(['auth','admin'])->prefix('/stat')->group(function () {
     // Route::post('/stat/a_venir','StatController@futur')->name('stat.futur.response');
     Route::get('/par-service',function(){

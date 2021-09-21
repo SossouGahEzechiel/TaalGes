@@ -351,7 +351,8 @@
         <br>
       </div>
     </div>
-    <div class="sticky-footer fixed-bottom bg-secondary" style=" height: 15mm;">
+    
+    <div class="sticky-footer bg-secondary" style="margin-left: 66mm; height: 15mm;">
       <div class="text-center mt-2" ondblclick="jeux();">
         <small class="btn btn-link" style="color: white" title='Bravo tu es au bon endroit quelle est la prochaine étape ?'>Plateforme de gestion administrative du personnel de la TAAL</small>
     </div>

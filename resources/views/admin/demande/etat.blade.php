@@ -9,7 +9,7 @@
             @break
         @case(route('demande.refuse'))
             {{$col = "table-light"}}
-            {{$btn = '' }}
+            {{$btn = 'disabled' }}
             {{$title = "Liste des demandes non-accordées"}}
             @break
         @case(route('demande.attente'))
@@ -44,11 +44,18 @@
                     <td>{{$demande->duree}}</td>
                     <td>{{Str::limit($demande->objet,40)}}</td>
                     <td>
-                        @if ($demande->decision == null)
-                            En attente
-                        @else
-                            {{$demande->decision}}
-                        @endif
+                        @switch($demande->decision)
+                            @case(null)
+                                {{$decision = 'En attente'}}
+                                @break
+                            @case('Accorde')
+                                {{$decision = 'Accordée'}}
+                                @break
+                            @case('Refuse')
+                                {{$decision = 'Non accordée'}}
+                                @break
+                                
+                        @endswitch
                     </td>
                     <td>
                         <a href="{{ route('demande.show', [$demande->id]) }}" class="btn btn-primary">Plus</a>

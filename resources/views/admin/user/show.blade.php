@@ -147,14 +147,91 @@
             </div>
         @endif
     </div>
-    @if (Auth::user()->fonction === 'admin' && Auth::user()->id == $user->id)
+    @if (Auth::user()->id == $user->id)
         <div class="d-grid gap-2 col-6 mx-auto mt-1">
             <a href="{{ route('admin.edit', [$user->id]) }}" class="btn btn-primary disabled">Faire des modifications</a>
         </div>
+         <code hidden>{{$text = "Voir mes demandes"}} {{$text2 = $user->nom." Vous n'avez pas encore soumis de demandes"}}</code>
     @else
         <div class="d-grid gap-2 col-6 mx-auto mt-1">
             <a href="{{ route('admin.edit', [$user->id]) }}" class="btn btn-primary">Faire des modifications</a>
         </div>
+         <code hidden>{{$text = "Lister ses demandes"}}{{$text2 = $user->nom." n'a pas encore soumis de demandes"}}</code>
     @endif
-    
+    <div class="d-grid gap-2 col-6 mx-auto mt-1">
+        <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#demandesListe" aria-expanded="false" aria-controls="demandesListe">
+            {{$text}}
+        </button>
+    </div>
+    <div class="collapse mt-3" id="demandesListe">
+        <div><h2>Liste de ses salariés </h2> <h6 style="text-align: center">({{$user->demandes->count()}})</h6></div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Type</th>
+                        <th scope="col">Datede soumission</th>
+                        <th scope="col">Datede début</th>
+                        <th scope="col">durée</th>
+                        <th scope="col">Date de fin</th>
+                        {{-- <th scope="col">objet</th> --}}
+                        <th scope="col">Etat</th>
+                        <th scope="col">Decision</th>
+                    </tr>
+                </thead>
+                <tbody>         
+                    @forelse ($user->demandes as $demande)
+                        <code hidden>
+                            @if ($demande->user_id == Auth::user()->id)
+                                {{$self = "disabled"}}
+                            @else
+                                {{$self = ""}}
+                            @endif
+                            @switch($demande->decision)
+                                @case("Refuse")
+                                    {{$col = "table-warning"}}
+                                    {{$btn = 'disabled' }}
+                                    {{$decision = "Rejetée"}}
+                                    @break
+                                @case("Accorde")
+                                    {{$col = "table-success"}}
+                                    {{$btn = "disabled"}}
+                                    {{$decision = "Accordée"}}
+                                    @break
+                                @case(null)
+                                    {{$col = "table-info"}}
+                                    {{$btn = ""}} 
+                                    {{$decision = "En attente"}}
+                                    @break
+                                @default
+                                
+                            @endswitch
+                        </code>
+                        <tr class="{{$col}}">
+                            <th>{{$demande->typeDem}}</th>
+                            <th>{{$demande->created_at->format('d/m/y')}}</th>
+                            <td>{{$demande->dateDeb->format('d/m/y')}}</td>
+                            <td>{{$demande->duree}}</td>
+                            <td>{{($demande->dateDeb->addDays($demande->duree))->format('d/m/y')}}</td>
+                            {{-- <td>{{Str::limit($demande->objet,40)}}</td> --}}
+                            <td>
+                                {{$decision}}
+                            </td>
+                            <td>
+                                <a href="{{ route('demande.show', [$demande->id]) }}" class="btn btn-primary">Plus</a>
+                                <form action="{{ route('demande.update', [$demande->id]) }}" method="POST" class="btn"
+                                    onsubmit="return confirm('Voulez-vous vraiment confirmer cette demande ??')">
+                                    @csrf
+                                    @method('put')
+                                    <button type="submit" class="btn btn-success {{$btn}} " {{$self}}>Accepter</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" style="text-align: center">Aucune demande n'a encore été faite</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+    </div>
 @endsection
