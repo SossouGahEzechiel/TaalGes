@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Conge;
-use App\Models\Demande;
+use App\Models\Service;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class CongeFactory extends Factory
+class ServiceFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Conge::class;
+    protected $model = Service::class;
 
     /**
      * Define the model's default state.
@@ -23,8 +23,8 @@ class CongeFactory extends Factory
     public function definition()
     {
         return [
-            'etatConge'=>$this->faker->randomElement(['accordé','refusé']),
-            'demande_id'=>$this->faker->randomElement(Demande::pluck('id')->toArray())
+            'lib'=>$this->faker->sentence(2),
+            'directeur_id'=>$this->faker->randomElement(User::whereFonction('admin')->get()->pluck('id')->toArray())
         ];
     }
 }

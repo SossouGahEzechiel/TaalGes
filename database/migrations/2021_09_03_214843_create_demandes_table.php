@@ -16,13 +16,14 @@ class CreateDemandesTable extends Migration
     {
         Schema::create('demandes', function (Blueprint $table) {
             $table->id();
-            $table->enum('typeDem',['congé','permission']);
-            $table->date('dateDem');
-            $table->date('dateDeb');
+            $table->enum('typeDem',['conge','permission']);
+            $table->dateTime('dateDem');
+            $table->dateTime('dateDeb');
             $table->integer('duree');
             $table->string('objet',128);
-            $table->enum('decision',['Accordé','Refusé'])
+            $table->enum('decision',['Accorde','Refuse'])
                 ->nullable();
+            $table->integer('v_by');
             $table->foreignId('user_id')
                 ->constrained()
                 ->onUpdate('cascade')
