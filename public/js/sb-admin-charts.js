@@ -7,7 +7,7 @@ var ctx = document.getElementById("myAreaChart");
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["Mar 1", "Mar 2", "Mar 3", "Mar 4", "Mar 5", "Mar 6", "Mar 7", "Mar 8", "Mar 9", "Mar 10", "Mar 11", "Mar 12", "Mar 13"],
+    labels: ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"],
     datasets: [{
       label: "Sessions",
       lineTension: 0.3,
@@ -53,7 +53,7 @@ var myLineChart = new Chart(ctx, {
   }
 });
 // -- Bar Chart Example
-var ctx = document.getElementById("myBarChart");
+var ctx = document.getElementById("myAreaChart2");
 var myLineChart = new Chart(ctx, {
   type: 'bar',
   data: {
@@ -95,7 +95,7 @@ var myLineChart = new Chart(ctx, {
   }
 });
 // -- Pie Chart Example
-var ctx = document.getElementById("myPieChart");
+var ctx = document.getElementById("myAreaChart3");
 var myPieChart = new Chart(ctx, {
   type: 'pie',
   data: {

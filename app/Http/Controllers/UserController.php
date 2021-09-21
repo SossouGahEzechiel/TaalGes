@@ -30,7 +30,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::simplePaginate(7);
+        $users = User::simplePaginate(15);
         return view('admin.user.index',compact('users'));
     }
 
@@ -61,10 +61,10 @@ class UserController extends Controller
             'tel'           =>      $request->tel,
             'email'         =>      $request->email,
             'password'      =>      Hash::make($request->password),
-            'sexe'          =>      $request->sexe,
+            'sexe'          =>      'F',
             'dateEmb'       =>      $request->dateEmb,
             'natCont'       =>      $request->natCont,
-            'dureCont'       =>      $request->dureCont,
+            'dureCont'       =>     $request->dureCont,
             'fonction'      =>      $request->fonction,
             'service_id'    =>      $request->service,
         ]);
@@ -88,7 +88,8 @@ class UserController extends Controller
     
         Flashy::success(sprintf("Salarié %s %s avec succès",$user->nom,message($user)));
         Flashy::success(sprintf("Mail envoyé avec succès à %s",$user->nom));
-        return redirect(route('user.show',$user));
+        return back();
+        // return redirect(route('user.show',$user));
     }
 
     /**

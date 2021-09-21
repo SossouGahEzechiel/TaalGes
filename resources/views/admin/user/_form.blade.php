@@ -29,8 +29,8 @@
     <div class="col-6">
         <div class="form-floating">
             <select class="form-select @error('sexe') is-invalid @enderror" id="sexe" name="sexe" aria-label="Floating label select example">
-                <option value="M">Masculin</option>
                 <option value="F">Féminin</option>
+                <option value="M">Masculin</option>
             </select>
             <label for="sexe">Sexe</label>
         </div>

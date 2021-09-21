@@ -146,7 +146,7 @@
                   <li>
                     <a href="{{ route('stat.parIntervalle')}}" style="color: white" title="[t1,t2]">Regroupement des données par intervalle de temps</a>
                   </li>
-                  <li>
+                  {{-- <li>
                     <a href="#" style="color: white">Second Level Item</a>
                   </li>
                   <li>
@@ -162,7 +162,7 @@
                         <a href="#" style="color: white">Third Level Item</a>
                       </li>
                     </ul>
-                  </li>
+                  </li> --}}
                 </ul>
               </li>
 
@@ -341,23 +341,25 @@
         </ul>
       </div>
     </nav>
+
     <!--  Body-->
     <div class="content-wrapper">
       <div class="mt-0 ml-5 mr-5" id="monBody" style="display: ">
-        @yield('content')@include('flashy::message')
+        @yield('content')
+        @include('flashy::message')
         <script src="//code.jquery.com/jquery.js"></script>
         <br>
       </div>
+    </div>
+    <div class="sticky-footer fixed-bottom bg-secondary" style=" height: 15mm;">
+      <div class="text-center mt-2" ondblclick="jeux();">
+        <small class="btn btn-link" style="color: white" title='Bravo tu es au bon endroit quelle est la prochaine étape ?'>Plateforme de gestion administrative du personnel de la TAAL</small>
+    </div>
       
       <!-- Scroll to Top Button-->
       <a class="scroll-to-top rounded" href="#page-top" style="color:white">
         <i class="fa fa-angle-up"></i>
       </a>
-      <div class="sticky-footer bg-secondary" style=" height: 15mm;">
-        <div class="text-center mt-2" ondblclick="jeux();">
-          <small class="btn btn-link" style="color: white" title='Bravo tu es au bon endroit quelle est la prochaine étape ?'>Plateforme de gestion administrative du personnel de la TAAL</small>
-        </div>
-      </div>
       {{-- Deconnexion --}}
       <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" name="pop" aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
         <div class="modal-dialog" role="document">

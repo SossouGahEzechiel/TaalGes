@@ -1,4 +1,4 @@
-    <script src="{{ asset('https://cdn.jsdelivr.net/npm/chart.js') }}"></script>
+<script src="{{ asset('https://cdn.jsdelivr.net/npm/chart.js') }}"></script>
 @extends('default')
 @section('content')
 <h2>Page des statistiques par service</h2>
@@ -7,7 +7,7 @@
     <div class="btn-group mb-3 ml4 col-12 mx-auto" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-primary mr-2" onclick="display('simple')">Demande par service</button>
         <button type="button" class="btn btn-warning mr-2" onclick="display('coming')">Demande en attente</button>
-        <button type="button" class="btn btn-success mr-2" onclick="display('done')">Demande en Accordées</button>
+        <button type="button" class="btn btn-success mr-2" onclick="display('done')">Demande accordées</button>
         <button type="button" class="btn btn-danger mr-2" onclick="display('refused')">Demande en non-accordées</button>
     </div>
 
@@ -15,12 +15,26 @@
         <div class="container">
             <div class="card mb-3" id="simple" style="display: none">
                 <div class="card-header">
-                    <i class="fa fa-area-chart"></i> Variation du nombre de demandes suivant les services
+                    <i class="fa fa-area-chart"></i> Variation du nombre de demandes suivant les sexe et d'après l'année 2019
                 </div>
                 <div class="card-body">
                     <canvas id="myAreaChart" width="786" height="235" class="chartjs-render-monitor" style="display: block; width: 786px; height: 235px;"></canvas>
                 </div>
                     <div class="card-footer small text-muted">Mis à jour {{$last->dateDem->locale('fr')->calendar()}}</div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="container">
+                    <div class="card mb-3" id="done" style="display: none">
+                        <div class="card-header" >
+                            <i class="fa fa-area-chart"></i> Variation du nombre de demandes accordées suivant les services
+                        </div>
+                        <div class="card-body">
+                            <canvas id="myAreaChart3" width="786" height="235" class="chartjs-render-monitor" style="display: block; width: 786px; height: 235px;"></canvas>
+                        </div>
+                            <div class="card-footer small text-muted">Mis à jour {{$last->dateDem->locale('fr')->calendar()}}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -38,20 +52,7 @@
         </div>
     </div>
     <div class="mr-0">
-        <div class="container">
-            <div class="container">
-                <div class="card mb-3" id="done" style="display: none">
-                    <div class="card-header" >
-                        <i class="fa fa-area-chart"></i> Variation du nombre de demandes accordées suivant les services
-                    </div>
-                    <div class="card-body">
-                        <canvas id="myAreaChart3" width="786" height="235" class="chartjs-render-monitor" style="display: block; width: 786px; height: 235px;"></canvas>
-                    </div>
-                        <div class="card-footer small text-muted">Mis à jour {{$last->dateDem->locale('fr')->calendar()}}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
         <div class="container">
             <div class="card mb-3" id="refused" style="display: none">
                 <div class="card-header">

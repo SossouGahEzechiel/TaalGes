@@ -1,6 +1,6 @@
 @extends('default')
 <code hidden>
-    @if ($user->sexe = 'M')
+    @if ($user->sexe === 'M')
         {{$sexe = "Masculin"}} 
     @else
         {{$sexe = "Féminin"}}
