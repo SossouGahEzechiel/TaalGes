@@ -89,10 +89,10 @@ Route::middleware(['auth','admin'])->prefix('/stat')->group(function () {
                     if($demande->decision == null){
                         $null++;
                     }
-                    if($demande->decision === 'Refusé'){
+                    if($demande->decision === 'Refuse'){
                         $ref++;
                     }
-                    if($demande->decision === "Accordé"){
+                    if($demande->decision === "Accorde"){
                         $acc++;
                     }
                 }
@@ -111,26 +111,7 @@ Route::middleware(['auth','admin'])->prefix('/stat')->group(function () {
         $data2['final'] = json_encode($data2);
         $data3['final'] = json_encode($data3);
         $data4['final'] = json_encode($data4);
-        // dd($data2['final']);
         return view('stat.parService',compact('data','data2','data3','data4','last'));
-        // dump($data['final'] = json_encode($data));
-        // $demandes = Demande::all()->groupBy('user_id');
-        // // dd($demandes);
-        // foreach ($demandes as $demande) {
-        //     // echo $demandes;
-        //     foreach ($demande as $dem ) {
-        //         dump($dem->user->service->lib,$dem->user->nom,);
-        //     }
-        // }
-        // foreach ($services as $service) {
-        //     foreach($service->salaries as $user){
-        //         dump($user->demandes->count().' demandes addressées par '.$user->nom.' étant sous les ordres de '.$service->boss()->nom.' '.$service->lib);
-        //         foreach($user->demandes as $demande){
-        //             dump($demande->dateDeb->month.' de '.$user->nom.' du service de: '.$user->service->boss()->nom.' chef de: '.$service->lib);
-        //         }
-        //     }
-        // }
-        // die();
     })->name('stat.parService');
 
     Route::get('/par-intervalle', function(){

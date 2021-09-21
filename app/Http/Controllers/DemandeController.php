@@ -25,7 +25,7 @@ class DemandeController extends Controller
     }
     public function index()
     {
-        $demandes = Demande::simplePaginate(6);
+        $demandes = Demande::simplePaginate(15);
         return view('admin.demande.index',compact('demandes'));
     }
 
@@ -100,19 +100,19 @@ class DemandeController extends Controller
     //Mes actions
     public function attente()
     {
-        $demandes = Demande::whereDecision(null)->simplePaginate(6);
+        $demandes = Demande::whereDecision(null)->simplePaginate(15);
         return view('admin.demande.etat',compact('demandes'));
     }
     
     public function refuse()
     {
-        $demandes = Demande::whereDecision('Refusé')->simplePaginate(6);
+        $demandes = Demande::whereDecision('Refusé')->simplePaginate(15);
         return view('admin.demande.etat',compact('demandes'));
     }
     
     public function accorde()
     {
-        $demandes = Demande::whereDecision('Accordé')->simplePaginate(6);
+        $demandes = Demande::whereDecision('Accordé')->simplePaginate(15);
         return view('admin.demande.etat',compact('demandes'));
     }
 
@@ -122,7 +122,7 @@ class DemandeController extends Controller
         return view('admin.demande.serach',compact('demandes','request'));
     }
 
-    public function read(DatabaseNotification $notification,$id)
+    public function read(DatabaseNotification $notification,int $id)
     {
         $notification->markAsRead();
         return redirect(route('demande.show',$id));

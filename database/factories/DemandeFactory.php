@@ -30,7 +30,8 @@ class DemandeFactory extends Factory
             'dateDeb'=>$this->faker->date(),
             'duree'=>$this->faker->numberBetween(0,30),
             'objet'=>$this->faker->sentence(3,true),
-            'decision'=>$this->faker->randomElement(['Accordé','Refusé']),
+            'decision'=>$this->faker->randomElement(['Accordé','Refusé',null]),
+            'v_by'=>$this->faker->randomElement(User::whereFonction('admin')->pluck('id')->toArray()),
             'user_id'=>$this->faker->randomElement(User::pluck('id')->toArray()),
         ];
     }

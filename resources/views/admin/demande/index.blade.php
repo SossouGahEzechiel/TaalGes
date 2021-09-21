@@ -23,17 +23,20 @@
                         {{$self = ""}}
                     @endif
                     @switch($demande->decision)
-                        @case("Refusé")
-                            {{$col = "table-light"}}
-                            {{$btn = '' }}
+                        @case("Refuse")
+                            {{$col = "table-warning"}}
+                            {{$btn = 'disabled' }}
+                            {{$decision = "Rejetée"}}
                             @break
-                        @case("Accordé")
+                        @case("Accorde")
                             {{$col = "table-success"}}
                             {{$btn = "disabled"}}
+                            {{$decision = "Accordée"}}
                             @break
                         @case(null)
                             {{$col = "table-info"}}
                             {{$btn = ""}} 
+                            {{$decision = "En attente"}}
                             @break
                         @default
                         
@@ -46,11 +49,7 @@
                     <td>{{$demande->duree}}</td>
                     <td>{{Str::limit($demande->objet,40)}}</td>
                     <td>
-                        @if ($demande->decision == null)
-                            En attente
-                        @else
-                            {{$demande->decision}}
-                        @endif
+                        {{$decision}}
                     </td>
                     <td>
                         <a href="{{ route('demande.show', [$demande->id]) }}" class="btn btn-primary">Plus</a>

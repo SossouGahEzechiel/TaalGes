@@ -28,18 +28,18 @@ class UserReq extends FormRequest
     public function rules()
     {
         return [
-            'nom' => ['required', 'string', 'max:255','min:3'],
-            'prenom' => ['required', 'string', 'max:255','min:3'],
+            'nom' => ['required', 'string', 'max:60','min:3'],
+            'prenom' => ['required', 'string', 'max:60','min:3'],
             'sexe' => ['required'],
             'natCont' => ['required'],
-            'adresse' => ['required', 'string', 'max:255','min:3'],
+            'adresse' => ['required', 'string', 'max:60','min:3'],
             'email' => ['required', 'string', 'email', 'max:255','unique:users,email'],
-            'tel' => ['required', 'string', 'max:15','min:8','unique:users,tel'],            
+            'tel' => ['required', 'string','min:8','unique:users,tel'],            
             'password' => ['required', 'confirmed', Rules\Password::defaults(),'unique:users,password'],
             'dateEmb' => ['required', 'date','before_or_equal:now'],
             'service' => ['required'],
-            'dureCont' =>['required_if:natCont,==,CDI'],
-            'fonction' => ['required'],
+            'dureCont' =>['required_if:natCont,==,CDD'],
+            'fonction' => ['required']
         ];
     }
 }

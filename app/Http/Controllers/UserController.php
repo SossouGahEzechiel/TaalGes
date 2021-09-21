@@ -61,7 +61,7 @@ class UserController extends Controller
             'tel'           =>      $request->tel,
             'email'         =>      $request->email,
             'password'      =>      Hash::make($request->password),
-            'sexe'          =>      'F',
+            'sexe'          =>      $request->sexe,
             'dateEmb'       =>      $request->dateEmb,
             'natCont'       =>      $request->natCont,
             'dureCont'       =>     $request->dureCont,
@@ -88,8 +88,7 @@ class UserController extends Controller
     
         Flashy::success(sprintf("Salarié %s %s avec succès",$user->nom,message($user)));
         Flashy::success(sprintf("Mail envoyé avec succès à %s",$user->nom));
-        return back();
-        // return redirect(route('user.show',$user));
+        return redirect(route('user.show',$user));
     }
 
     /**
@@ -143,7 +142,7 @@ class UserController extends Controller
                         return ($query->where('email',Auth::user()->id));
                     })             
                 ],
-                'tel' => ['required', 'string', 'max:15','min:8',
+                'tel' => ['required', 'string','min:8',
                     Rule::unique('users','tel')
                     ->where(function($query){
                         return $query->whereTel(Auth::user()->id);
@@ -173,7 +172,7 @@ class UserController extends Controller
                         return ($query->where('email',$this->old));
                     })             
                 ],
-                'tel' => ['required', 'string', 'max:15','min:8',
+                'tel' => ['required', 'string','min:8',
                     Rule::unique('users','tel')
                     ->where(function($query){
                         return $query->whereTel($this->old);

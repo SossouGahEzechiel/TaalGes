@@ -51,8 +51,6 @@
                             {{$btn = ""}} 
                             {{$decision = "En attente"}}
                             @break
-                        @default
-                        
                     @endswitch
                 </code>
                 </code>
@@ -75,7 +73,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" style="text-align: center" class="alert alert-danger">Vous n'avez addressé aucune demande</td>
+                    <td colspan="7" style="text-align: center" class="alert alert-danger">Aucun résultat ne correspont à votre critère de recherche</td>
                 </tr>
             @endforelse
         </tbody>
