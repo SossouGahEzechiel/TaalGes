@@ -6,6 +6,8 @@ use App\Http\Requests\SearchReq;
 use App\Http\Requests\ServiceReq;
 use App\Models\Service;
 use App\Models\User;
+use Illuminate\Http\Client\Request;
+use Illuminate\Validation\Rule;
 use MercurySeries\Flashy\Flashy;
 
 class ServiceController extends Controller
@@ -51,10 +53,15 @@ class ServiceController extends Controller
         return view('admin.service.edit',compact('service','admins'));
     }
 
-    public function update(ServiceReq $request, Service $service)
+    public function update(Request $request ,Service $service)
     {
+        $request->validate([
+            $request->lib => ['required','min:5','max:35',Rule::unique('services')->where('id',$service->id)],
+            $request->boss => ['required',Rule::unique('services')->where('directeur_id',$service->directeur_id)]
+        ]);
         $service->update([
-            'lib'=>$request->lib
+            'lib'=>$request->lib,
+            'directeur_id' =>$request->boss
         ]);
         Flashy::success(sprintf('service %s mis à jour avec succes',$service->lib));
         return redirect(route('service.show',$service));

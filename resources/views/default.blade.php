@@ -7,7 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>TAAL / {{Auth::user()->nom}}</title>
+  @if (Auth::user()->fonction === "user")
+    <title>TAAL | {{$title = Auth::user()->nom}} - profil </title>
+  @else
+    <title>TAAL | Plateforme de gestion</title>
+  @endif
   <link rel="icon" href="{{ asset('favicon.ico') }}" />
   <!-- Bootstrap core CSS-->
   <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -35,7 +39,7 @@
     </script>
 
   <style>
-    h1,h2{
+    h1,h2,h6{
       text-align: center;
       margin-bottom: 3mm;
     }
@@ -103,17 +107,37 @@
                   <span class="nav-link-text" >Gestion des demandes</span>
                 </a>
                 <ul class="sidenav-second-level collapse bg-gradient" id="demande">
+
                   <li>
-                    <a href="{{ route('demande.index') }}" style="color: white">Liste des demandes</a>
-                  </li>
+                    <a class="nav-link-collapse collapsed " data-toggle="collapse" data-parent="#demande" href="#main" style="color: white"><i class="fa fa-home" aria-hidden="true"></i></i> Menu principal</a>
+                    <ul class="sidenav-third-level collapse bg-gradient" id="main" style="color: white">
+                      <li>
+                        <a href="{{ route('demande.index') }}" style="color: white">Liste des demandes</a>
+                      </li>
+                      <li>
+                        <a href="{{ route('demande.attente') }}" style="color: white">Liste des demandes en attente</a>
+                      </li>
+                      <li>
+                        <a href="{{ route('demande.refuse') }}" style="color: white">Liste des demandes refusées</a>
+                      </li><li>
+                        <a href="{{ route('demande.accorde') }}" style="color: white">Liste des demandes acceptées</a>
+                      </li> 
+                    </ul>
+                  </li>  
                   <li>
-                    <a href="{{ route('demande.attente') }}" style="color: white">Liste des demandes en attente</a>
-                  </li>
-                  <li>
-                    <a href="{{ route('demande.refuse') }}" style="color: white">Liste des demandes refusées</a>
-                  </li><li>
-                    <a href="{{ route('demande.accorde') }}" style="color: white">Liste des demandes acceptées</a>
-                  </li>                  
+                    <a class="nav-link-collapse collapsed" data-toggle="collapse" data-parent="#demande" href="#plusOption" style="color: white"><i class="fa fa-plus" aria-hidden="true"></i> Plus d'options</a>
+                    <ul class="sidenav-third-level collapse bg-gradient" id="plusOption" style="color: white">
+                      <li>
+                        <a href="{{ route('byTime.today', ['id'=>1]) }}" style="color: white">Demandes soumises aujourd'hui</a>
+                      </li>
+                      <li>
+                        <a href="{{ route('byTime.week', ['id'=>1]) }}" style="color: white">Demandes soumises cette semaine </a>
+                      </li>
+                      <li>
+                        <a href="{{ route('byTime.month', ['id'=>1]) }}" style="color: white">Demandes soumises ce mois</a>
+                      </li>
+                    </ul>
+                  </li>                
                 </ul>
               </li>
 
@@ -208,6 +232,14 @@
                     <span class="nav-link-text">Faire une demande</span>
                   </a>
                 </li>
+                
+                {{-- Consulter ses mails --}}
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Nouvelle demande">
+                  <a class="nav-link" href="#" style="color: white">
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                    <span class="nav-link-text">Mes mails</span>
+                  </a>
+                </li>
               @endif
               {{-- Game --}}
               <li class="nav-item" data-toggle="tooltip"  data-placement="right" title="À quoi ça sert ?" >
@@ -248,7 +280,7 @@
                 <a class="dropdown-item small text-warning" href="#">Aucune nouvelle notification</a>
                 @endforelse
                 @if (Auth::user()->unreadNotifications->count()> 1) 
-                  <a class="dropdown-item small" href="#">Voir toutes les notifications</a>
+                  <a class="dropdown-item small" href="{{ route('toutLire') }}">Tout marquer comme lu</a>
                 @endif
               </div>
             </li>
@@ -346,19 +378,20 @@
     <div class="content-wrapper">
       <div class="mt-0 ml-5 mr-5" id="monBody" style="display: ">
         @yield('content')
+        <script src="{{ asset('//code.jquery.com/jquery.js') }}"></script>
         @include('flashy::message')
-        <script src="//code.jquery.com/jquery.js"></script>
         <br>
       </div>
     </div>
-    <div class="sticky-footer fixed-bottom bg-secondary" style=" height: 15mm;">
+    
+    <div class="sticky-footer bg-secondary" style="margin-left: 66mm; height: 15mm;">
       <div class="text-center mt-2" ondblclick="jeux();">
         <small class="btn btn-link" style="color: white" title='Bravo tu es au bon endroit quelle est la prochaine étape ?'>Plateforme de gestion administrative du personnel de la TAAL</small>
     </div>
       
       <!-- Scroll to Top Button-->
-      <a class="scroll-to-top rounded" href="#page-top" style="color:white">
-        <i class="fa fa-angle-up"></i>
+      <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fa fa-caret-up" aria-hidden="true" style="color: yellow"></i>
       </a>
       {{-- Deconnexion --}}
       <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" name="pop" aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">

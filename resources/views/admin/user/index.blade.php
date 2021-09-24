@@ -1,6 +1,6 @@
 @extends('default')
 @section('content')
-    <h1 class="mb-0">Liste des Salariés</h1> <br>
+    <h1 class="mb-0">Liste des Salariés</h1> <h6 style="text-align: center; font-style: oblique ">{{$total}}</h6> <br>
     <table class="table">
         <thead>
             <tr>
@@ -22,8 +22,13 @@
                     </td>
                     <td>
                         <a class="btn" href="{{ route('admin.show',$user->id) }}" style="background-color: rgb(221, 218, 12)">Plus de détails</a>   &nbsp;&nbsp; 
-                        <a class="btn btn-info" href="{{ route('admin.edit',$user->id) }}">Modifier</a>    &nbsp;&nbsp; 
-                        <button class="btn btn-danger" onclick="return document.getElementById('supp').style.display = 'block';">Retirer</button>                   
+                        @if ($user->id != Auth::user()->id)
+                            <a class="btn btn-info" href="{{ route('admin.edit',$user->id) }}">Modifier</a>    &nbsp;&nbsp; 
+                            <button class="btn btn-danger" onclick="return document.getElementById('supp').style.display = 'block';">Retirer</button>                   
+                        @else
+                            <a class="btn btn-info disabled" href="{{ route('admin.edit',$user->id) }}">Modifier</a>    &nbsp;&nbsp; 
+                            <button class="btn btn-danger disabled" onclick="return document.getElementById('supp').style.display = 'block';">Retirer</button>                   
+                        @endif
                     </td>
                 </tr>
             @empty

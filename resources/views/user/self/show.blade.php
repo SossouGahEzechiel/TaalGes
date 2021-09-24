@@ -97,7 +97,7 @@
         @if ($last)
             <div class="col-3">
                 <div class="form-floating mb-3">
-                    <input type="date" class="form-control" id="last" name="last" placeholder="last" value="{{$last}}" readonly>
+                    <input type="text" class="form-control" id="last" name="last" placeholder="last" value="{{$last->locale('fr')->calendar()}}" readonly>
                     <label for="last">Dernière permission en date</label>
                 </div>
             </div>
