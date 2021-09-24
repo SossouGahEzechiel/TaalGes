@@ -37,7 +37,6 @@ class DemandeController extends Controller
 
     public function store(DemandeRequest $request)
     {
-        //Vérifie si l'utilisateur est en mesure de faire une nouvelle demande
         if (Auth::user()->reserve > 0) {
             $demande = Demande::create([
                 'typeDem'=>$request->typeDem,
@@ -49,51 +48,75 @@ class DemandeController extends Controller
                 'user_id'=> Auth::user()->id
             ]);
             
-            
-            
             Notification::send(User::whereFonction('admin')->get(),new DemanadeSentNotification($demande));
-            Mail::to('taalcorp@gmail.com')->send(new DemandeSentMail($demande,Auth::user()));
+            Mail::to('taalsa@gmail.com')->send(new DemandeSentMail($demande,Auth::user()));
             Flashy::success("Votre demande a été envoyée avec succès");
-            return back();
-            // return redirect(route('user.show',$demande->user->id));
+            return redirect(route('user.show',$demande->user->id));
         }
-        // Auth::user()->notify(new DemandeAvorteNotification(Auth::user(),$request));
+        
         Mail::to(Auth::user()->email)->send(new DemandeAvorteMail(Auth::user()));
         Flashy::error("Un problème s'est posé avec votre demande");
         return back();
-        // Auth::user()->notify(new DemandeAvorteNotification()); À complèter 
+        // Auth::user()->notify(new DemandeAvorteNotificatçion()); À complèter 
     }
 
     public function show(Demande $demande)
     {
-        // $demande->markAsRead();
         return view('admin.demande.show',compact('demande'));
     }
 
-    public function edit(Demande $dem)
+    public function edit(Demande $demande)
     {
-        return view('demande.edit',compact('dem'));
+        //
     }
 
     public function update(Demande $demande)
     {
         $demande->update([
-            'decision' => 'Accordé'
+            'decision' => 'Refuse',
+            'v_at' => now(),
+            'v_by' => Auth::user()->id
         ]);
         $user = User::whereId($demande->user_id)->first();
-        $user->update([
-            'reserve' => $user->reserve -= $demande->duree
-        ]);
         $user->notify(new DemanadeValideNotification($demande,$user));
         Mail::to($user->email)->send(new DemandeValideMail($demande,$user));
-        Flashy::success('Acceptation de demande confirmé');
-        return back();
+        Flashy::success('Rejet de demande confirmé');
+        return redirect(route('user.show',$demande->user_id));
+    }
+
+    public function validation(Demande $demande, $decision, $opt = null)
+    {
+        if($decision){
+            $demande->update([
+                'decision' => 'Accorde',
+                'v_at' => now(),
+                'v_by' => Auth::user()->id
+            ]);
+            
+            if ($opt) {
+                $user = User::whereId($demande->user_id)->first();
+                $user->update([
+                    'reserve' => $user->reserve -= $demande->duree
+                ]);
+            }
+        } else {
+            $demande->update([
+                'decision' => 'Refuse',
+                'v_at' => now(),
+                'v_by' => Auth::user()->id
+            ]);
+        }
+        $user = User::whereId($demande->user_id)->first();
+        $user->notify(new DemanadeValideNotification($demande,$user));
+        Mail::to($user->email)->send(new DemandeValideMail($demande,$user));
+        Flashy::success('Décision appliquée à la demande avec succès');
+        return redirect(route('user.show',$demande->user_id));
     }
 
     public function destroy(Demande $dem)
     {
         $dem->delete();
-        Flashy::danger('Demande supprimée avec succès');
+        Flashy::error('Demande supprimée avec succès');
         return redirect(route('demande.index'));
     }
 

@@ -24,7 +24,7 @@ class CreateDemandesTable extends Migration
             $table->enum('decision',['Accorde','Refuse'])
                 ->nullable();
             $table->integer('v_by')->nullable();
-            $table->integer('v_at')->nullable();
+            $table->timestamp('v_at')->nullable();
             $table->foreignId('user_id')
                 ->constrained()
                 ->onUpdate('cascade')

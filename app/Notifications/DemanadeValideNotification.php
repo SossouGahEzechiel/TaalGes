@@ -58,10 +58,10 @@ class DemanadeValideNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'date'=>$this->demande->dateDem->format('d/m/y'),
+            'date'=>$this->demande->dateDem->locale('fr')->calendar(),
             'type'=>$this->demande->typeDem,
             'id'=>$this->demande->id,
-            'objet'=>'Mail de validation',
+            'objet'=>'Mail de Réponse',
             'de' => 'taalcorp@gmail.com'
         ];
     }

@@ -30,8 +30,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::simplePaginate(7);
-        return view('admin.user.index',compact('users'));
+        $total = User::all()->count();
+        $users = User::simplePaginate(20);
+        return view('admin.user.index',compact('users','total'));
     }
 
     /**
@@ -100,7 +101,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         $departement = Service::whereDirecteur_id($user->is)->first();
-        $last = Demande::whereUser_id($user->id)->max('dateDeb');
+        $last = Demande::whereUser_id($user->id)->get()->max('dateDeb');
         if (Auth::user()->fonction == "user") {
             return view('user.self.show',compact('user','last','departement'));
         }
@@ -172,7 +173,7 @@ class UserController extends Controller
                         return ($query->where('email',$this->old));
                     })             
                 ],
-                'tel' => ['required', 'string', 'max:15','min:8',
+                'tel' => ['required', 'string','min:8',
                     Rule::unique('users','tel')
                     ->where(function($query){
                         return $query->whereTel($this->old);
@@ -197,6 +198,7 @@ class UserController extends Controller
                 'fonction'      =>      $request->fonction,
                 'service_id'    =>      $request->service,
             ]);
+            // À déplacer
             Flashy::success(sprintf("Les modifications des données du salarié %s ont été mises à jour avec succès",$user->nom));
         }
         

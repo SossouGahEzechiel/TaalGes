@@ -6,7 +6,6 @@ use App\Models\Service;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
@@ -27,8 +26,8 @@ class UserFactory extends Factory
         return [
             'nom'           =>      $this->faker->firstName(),
             'prenom'        =>      $this->faker->lastName(),
-            'adresse'       =>      Str::limit($this->faker->address(),32,''),
-            'tel'           =>      Str::limit($this->faker->phoneNumber(),14,''),
+            'adresse'       =>      $this->faker->address(),
+            'tel'           =>      $this->faker->phoneNumber(),
             'email'         =>      $this->faker->email(),
             'password'      =>      Hash::make($this->faker->password()),
             'sexe'          =>      $this->faker->randomElement(['M','F']),

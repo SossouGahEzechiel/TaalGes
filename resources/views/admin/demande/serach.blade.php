@@ -59,7 +59,7 @@
                     <th>{{$demande->typeDem}}</th>
                     <td>{{$demande->dateDeb->format('d/m/y')}}</td>
                     <td>{{$demande->duree}}</td>
-                    <td>{{Str::limit($demande->objet,40)}}</td>
+                    <td>{{Str::limit($demande->objet,25)}}</td>
                     <td>{{$decision}}</td>
                     <td>
                         <a href="{{ route('demande.show', [$demande->id]) }}" class="btn btn-primary">Plus</a>

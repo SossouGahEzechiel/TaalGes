@@ -56,7 +56,7 @@ class DemanadeSentNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'de'=>$notifiable->email,
+            'de'=>$this->demande->user->email,
             'nom'=>$notifiable->nom,
             'a'=>'taalcorp@gmail.com',
             'objet'=>$this->demande->objet,

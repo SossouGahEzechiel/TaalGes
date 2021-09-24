@@ -3,6 +3,8 @@
 use App\Models\Demande;
 use App\Models\Service;
 use Carbon\Carbon;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,6 +43,7 @@ Route::get('/user_mail', 'UserController@mail')->name('user.mail')->middleware([
 Route::get('/demande/en_attente', 'DemandeController@attente')->name('demande.attente')->middleware(['auth','admin']); //Afficher les demandes en attente
 Route::get('/demande/accorde', 'DemandeController@accorde')->name('demande.accorde')->middleware(['auth','admin']); //Afficher les demandes accordées
 Route::get('/demande/refuse', 'DemandeController@refuse')->name('demande.refuse')->middleware(['auth','admin']); //Afficher les demandes non-accordées
+Route::put('/demande/{demande}/{decision}/{opt?}', 'DemandeController@validation')->name('demande.validation')->middleware(['auth','admin']); //Afficher les demandes non-accordées
 
 //Par rapport aux notifications 
 Route::get('/demande/read/{notification}/{id}', 'DemandeController@read')->name('demande.read')->middleware(['auth']); //Marquer une notification comme lue
@@ -57,7 +60,7 @@ Route::resource('demande', 'DemandeController');
 
 // Les routes pour les statistiques
 Route::middleware(['auth','admin'])->prefix('/stat')->group(function () {
-    // Route::post('/stat/a_venir','StatController@futur')->name('stat.futur.response');
+    
     Route::get('/par-service',function(){
         $last = new Carbon();
         $last = Demande::all(); 
@@ -69,19 +72,7 @@ Route::middleware(['auth','admin'])->prefix('/stat')->group(function () {
         $nb4=0;
         foreach ($services as $service ) {
             $nb = 0;
-            foreach($service->salaries as $user){
-                $nb += $user->demandes->count();
-            }
-            $data['service'][] = $service->lib;
-            $data['nb'][] = $nb;
-        }
-        
-        $data2 = []; //Pour receuillir les demandes en attente
-        $data3 = []; //Pour receuillir les demandes accrodées 
-        $data4 = []; //Pour receuillir les demandes non-accrodées
-        foreach ($services as $service ) {
-            $nb = 0;
-            foreach($service->salaries as $user){
+            foreach($service->salaries as $user){                
                 $null=0;
                 $acc=0;
                 $ref=0;
@@ -100,18 +91,14 @@ Route::middleware(['auth','admin'])->prefix('/stat')->group(function () {
                 $nb3 += $acc;
                 $nb4 += $ref;
             }
-            $data2['service'][] = $service->lib;
-            $data4['service'][] = $service->lib;
-            $data3['service'][] = $service->lib;
-            $data2['nb'][] = $nb2;
-            $data3['nb'][] = $nb3;
-            $data4['nb'][] = $nb4;
+            $data['service'][] = $service->lib;
+            $data['nb'][] = $nb2+$nb3+$nb4;
+            $data['null'][] = $nb2;
+            $data['acc'][] = $nb3;
+            $data['ref'][] = $nb4;
         } 
         $data['final'] = json_encode($data);
-        $data2['final'] = json_encode($data2);
-        $data3['final'] = json_encode($data3);
-        $data4['final'] = json_encode($data4);
-        return view('stat.parService',compact('data','data2','data3','data4','last'));
+        return view('stat.parService',compact('data','last'));
     })->name('stat.parService');
 
     Route::get('/par-intervalle', function(){
@@ -219,15 +206,22 @@ Route::middleware(['auth','admin'])->prefix('/stat')->group(function () {
         // dd($data['service'],$data['m'],$data['f'],);
         return view('stat.parIntervalle',compact('data'));
     })->name('stat.parIntervalle');
+    
 });
 
 // Route pour marquer toutes notifications comme lues ☣⚡
-// Route::get('/toutLire', function(){
-//     $notifs = DatabaseNotification::whereRead_at(null)->get();
-//     foreach ($notifs as $notif ) {
-//         $notif->update([
-//             'read_at'=>now()
-//         ]);
-//     }
-//     return "ok C'set bon";
-// })->name('toutLire');
+Route::get('/toutLire', function(){
+    $notifs = DatabaseNotification::whereRead_at(null)
+        ->where('notifiable_id',Auth::user()->id)->get();
+        // dd($notifs);
+    if ($notifs) {
+        foreach ($notifs as $notif ) {
+            $notif->update([
+                'read_at' => now()
+            ]);
+        }
+    } else {
+        return back();
+    }
+    return back();
+})->name('toutLire');

@@ -113,7 +113,21 @@
                     <a href="{{ route('demande.refuse') }}" style="color: white">Liste des demandes refusées</a>
                   </li><li>
                     <a href="{{ route('demande.accorde') }}" style="color: white">Liste des demandes acceptées</a>
-                  </li>                  
+                  </li>  
+                  <li>
+                    <a class="nav-link-collapse collapsed " data-toggle="collapse" href="#plusOption" style="color: white"><i class="bi bi-patch-plus"></i>Plus d'options</a>
+                    <ul class="sidenav-third-level collapse bg-gradient" id="plusOption" style="color: white">
+                      <li>
+                        <a href="#" style="color: white">Demandes soumises aujourd'hui</a>
+                      </li>
+                      <li>
+                        <a href="#" style="color: white">Demandes soumises cette semaine </a>
+                      </li>
+                      <li>
+                        <a href="#" style="color: white">Demandes soumises ce mois</a>
+                      </li>
+                    </ul>
+                  </li>                
                 </ul>
               </li>
 
@@ -208,6 +222,14 @@
                     <span class="nav-link-text">Faire une demande</span>
                   </a>
                 </li>
+                
+                {{-- Consulter ses mails --}}
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Nouvelle demande">
+                  <a class="nav-link" href="#" style="color: white">
+                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                    <span class="nav-link-text">Mes mails</span>
+                  </a>
+                </li>
               @endif
               {{-- Game --}}
               <li class="nav-item" data-toggle="tooltip"  data-placement="right" title="À quoi ça sert ?" >
@@ -248,7 +270,7 @@
                 <a class="dropdown-item small text-warning" href="#">Aucune nouvelle notification</a>
                 @endforelse
                 @if (Auth::user()->unreadNotifications->count()> 1) 
-                  <a class="dropdown-item small" href="#">Voir toutes les notifications</a>
+                  <a class="dropdown-item small" href="{{ route('toutLire') }}">Tout marquer comme lu</a>
                 @endif
               </div>
             </li>
@@ -346,8 +368,8 @@
     <div class="content-wrapper">
       <div class="mt-0 ml-5 mr-5" id="monBody" style="display: ">
         @yield('content')
+        <script src="{{ asset('//code.jquery.com/jquery.js') }}"></script>
         @include('flashy::message')
-        <script src="//code.jquery.com/jquery.js"></script>
         <br>
       </div>
     </div>
@@ -358,8 +380,8 @@
     </div>
       
       <!-- Scroll to Top Button-->
-      <a class="scroll-to-top rounded" href="#page-top" style="color:white">
-        <i class="fa fa-angle-up"></i>
+      <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fa fa-caret-up" aria-hidden="true" style="color: yellow"></i>
       </a>
       {{-- Deconnexion --}}
       <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" name="pop" aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">

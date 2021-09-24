@@ -42,7 +42,7 @@
                     <th>{{$demande->typeDem}}</th>
                     <td>{{$demande->dateDeb->format('d/m/y')}}</td>
                     <td>{{$demande->duree}}</td>
-                    <td>{{Str::limit($demande->objet,40)}}</td>
+                    <td>{{Str::limit($demande->objet,25)}}</td>
                     <td>
                         @switch($demande->decision)
                             @case(null)

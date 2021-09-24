@@ -42,7 +42,7 @@
                     <td>{{$demande->dateDeb->format('d/m/y')}}</td>
                     <td>{{$demande->duree}}</td>
                     <td>{{($demande->dateDeb->addDays($demande->duree))->format('d/m/y')}}</td>
-                    <td>{{$demande->objet}}</td>
+                    <td>{{Str::limit($demande->objet,25)}}</td>
                     <td>{{$decision}}</td>
                     <td><a href="{{ route('demande.show', [$demande->id]) }}" class="btn btn-primary">Détails</a></td>
                 </tr>

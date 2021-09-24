@@ -40,8 +40,8 @@ class DemandeValideMail extends Mailable
         $this->id= $demande->id;
         $this->dateDeb = $demande->dateDeb->format('d/m/y');
         $this->dateSoum = $demande->dateDem->format('d/m/y');
-        $this->msg = "Bravo ".$this->sexe($user)." ".$this->nom.". Votre demande de ".$this->lib." envoyée le ".$this->dateDeb." 
-        a été accetptée. Cliquez sur ce boutton pour voir plus de détails.";
+        $this->msg = "Bonjour ".$this->sexe($user)." ".$this->nom.". Votre demande de ".$this->lib." envoyée le ".$this->dateDeb." 
+        a été ".$this->decision($demande)." Cliquez sur ce boutton pour voir plus de détails.";
         $this->createMonMail($this->msg,$this->celui);
     }
     
@@ -63,6 +63,10 @@ class DemandeValideMail extends Mailable
         $mail->users()->attach($celui);
     }
     
+    public function decision($demande)
+    {
+        return ($demande->decision === "Accorde") ? "acceptée" : "rejetée" ;
+    }
 
     /**
      * Build the message.

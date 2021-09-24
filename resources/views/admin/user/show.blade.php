@@ -164,7 +164,7 @@
         </button>
     </div>
     <div class="collapse mt-3" id="demandesListe">
-        <div><h2>Liste de ses salariés </h2> <h6 style="text-align: center">({{$user->demandes->count()}})</h6></div>
+        <div><h2>Liste de ses demandes </h2> <h6 style="text-align: center">({{$user->demandes->count()}})</h6></div>
             <table class="table">
                 <thead>
                     <tr>

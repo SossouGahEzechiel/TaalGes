@@ -24,15 +24,39 @@ class DemandeFactory extends Factory
      */
     public function definition()
     {
+        // if(!function_exists('v_at')){
+
+        //     function v_at($decision)
+        //     {
+        //         if ($decision !=null){
+        //             return now();
+        //         }
+        //         return null;  
+        //     }
+        // }
+        // if(!function_exists('v_by')){
+        //     function v_by($decision)
+        //     {
+        //         if ($decision!=null){
+        //             $array = User::whereFonction('admin')->pluck('id')->toArray();
+        //             return $array[array_rand($array)];
+        //         }
+        //         return null;  
+        //     }
+        // }
         return [
             'typeDem'=>$this->faker->randomElement(['congé','permission']),
             'dateDem'=>$this->faker->date(),
             'dateDeb'=>$this->faker->date(),
-            'duree'=>$this->faker->numberBetween(0,30),
+            'duree'=>$this->faker->numberBetween(1,3),
             'objet'=>$this->faker->sentence(3,true),
-            'decision'=>$this->faker->randomElement(['Accordé','Refusé',null]),
-            'v_by'=>$this->faker->randomElement(User::whereFonction('admin')->pluck('id')->toArray()),
+            'decision'=> $decision = $this->faker->randomElement(['Accordé','Refusé',null]),
+            "v_by" => $this->faker->randomElement(User::whereFonction('admin')->pluck('id')->toArray()),
+            "v_at" => $this->faker->date(),
             'user_id'=>$this->faker->randomElement(User::pluck('id')->toArray()),
+            // dd($decision),
         ];
     }
+    
+    
 }
