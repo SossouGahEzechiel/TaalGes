@@ -7,7 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>TAAL | {{$title = Auth::user()->nom}}_profil </title>
+  @if (Auth::user()->fonction === "user")
+    <title>TAAL | {{$title = Auth::user()->nom}} - profil </title>
+  @else
+    <title>TAAL | Plateforme de gestion</title>
+  @endif
   <link rel="icon" href="{{ asset('favicon.ico') }}" />
   <!-- Bootstrap core CSS-->
   <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -35,7 +39,7 @@
     </script>
 
   <style>
-    h1,h2{
+    h1,h2,h6{
       text-align: center;
       margin-bottom: 3mm;
     }
@@ -103,28 +107,34 @@
                   <span class="nav-link-text" >Gestion des demandes</span>
                 </a>
                 <ul class="sidenav-second-level collapse bg-gradient" id="demande">
+
                   <li>
-                    <a href="{{ route('demande.index') }}" style="color: white">Liste des demandes</a>
-                  </li>
-                  <li>
-                    <a href="{{ route('demande.attente') }}" style="color: white">Liste des demandes en attente</a>
-                  </li>
-                  <li>
-                    <a href="{{ route('demande.refuse') }}" style="color: white">Liste des demandes refusées</a>
-                  </li><li>
-                    <a href="{{ route('demande.accorde') }}" style="color: white">Liste des demandes acceptées</a>
+                    <a class="nav-link-collapse collapsed " data-toggle="collapse" data-parent="#demande" href="#main" style="color: white"><i class="fa fa-home" aria-hidden="true"></i></i> Menu principal</a>
+                    <ul class="sidenav-third-level collapse bg-gradient" id="main" style="color: white">
+                      <li>
+                        <a href="{{ route('demande.index') }}" style="color: white">Liste des demandes</a>
+                      </li>
+                      <li>
+                        <a href="{{ route('demande.attente') }}" style="color: white">Liste des demandes en attente</a>
+                      </li>
+                      <li>
+                        <a href="{{ route('demande.refuse') }}" style="color: white">Liste des demandes refusées</a>
+                      </li><li>
+                        <a href="{{ route('demande.accorde') }}" style="color: white">Liste des demandes acceptées</a>
+                      </li> 
+                    </ul>
                   </li>  
                   <li>
-                    <a class="nav-link-collapse collapsed " data-toggle="collapse" href="#plusOption" style="color: white"><i class="bi bi-patch-plus"></i>Plus d'options</a>
+                    <a class="nav-link-collapse collapsed" data-toggle="collapse" data-parent="#demande" href="#plusOption" style="color: white"><i class="fa fa-plus" aria-hidden="true"></i> Plus d'options</a>
                     <ul class="sidenav-third-level collapse bg-gradient" id="plusOption" style="color: white">
                       <li>
-                        <a href="#" style="color: white">Demandes soumises aujourd'hui</a>
+                        <a href="{{ route('byTime.today', ['id'=>1]) }}" style="color: white">Demandes soumises aujourd'hui</a>
                       </li>
                       <li>
-                        <a href="#" style="color: white">Demandes soumises cette semaine </a>
+                        <a href="{{ route('byTime.week', ['id'=>1]) }}" style="color: white">Demandes soumises cette semaine </a>
                       </li>
                       <li>
-                        <a href="#" style="color: white">Demandes soumises ce mois</a>
+                        <a href="{{ route('byTime.month', ['id'=>1]) }}" style="color: white">Demandes soumises ce mois</a>
                       </li>
                     </ul>
                   </li>                

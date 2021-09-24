@@ -25,8 +25,9 @@ class DemandeController extends Controller
     }
     public function index()
     {
-        $demandes = Demande::simplePaginate(15);
-        return view('admin.demande.index',compact('demandes'));
+        $total = Demande::all()->count();
+        $demandes = Demande::orderByDesc('id')->simplePaginate(15);
+        return view('admin.demande.index',compact('demandes','total'));
     }
 
     public function create()
@@ -81,7 +82,42 @@ class DemandeController extends Controller
         $user->notify(new DemanadeValideNotification($demande,$user));
         Mail::to($user->email)->send(new DemandeValideMail($demande,$user));
         Flashy::success('Rejet de demande confirmé');
-        return redirect(route('user.show',$demande->user_id));
+        return back();
+    }
+
+    public function destroy(Demande $dem)
+    {
+        $dem->delete();
+        Flashy::error('Demande supprimée avec succès');
+        return redirect(route('demande.index'));
+    }
+
+    //Mes actions
+    public function attente()
+    {
+        $demandes = Demande::whereDecision(null)->simplePaginate(15);
+        $total = Demande::whereDecision(null)->count();
+        return view('admin.demande.etat',compact('demandes','total'));
+    }
+    
+    public function refuse()
+    {
+        $demandes = Demande::whereDecision('Refusé')->simplePaginate(15);
+        $total = Demande::whereDecision('Refusé')->count();
+        return view('admin.demande.etat',compact('demandes','total'));
+    }
+    
+    public function accorde()
+    {
+        $demandes = Demande::whereDecision('Accordé')->simplePaginate(15);
+        $total = Demande::whereDecision('Accordé')->count();
+        return view('admin.demande.etat',compact('demandes','total'));
+    }
+
+    public function search(SearchReq $request)
+    {
+        $demandes = Demande::with('user')->whereRelation('user','nom','like',"%$request->search%")->get();
+        return view('admin.demande.serach',compact('demandes','request'));
     }
 
     public function validation(Demande $demande, $decision, $opt = null)
@@ -110,39 +146,48 @@ class DemandeController extends Controller
         $user->notify(new DemanadeValideNotification($demande,$user));
         Mail::to($user->email)->send(new DemandeValideMail($demande,$user));
         Flashy::success('Décision appliquée à la demande avec succès');
-        return redirect(route('user.show',$demande->user_id));
+        return back();
     }
 
-    public function destroy(Demande $dem)
+    public function today()
     {
-        $dem->delete();
-        Flashy::error('Demande supprimée avec succès');
-        return redirect(route('demande.index'));
+        $all = Demande::all();
+        $demandes = [];
+        foreach ($all as $demande) {
+            if($demande->dateDem->isToday())
+                $demandes[] = $demande;
+        }
+        $total = sizeof($demandes);
+        return view('admin.demande.by',compact('demandes','total'));
     }
 
-    //Mes actions
-    public function attente()
+    public function thisWeek()
     {
-        $demandes = Demande::whereDecision(null)->simplePaginate(15);
-        return view('admin.demande.etat',compact('demandes'));
-    }
-    
-    public function refuse()
-    {
-        $demandes = Demande::whereDecision('Refusé')->simplePaginate(15);
-        return view('admin.demande.etat',compact('demandes'));
-    }
-    
-    public function accorde()
-    {
-        $demandes = Demande::whereDecision('Accordé')->simplePaginate(15);
-        return view('admin.demande.etat',compact('demandes'));
+        $all = Demande::all();
+        $demandes = [];
+        foreach ($all as $demande) {
+            if($demande->dateDem->isCurrentWeek())
+                $demandes[] = $demande;
+        }
+        $total = sizeof($demandes);
+        return view('admin.demande.by',compact('demandes','total'));
     }
 
-    public function search(SearchReq $request)
+    public function thisMonth()
     {
-        $demandes = Demande::with('user')->whereRelation('user','nom','like',"%$request->search%")->get();
-        return view('admin.demande.serach',compact('demandes','request'));
+        $all = Demande::all();
+        $demandes = [];
+        foreach ($all as $demande) {
+            if($demande->dateDem->isCurrentMonth())
+                $demandes[] = $demande;
+        }
+        $total = sizeof($demandes);
+        return view('admin.demande.by',compact('demandes','total'));
+    }
+
+    public function aMonth(int $month)
+    {
+        # code...
     }
 
     public function read(DatabaseNotification $notification,int $id)

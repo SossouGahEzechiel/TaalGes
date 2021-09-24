@@ -1,29 +1,23 @@
 @extends('default')
 @section('content')
-    <code hidden>
-        @switch(url()->current())
-        @case(route('demande.accorde'))
-            {{$col = "table-success"}}
-            {{$btn = 'disabled' }}
-            {{$title = "Liste des demandes accordées "}}
+<code hidden>
+    @switch(url()->current())
+        @case(route('byTime.today'))
+            {{$title = "Liste des demandes de la journée "}}
             {{$total = $total." au total"}}
             @break
-        @case(route('demande.refuse'))
-            {{$col = "table-light"}}
-            {{$btn = 'disabled' }}
-            {{$title = "Liste des demandes non-accordées "}}
+        @case(route('byTime.week'))
+            {{$title = "Liste des demandes de la semaine"}}
             {{$total = $total." au total"}}
             @break
-        @case(route('demande.attente'))
-            {{$col = "table-info"}}
-            {{$btn = '' }}
-            {{$title = "Liste des demandes en attente "}}
+        @case(route('byTime.month'))
+            {{$title = "Liste des demandes de ce mois "}}
             {{$total = $total." au total"}}
             @break
         @default
     @endswitch
-    </code>
-    <h1>{{$title}}</h1><h6>{{$total}}</h6>
+</code>
+    <h2>{{$title}}</h2><h6>{{$total}}</h6>
     <table class="table">
         <thead>
             <tr>
@@ -38,7 +32,25 @@
         </thead>
         <tbody>         
             @forelse ($demandes as $demande)
-                
+               <code hidden>
+                    @switch($demande->decision)
+                        @case(null)
+                            {{$decision = 'En attente'}}
+                            {{$col = "table-info"}}
+                            {{$btn = '' }}
+                            @break
+                        @case('Accorde')
+                            {{$decision = 'Accordée'}}
+                            {{$col = "table-success"}}
+                            {{$btn = 'disabled' }}
+                            @break
+                        @case('Refuse')
+                            {{$decision = 'Non accordée'}}
+                            {{$col = "table-light"}}
+                            {{$btn = 'disabled' }}
+                            @break                                
+                    @endswitch
+               </code>
                 <tr class="{{$col}}">
                     <th scope="row">{{$demande->user->nom}}</th>
                     <th>{{$demande->typeDem}}</th>
@@ -46,17 +58,7 @@
                     <td>{{$demande->duree}}</td>
                     <td>{{Str::limit($demande->objet,25)}}</td>
                     <td>
-                        @switch($demande->decision)
-                            @case(null)
-                                {{$decision = 'En attente'}}
-                                @break
-                            @case('Accorde')
-                                {{$decision = 'Accordée'}}
-                                @break
-                            @case('Refuse')
-                                {{$decision = 'Non accordée'}}
-                                @break                                
-                        @endswitch
+                        {{$decision}}
                     </td>
                     <td>
                         <a href="{{ route('demande.show', [$demande->id]) }}" class="btn btn-primary">Plus</a>                       
@@ -91,5 +93,4 @@
           </div>
         </div>
     </div>
-    {{$demandes->links()}}
 @endsection

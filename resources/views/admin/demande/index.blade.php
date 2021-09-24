@@ -1,6 +1,6 @@
 @extends('default')
 @section('content')
-    <h1>Liste des demandes</h1>
+    <h1>Liste des demandes</h1><h6>{{$total}} au total</h6>
     <table class="table">
         <thead>
             <tr>
@@ -8,7 +8,6 @@
                 <th scope="col">Type</th>
                 <th scope="col">début</th>
                 <th scope="col">durée</th>
-                {{-- <th scope="col">fin</th> --}}
                 <th scope="col">objet</th>
                 <th scope="col">Etat</th>
                 <th scope="col">Decision</th>

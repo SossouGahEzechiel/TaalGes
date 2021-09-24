@@ -225,3 +225,11 @@ Route::get('/toutLire', function(){
     }
     return back();
 })->name('toutLire');
+
+Route::middleware(['auth','admin'])->group(function () {
+    
+    Route::get('/today', 'DemandeController@today')->name('byTime.today');
+    Route::get('/this-week', 'DemandeController@today')->name('byTime.week');
+    Route::get('/this-month', 'DemandeController@today')->name('byTime.month');
+
+});
