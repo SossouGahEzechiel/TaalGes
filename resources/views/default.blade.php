@@ -45,11 +45,13 @@
     }
   </style>
   <script>
-    function bye(){
-      return document.getElementById('exampleModal').style.display = "none";
+    function hide(id){
+      var target = document.getElementById(id);
+      return target.style.display = "none";
     }
-    function vient(){
-      return document.getElementById('exampleModal').style.display = "block";
+    function display(id){
+      var target = document.getElementById(id);
+      return target.style.display = "block";
     }
     function game(){
       if(document.getElementById('monBody').style.display == "block")
@@ -57,7 +59,6 @@
       else
         {return document.getElementById('monBody').style.display = "block"; }      
     }
-    
     function jeux(){
       if(document.getElementById('game').style.display == "block")
         {return document.getElementById('game').style.display = "none";}
@@ -363,7 +364,7 @@
             </li>
           @endif
 
-          <li class="nav-item" onclick="vient();">
+          <li class="nav-item" onclick="display('logout');">
             <a class="nav-link"  style="color: white;">
               <i class="fa fa-power-off" aria-hidden="true"></i>
             </i>Se déconnecter
@@ -394,12 +395,12 @@
         <i class="fa fa-caret-up" aria-hidden="true" style="color: yellow"></i>
       </a>
       {{-- Deconnexion --}}
-      <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" name="pop" aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
+      <div class="modal fade show" id="logout" tabindex="-1" role="dialog" name="pop" aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-body" style="text-align: center;">Voulez-vous vraiment vous déconnecter ?</div>
             <div class="modal-footer">
-              <a class="btn btn-primary" onclick="bye();">Annuler</a>
+              <a class="btn btn-primary" onclick="hide('logout');">Annuler</a>
               <p style="padding-right: 45%"></p>
               <a class="btn btn-danger ml-3" href="{{ route('logout') }}">Me déconnecter</a>
             </div>

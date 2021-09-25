@@ -85,9 +85,9 @@ class DemandeController extends Controller
         return back();
     }
 
-    public function destroy(Demande $dem)
+    public function destroy(Demande $demande)
     {
-        $dem->delete();
+        $demande->delete();
         Flashy::error('Demande supprimée avec succès');
         return redirect(route('demande.index'));
     }
@@ -143,8 +143,12 @@ class DemandeController extends Controller
             ]);
         }
         $user = User::whereId($demande->user_id)->first();
-        $user->notify(new DemanadeValideNotification($demande,$user));
-        Mail::to($user->email)->send(new DemandeValideMail($demande,$user));
+        Notification::send(
+            User::where('id','!=',$demande->user_id)->get(),
+            new DemanadeValideNotification($demande)
+        ); //Créer une nouvelle notification pour ce cas
+        $user->notify(new DemanadeValideNotification($demande));
+        Mail::to($demande->user->email)->send(new DemandeValideMail($demande,$user));
         Flashy::success('Décision appliquée à la demande avec succès');
         return back();
     }

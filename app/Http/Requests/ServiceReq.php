@@ -27,7 +27,7 @@ class ServiceReq extends FormRequest
     {
         return [
             'lib'=>['required','min:5','max:35','unique:services,lib'],
-            'boss'=>['required','unique:services,directeur_id']
+            'directeur_id'=>['required','unique:services']
         ];
     }
 }

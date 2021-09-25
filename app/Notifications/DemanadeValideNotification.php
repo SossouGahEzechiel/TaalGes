@@ -21,10 +21,11 @@ class DemanadeValideNotification extends Notification
      *
      * @return void
      */
-    public function __construct(Demande $demande,User $user)
+    public function __construct(Demande $demande)
     {
         $this->demande = $demande;
-        $this->user = $user;
+        $this->user = Demande::whereUser_id($demande->user_id)->first();
+        // $this->toMail();
     }
 
     /**
@@ -44,7 +45,7 @@ class DemanadeValideNotification extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail()
     {
         return (new DemandeValideMail($this->demande,$this->user));
     }

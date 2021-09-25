@@ -51,7 +51,7 @@
             </tbody>
         </table>
     </div>
-    <a href="{{ route('service.edit', [$service->id]) }}" class=" btn btn-warning">Modifier le libellé du service</a>
+    <a href="{{ route('service.edit', [$service->id]) }}" class=" btn btn-warning">Modifier les informations du service</a>
     <form action="{{ route('service.destroy',[$service]) }}" class="btn  method="POST"
         onsubmit="return confirm('Voulez-vous vraiment retirer ce service ?? \n cette action effacera aussi tout les salariés qui y sont enrégistrés et sera irréversible')">
         @csrf

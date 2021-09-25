@@ -39,7 +39,7 @@ class DemandeSentMail extends Mailable
             'auteur' => Auth::user()->id
         ]);
         //Le mail est attaché au destinataire
-        $mail->users()->attach(User::whereFonction('admin')->first()->id);
+        // $mail->users()->attach(User::whereFonction('admin')->first()->id);
     }
 
     function sexe()

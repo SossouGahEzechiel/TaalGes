@@ -30,7 +30,7 @@ class DemandeValideMail extends Mailable
      *
      * @return void
      */
-    public function __construct(Demande $demande, User $user)
+    public function __construct(Demande $demande, $user)
     {
         $this->celui = $demande->user->id;
         $this->nom = $user->nom;
@@ -38,10 +38,10 @@ class DemandeValideMail extends Mailable
         $this->prenom = $user->prenom;
         $this->de = $user->email;
         $this->id= $demande->id;
-        $this->dateDeb = $demande->dateDeb->format('d/m/y');
-        $this->dateSoum = $demande->dateDem->format('d/m/y');
+        $this->dateDeb = $demande->dateDeb->locale('fr')->calendar();
+        $this->dateSoum = $demande->dateDem->locale('fr')->calendar();
         $this->msg = "Bonjour ".$this->sexe($user)." ".$this->nom.". Votre demande de ".$this->lib." envoyée le ".$this->dateDeb." 
-        a été ".$this->decision($demande)." Cliquez sur ce boutton pour voir plus de détails.";
+        a été ".$this->decision($demande)." .Cliquez sur ce boutton pour voir plus de détails.";
         $this->createMonMail($this->msg,$this->celui);
     }
     
@@ -57,10 +57,11 @@ class DemandeValideMail extends Mailable
     {
         $mail = Mail::create([
             'message'=>$msg,
-            'auteur' => Auth::user()->id
+            'auteur' => Auth::user()->id,
+            'destinataire' => $celui
         ]);
         //Le mail est attaché au destinataire
-        $mail->users()->attach($celui);
+        // $mail->users()->attach($celui);
     }
     
     public function decision($demande)

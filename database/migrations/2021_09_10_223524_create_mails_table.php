@@ -20,6 +20,7 @@ class CreateMailsTable extends Migration
                 ->constrained('users','id')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->integer('destinataire')->nullable();
             $table->timestamps();
         }); 
     }
