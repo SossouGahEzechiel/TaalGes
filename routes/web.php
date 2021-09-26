@@ -42,6 +42,8 @@ Route::put('/demande/{demande}/{decision}/{opt?}', 'DemandeController@validation
 
 //Par rapport aux notifications 
 Route::get('/demande/read/{notification}/{id}', 'DemandeController@read')->name('demande.read')->middleware(['auth']); //Marquer une notification comme lue
+// Route pour marquer toutes notifications comme lues ☣⚡
+Route::get('/toutLire', 'MoreController@toutLire')->name('toutLire');
 
 // Route de consultation de ses demandes
 Route::get('/mesdemandes', 'UserController@profil')->name('user.profil')->middleware(['auth']);
@@ -61,8 +63,8 @@ Route::middleware(['auth','admin'])->prefix('/stat')->group(function () {
     
 });
 
-// Route pour marquer toutes notifications comme lues ☣⚡
-Route::get('/toutLire', 'MoreController@toutLire')->name('toutLire');
+Route::get('/mes-mails', 'MoreController@mesMails')->name('mails');
+Route::get('/alert/{notification}/{id}', 'MoreController@flashMails')->name('flashMails');
 
 // Routes pour cinder les demandes sur un petit intervalle de temps et pour gérer les mails
 Route::middleware(['auth','admin'])->group(function () {
@@ -70,6 +72,5 @@ Route::middleware(['auth','admin'])->group(function () {
     Route::get('/today', 'DemandeController@today')->name('byTime.today');
     Route::get('/this-week', 'DemandeController@today')->name('byTime.week');
     Route::get('/this-month', 'DemandeController@today')->name('byTime.month');
-    Route::get('/mails', 'MoreController@mail')->name('mails');
 
 });

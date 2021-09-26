@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
+  {{-- @foreach (Auth::user()->unreadNotifications as $notification){
+    @dump($notification)
+  }
+  @endforeach
+  @die() --}}
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,22 +57,22 @@
       var target = document.getElementById(id);
       return target.style.display = "block";
     }
-    function game(){
-      if(document.getElementById('monBody').style.display == "block")
-        {return document.getElementById('monBody').style.display = "none";}
-      else
-        {return document.getElementById('monBody').style.display = "block"; }      
-    }
-    function jeux(){
-      if(document.getElementById('game').style.display == "block")
-        {return document.getElementById('game').style.display = "none";}
-      else
-        {return document.getElementById('game').style.display = "block"; }      
+    function visibility(id){
+      var el = document.getElementById(id);
+      if(el.style.display == "block"){
+        document.getElementById('but').innerHTML = "Plus";
+        return el.style.display = "none";
+      }
+      else{
+        el.colSpan = "4";
+        document.getElementById('but').innerHTML = "Moins";
+        return el.style.display = "block"; 
+      }      
     }
   </script>
 
 </head>
-  <body class="fixed-nav bg-light" id="page-top">
+  <body class="fixed-nav bg-light" id="page-top" >
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg bg-secondary fixed-top" id="mainNav">
       <a class="navbar-brand text-light" href="" style="font-style: italic">{{Auth::user()->nom}} {{Auth::user()->prenom}} </a>
@@ -207,6 +211,13 @@
                   <li>
                     <a href="{{ route('demande.create') }}" style="color: white">Faire une demande</a>
                   </li>
+                  {{-- Consulter ses mails --}}
+                  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Nouvelle demande">
+                    <a class="nav-link" href="{{ route('mails') }}" style="color: white">
+                      <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                      <span class="nav-link-text">Mes mails</span>
+                    </a>
+                  </li>
                 </ul>
               </li>
           @else
@@ -236,7 +247,7 @@
                 
                 {{-- Consulter ses mails --}}
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Nouvelle demande">
-                  <a class="nav-link" href="#" style="color: white">
+                  <a class="nav-link" href="{{ route('mails') }}" style="color: white">
                     <i class="fa fa-envelope-o" aria-hidden="true"></i>
                     <span class="nav-link-text">Mes mails</span>
                   </a>
@@ -244,7 +255,7 @@
               @endif
               {{-- Game --}}
               <li class="nav-item" data-toggle="tooltip"  data-placement="right" title="À quoi ça sert ?" >
-                <div class="ml-3" onclick="game();" id="game" style="display: none">
+                <div class="ml-3" onclick="visibility('monBody');" id="game" style="display: none">
                   <i class="fa fa-gamepad" aria-hidden="true" style="color: white"></i>
                 </div>
               </li>
@@ -267,18 +278,29 @@
                 @else
                   <h6 class="dropdown-header">{{Auth::user()->unreadNotifications->count() }} Nouvelles notifications</h6>
                 @endif
-                <div class="dropdown-divider"></div>
+                  <div class="dropdown-divider"></div>
                 @forelse (Auth::user()->unreadNotifications as $notification)
-                <a class="dropdown-item" href="{{ route('demande.read',[$notification->id,$notification->data["id"]]) }}" >
-                  <span class="text-success"> 
-                  <strong>Mail de {{$notification->data['de']}}</strong>
-                  </span>
-                  <span class="small float-right text-muted">{{$notification->created_at->format('d/m')}} à {{$notification->created_at->format('G:i')}}</span>
-                  <div class="dropdown-message small">{{Str::limit($notification->data['objet'])}}</div>
-                </a>
-                <div class="dropdown-divider"></div>
+                  @if ($notification->type != "App\Notifications\AvisNotification")
+                    <a class="dropdown-item" href="{{ route('demande.read',[$notification->id,$notification->data["id"]]) }}">
+                      <span class="text-success"> 
+                      <strong>Mail de {{$notification->data['de']}}</strong>
+                      </span>
+                      <span class="small float-right text-muted">{{$notification->created_at->locale('fr')->calendar()}}</span>
+                      <div class="dropdown-message small">{{Str::limit($notification->data['objet'])}}</div>
+                    </a>
+                  @else
+                    <a class="dropdown-item" href="{{ route('flashMails',[$notification->id,$notification->data["demandeId"]]) }}" >
+                      <span class="text-success"> 
+                      <strong>Mail de TAAL-corp</strong>
+                      </span>
+                      <span class="small float-right text-muted">{{$notification->created_at->locale('fr')->calendar()}}</span>
+                      <div class="dropdown-message small">Mail d'avisement</div>
+                    </a>
+                  @endif
+                  
+                  <div class="dropdown-divider"></div>
                 @empty
-                <a class="dropdown-item small text-warning" href="#">Aucune nouvelle notification</a>
+                  <a class="dropdown-item small text-warning" href="#">Aucune nouvelle notification</a>
                 @endforelse
                 @if (Auth::user()->unreadNotifications->count()> 1) 
                   <a class="dropdown-item small" href="{{ route('toutLire') }}">Tout marquer comme lu</a>
@@ -303,19 +325,31 @@
                 @endif
                 <div class="dropdown-divider"></div>
                 @forelse (Auth::user()->unreadNotifications as $notification)
-                  <a class="dropdown-item" href="{{ route('demande.read',[$notification,$notification->data["id"]]) }}">
-                    <span class="text-success"> 
-                    <strong>Mail de taalcorp@gmail.com</strong>
-                    </span>
-                    <span class="small float-right text-muted">{{$notification->created_at->format('d/m')}} à {{$notification->created_at->format('G:i')}}</span>
-                    <div class="dropdown-message small">{{Str::limit("Votre demande envoyée le".$notification->data['date'],22)}}</div>
-                  </a>
-                  <div class="dropdown-divider"></div>
+                  @if ($notification->type != "App\Notifications\AvisNotification")
+                    <a class="dropdown-item" href="{{ route('demande.read',[$notification,$notification->data["id"]]) }}">
+                      <span class="text-success"> 
+                      <strong>Mail de taalcorp@gmail.com</strong>
+                      </span>
+                      <span class="small float-right text-muted">{{$notification->created_at->format('d/m')}} à {{$notification->created_at->format('G:i')}}</span>
+                      <div class="dropdown-message small">{{Str::limit("Votre demande envoyée le".$notification->data['date'],22)}}</div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                  @else
+                    <a class="dropdown-item" href="{{ route('flashMails',[$notification->id,$notification->data["demandeId"]]) }}" >
+                      <span class="text-success"> 
+                      <strong>Mail de TAAL-corp</strong>
+                      </span>
+                      <span class="small float-right text-muted">{{$notification->created_at->locale('fr')->calendar()}}</span>
+                      <div class="dropdown-message small">Mail d'avisement</div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                  @endif
+                  
                 @empty
                   <a class="dropdown-item small text-warning" href="#">Aucune nouvelle notification</a>
                 @endforelse
                 @if (Auth::user()->unreadNotifications->count()> 1) 
-                  <a class="dropdown-item small" href="#">Voir toutes les notifications</a>
+                  <a class="dropdown-item small" href="{{ route('toutLire') }}">Tout marquer comme lu</a>
                 @endif
               </div>
             </li>
@@ -386,7 +420,7 @@
     </div>
     
     <div class="sticky-footer bg-secondary" style="margin-left: 66mm; height: 15mm;">
-      <div class="text-center mt-2" ondblclick="jeux();">
+      <div class="text-center mt-2" ondblclick="visibility('game');">
         <small class="btn btn-link" style="color: white" title='Bravo tu es au bon endroit quelle est la prochaine étape ?'>Plateforme de gestion administrative du personnel de la TAAL</small>
     </div>
       

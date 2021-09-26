@@ -55,13 +55,11 @@ class DemandeValideMail extends Mailable
     }
     function createMonMail($msg,$celui)
     {
-        $mail = Mail::create([
+        return $mail = Mail::create([
             'message'=>$msg,
             'auteur' => Auth::user()->id,
             'destinataire' => $celui
         ]);
-        //Le mail est attaché au destinataire
-        // $mail->users()->attach($celui);
     }
     
     public function decision($demande)
@@ -77,7 +75,7 @@ class DemandeValideMail extends Mailable
     public function build()
     {   
         return $this->from('taalcorp@gmail.com')
-            ->subject("Confirmation d'accord de congé par la TAAL-corp")
+            ->subject("Mail de confirmation")
             ->markdown('emails.demande.valideMail');
     }
 }

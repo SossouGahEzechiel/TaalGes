@@ -106,14 +106,14 @@
                 <!-- Fonction -->
                 <div class="form-floating">
                     <input type="text" class="form-control" id="fonction" name="fonction" value="{{$departement->lib }}" readonly>
-                    <label for="fonction">Département</label>
+                    <label for="fonction">Chef dans le département</label>
                 </div> 
             </div>
         @else
             <div class="col-3">
                 <!-- Fonction -->
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="fonction" name="fonction" value="Salarié" readonly>
+                    <input type="text" class="form-control" id="fonction" name="fonction" value="{{$fonction}}" readonly>
                     <label for="fonction">Fonction</label>
                 </div> 
             </div>

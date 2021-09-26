@@ -22,6 +22,7 @@ class UserController extends Controller
     public $old;
     public function __construct() {
         $this->middleware(['auth']);
+        $this->middleware(['auth','admin'])->only(['index','create','delete']);
     }
     /**
      * Display a listing of the resource.
@@ -100,7 +101,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $departement = Service::whereDirecteur_id($user->is)->first();
+        $departement = Service::whereDirecteur_id($user->id)->first();
         $last = Demande::whereUser_id($user->id)->get()->max('dateDeb');
         if (Auth::user()->fonction == "user") {
             return view('user.self.show',compact('user','last','departement'));
@@ -143,7 +144,7 @@ class UserController extends Controller
                         return ($query->where('email',Auth::user()->id));
                     })             
                 ],
-                'tel' => ['required', 'string', 'max:15','min:8',
+                'tel' => ['required', 'string','min:8',
                     Rule::unique('users','tel')
                     ->where(function($query){
                         return $query->whereTel(Auth::user()->id);

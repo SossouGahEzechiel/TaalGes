@@ -12,6 +12,7 @@ use MercurySeries\Flashy\Flashy;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\DemandeRequest;
+use App\Notifications\AvisNotification;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\DemanadeSentNotification;
 use App\Notifications\DemanadeValideNotification;
@@ -21,7 +22,12 @@ class DemandeController extends Controller
 {
     // use Notifiable;
     public function __construct() {
-        $this->middleware('auth');
+        $this->middleware(['auth']);
+        // $this->middleware(['auth','user'])->only(['create','store']);
+        // $this->middleware(['auth','admin'])->only([
+        //     'index','validation','search','attente','accorde','refuse'
+        // ]);
+
     }
     public function index()
     {
@@ -128,36 +134,28 @@ class DemandeController extends Controller
                 'v_at' => now(),
                 'v_by' => Auth::user()->id
             ]);
-            
             if ($opt) {
                 $user = User::whereId($demande->user_id)->first();
                 $user->update([
                     'reserve' => $user->reserve -= $demande->duree
                 ]);
             }
-        } else {
-            $demande->update([
-                'decision' => 'Refuse',
-                'v_at' => now(),
-                'v_by' => Auth::user()->id
-            ]);
-        }
-        $user = User::whereId($demande->user_id)->first();
+        } 
+        $user = User::find($demande->user_id);
+        $user->notify(new DemanadeValideNotification($demande));
+        Mail::to($user->email)->send(new DemandeValideMail($demande,$user));
         Notification::send(
             User::where('id','!=',$demande->user_id)->get(),
-            new DemanadeValideNotification($demande)
-        ); //Créer une nouvelle notification pour ce cas
-        $user->notify(new DemanadeValideNotification($demande));
-        Mail::to($demande->user->email)->send(new DemandeValideMail($demande,$user));
+            new AvisNotification($demande)
+        );
         Flashy::success('Décision appliquée à la demande avec succès');
         return back();
     }
 
     public function today()
     {
-        $all = Demande::all();
         $demandes = [];
-        foreach ($all as $demande) {
+        foreach (Demande::orderByDesc('dateDem')->get() as $demande) {
             if($demande->dateDem->isToday())
                 $demandes[] = $demande;
         }
@@ -167,9 +165,8 @@ class DemandeController extends Controller
 
     public function thisWeek()
     {
-        $all = Demande::all();
         $demandes = [];
-        foreach ($all as $demande) {
+        foreach (Demande::orderByDesc('dateDem')->get() as $demande) {
             if($demande->dateDem->isCurrentWeek())
                 $demandes[] = $demande;
         }
@@ -179,9 +176,8 @@ class DemandeController extends Controller
 
     public function thisMonth()
     {
-        $all = Demande::all();
         $demandes = [];
-        foreach ($all as $demande) {
+        foreach (Demande::orderByDesc('dateDem')->get() as $demande) {
             if($demande->dateDem->isCurrentMonth())
                 $demandes[] = $demande;
         }
@@ -199,5 +195,4 @@ class DemandeController extends Controller
         $notification->markAsRead();
         return redirect(route('demande.show',$id));
     }
-
 }

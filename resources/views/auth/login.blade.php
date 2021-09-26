@@ -1,10 +1,10 @@
 <x-guest-layout>
     <x-auth-card>
-        {{-- <x-slot name="logo" class="pt-1">
+        <x-slot name="logo" class="pt-1">
             <a href="/">
                 <x-application-logo class="w-0 h-0 fill-current text-gray-500" />
             </a>
-        </x-slot> --}}
+        </x-slot>
 
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />

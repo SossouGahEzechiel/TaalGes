@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Auth;
 
 class MoreController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
+
     public function parService()
     {
         $last = new Carbon();
@@ -175,21 +180,17 @@ class MoreController extends Controller
         return back();
     }
 
-    public function mail()
+    public function mesMails()
     {
-        $mail = Mail::find(17);
-        // foreach ($mails as $mail ) {
-        //     dump($mail->auteur,$mail->message);
-        //     foreach ($mail->users as $user ) {
-        //         dump($user->nom." Avec la fonction de :".$user->fonction);
-        //     }
-        //     die();
-        // }
+        $mails = Mail::whereDestinataire(Auth::user()->id)->orderByDesc('id')->simplePaginate(25);
+        // dd($mails = Mail::whereDestinataire(Auth::user()->id)->count());
+        return view('user.self.mesMails',compact('mails'));
+    }
 
-        dump($mail->auteur,$mail->message);
-            foreach ($mail->users as $user ) {
-                dump($user->nom." Avec la fonction de :".$user->fonction);
-            }
-            die();
+    public function flashMails(DatabaseNotification $notification,$id)
+    {
+        $notification->markAsRead();
+        $demande = Demande::find($id);
+        return view('emails.demande.avisMail',compact('demande','notification'));
     }
 }
