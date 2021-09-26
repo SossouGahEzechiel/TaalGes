@@ -47,7 +47,7 @@
         <div class="col-6">
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="adresse" name="sexe" placeholder="adresse" value="{{$user->adresse}}" readonly>
-                <label for="adresse">Sexe</label>
+                <label for="adresse">Adresse</label>
             </div>
         </div>
         
@@ -77,7 +77,7 @@
                 <!-- Fonction -->
                 <div class="form-floating">
                     <input type="text" class="form-control" id="fonction" name="fonction" value="{{$departement->lib }}" readonly>
-                    <label for="fonction"></label>
+                    <label for="fonction">Chef dans le département</label>
                 </div> 
             </div>
         @endif

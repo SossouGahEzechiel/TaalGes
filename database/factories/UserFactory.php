@@ -36,7 +36,6 @@ class UserFactory extends Factory
             'dureCont'      =>      $this->faker->numberBetween(0,36),
             'fonction'      =>      $this->faker->randomElement(['admin','user']),
             'service_id'    =>      $this->faker->randomElement(Service::pluck(('id'))->toArray()),
-            // dd($this->faker->randomElement(User::all()->pluck(('id'))->toArray()))
         ];
     }
 

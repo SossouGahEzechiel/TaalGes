@@ -2,17 +2,19 @@
 
 namespace App\Notifications;
 
-use App\Mail\DemandeValideMail;
+use App\Mail\AvisMail;
 use App\Models\Demande;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class DemanadeValideNotification extends Notification
+class AvisNotification extends Notification
 {
     use Queueable;
-
+    
     public $demande;
-    public $user;
+
     /**
      * Create a new notification instance.
      *
@@ -21,8 +23,6 @@ class DemanadeValideNotification extends Notification
     public function __construct(Demande $demande)
     {
         $this->demande = $demande;
-        $this->user = Demande::whereUser_id($demande->user_id)->first();
-        // $this->toMail();
     }
 
     /**
@@ -42,9 +42,10 @@ class DemanadeValideNotification extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail()
+    public function toMail($notifiable)
     {
-        return (new DemandeValideMail($this->demande,$this->user));
+        return (new AvisMail($this->demande));
+            // ->to('eifireofierf@gmai.com');
     }
 
     /**
@@ -56,11 +57,7 @@ class DemanadeValideNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'date'=>$this->demande->dateDem->locale('fr')->calendar(),
-            'type'=>$this->demande->typeDem,
-            'id'=>$this->demande->id,
-            'objet'=>'Mail de Réponse',
-            'de' => 'taalcorp@gmail.com'
+            'demandeId' =>$this->demande->id
         ];
     }
 }

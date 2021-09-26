@@ -12,8 +12,8 @@ class Mail extends Model
     protected $guarded = [];
     protected $dates = ['created_at','updated_at'];
 
-    public function users()
+    public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class,'auteur');
     }
 }

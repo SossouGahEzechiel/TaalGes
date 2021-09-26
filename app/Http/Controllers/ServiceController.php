@@ -6,12 +6,13 @@ use App\Http\Requests\SearchReq;
 use App\Http\Requests\ServiceReq;
 use App\Models\Service;
 use App\Models\User;
-use Illuminate\Http\Client\Request;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use MercurySeries\Flashy\Flashy;
 
 class ServiceController extends Controller
 {
+    public $old;
 
     public function __construct() {
         $this->middleware(['auth','admin']);
@@ -20,7 +21,7 @@ class ServiceController extends Controller
     public function index()
     {
     
-        $services = Service::simplePaginate(5);
+        $services = Service::simplePaginate(10);
         return view('admin.service.index',compact('services'));
     }
 
@@ -35,7 +36,11 @@ class ServiceController extends Controller
     {
         $service = Service::create([
             'lib'=>$request->lib,
-            'directeur_id'=>$request->boss
+            'directeur_id'=>$request->directeur_id
+        ]);
+        $admin = User::whereId($service->directeur_id)->first();
+        $admin->update([
+            'service_id'=>$service->id
         ]);
         Flashy::success(sprintf('Service %s créé avec succes',$service->lib));
         return redirect(route('service.index',$service));
@@ -43,27 +48,29 @@ class ServiceController extends Controller
 
     public function show(Service $service)
     {
-        // dd($admin);
         return view('admin.service.show',compact('service'));
     }
 
     public function edit(Service $service)
     {   $admins = User::whereFonction('admin')->get();
-        // dd(User::all());
         return view('admin.service.edit',compact('service','admins'));
     }
 
     public function update(Request $request ,Service $service)
     {
         $request->validate([
-            $request->lib => ['required','min:5','max:35',Rule::unique('services')->where('id',$service->id)],
-            $request->boss => ['required',Rule::unique('services')->where('directeur_id',$service->directeur_id)]
+            'lib' => ['required','min:3','max:35',Rule::unique('services')->ignore($service->id)],
+            'directeur_id' => ['required',Rule::unique('services')->ignore($service->id)]
         ]);
         $service->update([
             'lib'=>$request->lib,
-            'directeur_id' =>$request->boss
+            'directeur_id' =>$request->directeur_id
         ]);
-        Flashy::success(sprintf('service %s mis à jour avec succes',$service->lib));
+        $admin = User::whereId($service->directeur_id)->first();
+        $admin->update([
+            'service_id'=>$service->id
+        ]);
+        Flashy::success(sprintf('Modification appliquée avec succes'));
         return redirect(route('service.show',$service));
     }
 

@@ -48,14 +48,12 @@
                     data : cData.M, 
                     backgroundColor: 'rgb(255,255,255)',
                     borderColor: 'rgb(146, 192, 208)',
-                    // fill: true,
                 },
                 {
                     label: 'Les demandes des femmes',
                     data : cData.F,   
                     backgroundColor: 'rgb(255,0,0)',
                     borderColor: 'rgb(146, 192, 17)',
-                    // fill: true,
                 }
             ]
         };

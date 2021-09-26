@@ -11,7 +11,9 @@
                 <div class="card-body">
                     <canvas id="myAreaChart" width="786" height="235" class="chartjs-render-monitor" style="width: 786px; height: 235px;"></canvas>
                 </div>
-                    <div class="card-footer small text-muted">Mis à jour {{$last->dateDem->locale('fr')->calendar()}}</div>
+                    @if ($last)
+                        <div class="card-footer small text-muted">Mis à jour {{$last->dateDem->locale('fr')->calendar()}}</div>
+                    @endif
                 </div>
             </div>
         </div>
