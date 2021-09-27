@@ -7,6 +7,6 @@
         Veuillez tenir compte de la présente annonce pour organiser vos activités. <br> <br>
         Merci de votre compréhension <br>TAAL-corporation
 
-        <div style="text-align: center; font-style: italic; font-family: Verdana, Geneva, Tahoma, sans-serif">{{$notification->created_at->locale('fr')->calendar()}}</div>
+        <div style="text-align: center; font-style: italic; font-family: Verdana, Geneva, Tahoma, sans-serif">{{$notification->locale('fr')->calendar()}}</div>
     </p>
 @endsection

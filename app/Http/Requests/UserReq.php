@@ -31,7 +31,7 @@ class UserReq extends FormRequest
             'natCont' => ['required'],
             'adresse' => ['required', 'string', 'max:60','min:3'],
             'email' => ['required', 'string', 'email', 'max:255','unique:users,email'],
-            'tel' => ['required', 'string','min:8','unique:users,tel'],            
+            'tel' => ['required', 'integer','min:8','unique:users,tel'],            
             'password' => ['required', 'confirmed', Rules\Password::defaults(),'unique:users,password'],
             'dateEmb' => ['required', 'date','before_or_equal:now'],
             'service' => ['required'],

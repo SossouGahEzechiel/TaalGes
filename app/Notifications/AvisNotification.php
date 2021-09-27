@@ -5,8 +5,7 @@ namespace App\Notifications;
 use App\Mail\AvisMail;
 use App\Models\Demande;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Notification;
 
 class AvisNotification extends Notification
@@ -44,8 +43,7 @@ class AvisNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new AvisMail($this->demande));
-            // ->to('eifireofierf@gmai.com');
+        return (new AvisMail($this->demande,now()));
     }
 
     /**

@@ -74,8 +74,8 @@
             @endforelse
         </tbody>
     </table>
-     {{-- Simple validation --}}
-     <div class="modal fade show" id="accepter" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:; font-size: 2mm">
+    {{-- Simple validation --}}
+    <div class="modal fade show" id="accepter" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:; font-size: 2mm">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-body text-danger" style="text-align: center; font-size: 2em">Voulez-vous vraiment accepter cette demande ? <br> <strong>Elle sera sans déduction !!</strong></div>

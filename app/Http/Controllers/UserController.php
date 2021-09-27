@@ -199,7 +199,6 @@ class UserController extends Controller
                 'fonction'      =>      $request->fonction,
                 'service_id'    =>      $request->service,
             ]);
-            // À déplacer
             Flashy::success(sprintf("Les modifications des données du salarié %s ont été mises à jour avec succès",$user->nom));
         }
         
@@ -214,8 +213,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if ($user->isBoss()) {
+            return back()->with('status','Cet salarié ne peut être supprimé en étant toujours chef d\'un service');
+        }
         $user->delete();
-        Flashy::error(sprintf("Salarié %s retiré avec succès",$user->nom));
+        Flashy::success(sprintf("Salarié %s retiré avec succès",$user->nom));
         return redirect(route('admin.index'));
     }
 
@@ -227,7 +229,7 @@ class UserController extends Controller
     }
     public function profil()
     {
-        $demandes = Demande::where('user_id',Auth::user()->id)->simplePaginate(9);
+        $demandes = Demande::where('user_id',Auth::user()->id)->simplePaginate(15);
         return view('user.demande.index',compact('demandes'));
     }
 

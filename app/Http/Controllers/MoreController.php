@@ -190,6 +190,7 @@ class MoreController extends Controller
     public function flashMails(DatabaseNotification $notification,$id)
     {
         $notification->markAsRead();
+        $notification = $notification->created_at;
         $demande = Demande::find($id);
         return view('emails.demande.avisMail',compact('demande','notification'));
     }

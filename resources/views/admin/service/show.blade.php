@@ -34,13 +34,14 @@
                         <td>{{$user->prenom}}</td>
                         <td>
                             <a href="{{ route('user.show', [$user->id]) }}" class="btn btn-secondary">Plus de détails</a>   &nbsp;&nbsp; 
-                            <a class="btn btn-warning" href="{{ route('user.edit',$service->id) }}">Modifier</a>    
-                            <form action="{{ route('user.destroy',$user->id) }}" method="POST" 
-                                onsubmit="return confirm('Voulez-vous vraiment retirer ce service ?? \n cette action effacera aussi tout les salariés qui y sont enrégistrés et sera irréversible')" class="btn">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger">Supprimer</button>
-                            </form>                          
+                            {{-- <a class="btn btn-warning" href="{{ route('user.edit',$service->id) }}">Modifier</a>     --}}
+                            @if ($user->id != Auth::user()->id)
+                                <a class="btn btn-info" href="{{ route('admin.edit',$user->id) }}">Modifier</a>    &nbsp;&nbsp; 
+                                <button class="btn btn-danger" onclick="return document.getElementById('searchDelete').style.display = 'block';">Retirer</button>                   
+                            @else
+                                <a class="btn btn-info disabled" href="{{ route('admin.edit',$user->id) }}">Modifier</a>    &nbsp;&nbsp; 
+                                <button class="btn btn-danger disabled" onclick="return document.getElementById('searchDelete').style.display = 'block';">Retirer</button>                   
+                            @endif                                 
                         </td>
                     </tr>
                 @empty
@@ -52,10 +53,44 @@
         </table>
     </div>
     <a href="{{ route('service.edit', [$service->id]) }}" class=" btn btn-warning">Modifier les informations du service</a>
-    <form action="{{ route('service.destroy',[$service]) }}" class="btn  method="POST"
-        onsubmit="return confirm('Voulez-vous vraiment retirer ce service ?? \n cette action effacera aussi tout les salariés qui y sont enrégistrés et sera irréversible')">
-        @csrf
-        @method('delete')
-        <button type="submit" class="btn btn-danger btn-block"">Supprimer le service</button>
-    </form>
+    <button onclick="return document.getElementById('serviceDelete').style.display = 'block';" class="btn btn-danger btn-group">Supprimer le service</button>
+    
+    {{-- Pour supprimer un utilisateur --}}
+    @if ($service->salaries->count() > 0)
+        <div class="modal fade show" id="searchDelete" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-danger" style="text-align: center; font-size: 20px">Voulez-vous vraiment vous retirer cet salarié ? <br> <strong>Attention cette action sera irréversible</strong></div>
+                <p style="padding-right: 45%""></p>
+                <div class="modal-footer">
+                <a class="btn btn-primary" onclick="return document.getElementById('searchDelete').style.display = 'none';" type="button" data-dismiss="modal" >Annuler</a>
+                <form action="{{ route('user.destroy',$user->id) }}" method="POST" class="btn">
+                    @csrf
+                    @method('delete')
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+    @endif
+
+
+    {{-- Pour supprimer un service --}}
+    <div class="modal fade show" id="serviceDelete" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body text-danger" style="text-align: center; font-size: 15px">Voulez-vous vraiment vous retirer ce service ? Celà entrainerait la suppresion des salariées qui y sont employés</div>
+            <p style="padding-right: 45%""></p>
+            <div class="modal-footer">
+              <a class="btn btn-primary" onclick="return document.getElementById('serviceDelete').style.display = 'none';" type="button" data-dismiss="modal" >Annuler</a>
+              <form action="{{ route('service.destroy',$service->id) }}" method="POST" class="btn">
+                @csrf
+                @method('delete')
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
     @endsection
