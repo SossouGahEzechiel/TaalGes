@@ -36,12 +36,12 @@
                         {{$self = ""}}
                     @endif
                     @switch($demande->decision)
-                        @case("Refusé")
+                        @case("Refuse")
                             {{$col = "table-light"}}
-                            {{$btn = '' }}
+                            {{$btn = 'disabled' }}
                             {{$decision = "Refusée"}}
                             @break
-                        @case("Accordé")
+                        @case("Accorde")
                             {{$col = "table-success"}}
                             {{$btn = "disabled"}}
                             {{$decision = "Accordée"}}
@@ -63,12 +63,11 @@
                     <td>{{$decision}}</td>
                     <td>
                         <a href="{{ route('demande.show', [$demande->id]) }}" class="btn btn-primary">Plus</a>
-                        <form action="{{ route('demande.update', [$demande->id]) }}" method="POST" class="btn"
-                            onsubmit="return confirm('Voulez-vous vraiment confirmer cette demande ??')">
-                            @csrf
-                            @method('put')
-                            <button type="submit" class="btn btn-success {{$btn}} ">Accepter</button>
-                        </form>
+                        @if($demande->user_id == Auth::user()->id)
+                            <button onclick="return document.getElementById('accepter').style.display = 'block';" class="btn btn-success {{$btn}} disabled">Accepter</button> 
+                        @else
+                            <button onclick="return document.getElementById('accepter').style.display = 'block';" class="btn btn-success {{$btn}}">Accepter</button>
+                        @endif
                     </td>
                 </tr>
             @empty
@@ -78,5 +77,27 @@
             @endforelse
         </tbody>
     </table>
+
+
+    
+    @if ($demandes->count() > 0)
+        {{-- Simple validation --}}
+        <div class="modal fade show" id="accepter" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:; font-size: 2mm">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-danger" style="text-align: center; font-size: 2em">Voulez-vous vraiment accepter cette demande ? <br> <strong>Elle sera sans déduction !!</strong></div>
+                <p style="padding-right: 45%""></p>
+                <div class="modal-footer">
+                <a class="btn btn-info col-auto " onclick="return document.getElementById('accepter').style.display = 'none';" type="button" data-dismiss="modal" >Annuler</a>
+                <form action="{{ route('demande.validation', [$demande->id,true]) }}" method="POST" class="btn">
+                    @csrf
+                    @method('put')
+                    <button type="submit" class="btn btn-success">Accepter</button>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+    @endif
     {{-- {{$demandes->links()}} --}}
 @endsection

@@ -77,7 +77,7 @@ class ServiceController extends Controller
     public function destroy(Service $service)
     {
         $service->delete();
-        Flashy::warning(sprintf('service %s supprimé avec succes',$service->lib));
+        Flashy::success(sprintf('service %s supprimé avec succes',$service->lib));
         return redirect(route('service.index'));
     }
 

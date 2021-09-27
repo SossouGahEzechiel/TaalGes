@@ -18,7 +18,7 @@
             <div class="row gx-6 mt-3">
                 <div class="col">
                     <div class="form-floating">
-                        <input type="date" class="form-control @error('dateDemb') is-invalid @enderror" name="dateDeb" id="dateDeb" value="{{old('dateDeb') ?? $demande->dateDeb}}" >
+                        <input type="date" class="form-control @error('dateDeb') is-invalid @enderror" name="dateDeb" id="dateDeb" value="{{old('dateDeb') ?? $demande->dateDeb}}" >
                         <label for="dateDeb">Date de début</label>
                     </div>
                     @error('dateDeb')

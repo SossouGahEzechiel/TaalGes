@@ -7,7 +7,7 @@
             <tr>
                 <th scope="col">Titre</th>
                 <th scope="col">Nom du directeur</th>
-                <th scope="col">Nombre de salarié</th>
+                <th scope="col">Effectif</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
@@ -19,14 +19,9 @@
                     <td>{{$service->boss()->nom}} {{$service->boss()->prenom}}</td>
                     <td>{{$service->salaries->count()}}</td>
                     <td>
-                        <a href="{{ route('service.show', [$service->id]) }}" class="btn btn-secondary">Plus de détails</a>   &nbsp;&nbsp; 
-                        <a class="btn btn-warning" href="{{ route('service.edit',$service->id) }}">Modifier</a>    
-                        <form action="{{ route('service.destroy',$service->id) }}" method="POST" 
-                            onsubmit="return confirm('Voulez-vous vraiment retirer ce service ?? \n cette action effacera aussi tout les salariés qui y sont enrégistrés et sera irréversible')" class="btn">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-danger">Supprimer</button>
-                        </form>                          
+                        <a href="{{ route('service.show', [$service->id]) }}" class="btn btn-secondary">Plus de détails</a> 
+                        <a class="btn btn-warning" href="{{ route('service.edit',$service->id) }}">Modifier</a> 
+                        <button onclick="return document.getElementById('serviceDelete').style.display = 'block';" class="btn btn-danger">Supprimer</button>                       
                     </td>
                 </tr>
             @empty

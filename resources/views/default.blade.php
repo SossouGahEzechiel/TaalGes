@@ -11,11 +11,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  @if (Auth::user()->fonction === "user")
-    <title>TAAL | {{$title = Auth::user()->nom}} - profil </title>
-  @else
-    <title>TAAL | Plateforme de gestion</title>
-  @endif
+  <code hidden>
+    @switch(url()->current())
+      @case(route('user.index'))
+        {{$title = "Liste des salariés"}}
+        @break
+      @case(route('user.create'))
+        {{$title = "Ajouter un nouveau salarié"}}
+        @break
+      @case(route('user.show',[Auth::user()]))
+        {{$title = "Mon profil"}}
+        @break
+      @case(route('user.profil'))
+        {{$title = "Mes demandes"}}
+        @break
+      @case(route('mails'))
+        {{$title = "Ma boîte mail"}}
+        @break
+      @case(route('demande.index'))
+        {{$title = "Liste des demandes"}}
+        @break
+      @case(route('demande.create'))
+        {{$title = "Faire une demande"}}
+        @break
+      @case(route('service.index'))
+        {{$title = "Liste des Services"}}
+        @break
+      @case(route('stat.parService'))
+        {{$title = "Page des statistiques par service"}}
+        @break
+      @case(route('stat.parIntervalle'))
+        {{$title = "Page des statistiques par intervalle de temps"}}
+        @break
+      @case(route('user.index'))
+        {{$title = "Liste des salariés"}}
+        @break
+      @case(route('user.index'))
+        {{$title = "Liste des salariés"}}
+        @break
+    
+      @default
+        {{$title = "Plateforme de gestion"}}
+    @endswitch
+  </code>
+  <title>TAAL | {{$title}} </title>
   <link rel="icon" href="{{ asset('favicon.ico') }}" />
   <!-- Bootstrap core CSS-->
   <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -75,7 +114,14 @@
   <body class="fixed-nav bg-light" id="page-top" >
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg bg-secondary fixed-top" id="mainNav">
-      <a class="navbar-brand text-light" href="" style="font-style: italic">{{Auth::user()->nom}} {{Auth::user()->prenom}} </a>
+      <a class="navbar-brand text-light" href="{{ route('user.show', [Auth::user()]) }}" style="font-style: italic; font-size: 15px">
+        @if (Auth::user()->sexe === 'M')
+          <img src="{{ asset('images/profilHomme.jpg') }}" alt="{{Auth::user()->nom}}" sizes="" srcset="" height="20px" width="20px">
+        @else
+          <img src="{{ asset('images/profilFemme.jpg') }}" alt="{{Auth::user()->nom}}" sizes="" srcset="" height="20px" width="20px">
+        @endif
+        {{Auth::user()->nom}} {{Auth::user()->prenom}} 
+      </a>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         {{-- Side bar --}}
         <ul class="navbar-nav navbar-sidenav bg-secondary" id="exampleAccordion">
@@ -413,6 +459,11 @@
     <div class="content-wrapper">
       <div class="mt-0 ml-5 mr-5" id="monBody" style="display: ">
         @yield('content')
+        @if (session('status'))
+          <div class="alert alert-danger text-center" id="alerte" onclick="return document.getElementById('alerte').style.display = 'none';"  >
+              {{ session('status') }}
+          </div>
+      @endif
         <script src="{{ asset('//code.jquery.com/jquery.js') }}"></script>
         @include('flashy::message')
         <br>
@@ -421,7 +472,8 @@
     
     <div class="sticky-footer bg-secondary" style="margin-left: 66mm; height: 15mm;">
       <div class="text-center mt-2" ondblclick="visibility('game');">
-        <small class="btn btn-link" style="color: white" title='Bravo tu es au bon endroit quelle est la prochaine étape ?'>Plateforme de gestion administrative du personnel de la TAAL</small>
+        <small class="btn" style="color: white" title='Bravo tu es au bon endroit quelle est la prochaine étape ?'>Plateforme de gestion administrative du personnel de la TAAL</small>
+      </div>
     </div>
       
       <!-- Scroll to Top Button-->
@@ -461,6 +513,26 @@
           </div>
         </div>
       @endif
+      
+      {{-- Suppression de service --}}
+      @if (url()->current() == route('service.index'))
+        <div class="modal fade show" id="serviceDelete" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" style="padding-right: 17px; display:;">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-body text-danger" style="text-align: center; font-size: 15px">Voulez-vous vraiment vous retirer ce service ? Celà entrainerait la suppresion des salariées qui y sont employés</div>
+              <p style="padding-right: 45%""></p>
+              <div class="modal-footer">
+                <a class="btn btn-primary" onclick="return document.getElementById('serviceDelete').style.display = 'none';" type="button" data-dismiss="modal" >Annuler</a>
+                <form action="{{ route('service.destroy',$service->id) }}" method="POST" class="btn">
+                  @csrf
+                  @method('delete')
+                  <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      @endif
 
 
       
@@ -478,7 +550,6 @@
       <!-- Custom scripts for this page-->
       <script src="{{asset('js/sb-admin-datatables.min.js')}}"></script>
       {{-- <script src="{{asset('js/sb-admin-charts.min.js')}}"></script> --}}
-    </div>
     
   </body>
 

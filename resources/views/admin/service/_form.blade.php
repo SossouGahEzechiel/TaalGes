@@ -2,7 +2,7 @@
     <div class="form-floating mb-3">
         <input type="text" class="form-control @error('lib') is-invalid @enderror" onclick="lo();" placeholder="lib" name="lib" id="lib" value="{{old('lib') ?? $service->lib}}">
         <label for="lib">Libellé du service</label>
-        @error('lib')<div class="alert alert-danger text-center">{{$message}}</div>@enderror
+        @error('lib')<div class="text-danger text-center">{{$message}}</div>@enderror
     </div>
     
     <div class="form-floating mb-3">
@@ -15,7 +15,7 @@
             <label for="directeur_id">Directeur du service</label>
         </div> 
     </div> 
-        @error('directeur_id')<div class="alert alert-danger text-center">{{$message}}</div>@enderror
+        @error('directeur_id')<div class="text-danger text-center">{{$message}}</div>@enderror
     <div class="d-grid gap-2 col-6 mx-auto mt-3">
         <button type="submit" class="btn btn-success">{{$action}}</button>
     </div>  

@@ -27,5 +27,10 @@ class User extends Authenticatable
     {
         return $this->HasMany(Mail::class,'auteur');
     }
+
+    public function isBoss() 
+    {
+        return (Service::whereDirecteur_id($this->id)->first()) ? true : false;
+    }
     
 }
