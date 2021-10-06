@@ -4,7 +4,7 @@
         @dump($error)
     @endforeach
     @if ($services->count()<1)
-        <p class="text-danger">Aucun service n'a été enrégitré, veuillez en ajouter avant d'ajouter un salarié </p>
+        <div class="alert alert-danger">Aucun service n'a été enrégitré, veuillez en ajouter avant d'ajouter un salarié </div>
         <a href="{{ route('service.create') }}" class="btn btn-primary">Ajouter un service</a>
     @else
         <h1>Formulaire d'enrégistrement d'un nouveau salarié</h1>

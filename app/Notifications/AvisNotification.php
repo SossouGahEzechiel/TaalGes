@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use App\Mail\AvisMail;
-use App\Models\Demande;
+use App\Models\Demand;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Notification;
@@ -19,7 +19,7 @@ class AvisNotification extends Notification
      *
      * @return void
      */
-    public function __construct(Demande $demande)
+    public function __construct(Demand $demande)
     {
         $this->demande = $demande;
     }

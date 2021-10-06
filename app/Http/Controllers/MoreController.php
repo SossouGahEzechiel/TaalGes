@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Demande;
+use App\Models\Demand;
 use App\Models\Mail;
 use App\Models\Service;
 use Carbon\Carbon;
@@ -20,7 +20,7 @@ class MoreController extends Controller
     public function parService()
     {
         $last = new Carbon();
-        $last = Demande::all(); 
+        $last = Demand::all(); 
         $last = $last->last();
         $services = Service::all();
         $data = [];
@@ -66,7 +66,7 @@ class MoreController extends Controller
 
         $data['F']["Janvier"] = 0;$data['F']["Fevrier"] = 0;$data['F']["Mars"] = 0;$data['F']["Avril"] = 0;$data['F']["Mai"] = 0;$data['F']["Juin"] = 0;
         $data['F']["Juillet"] = 0;$data['F']["Aout"] = 0;$data['F']["Septembre"] = 0;$data['F']["Octobre"] = 0;$data['F']["Novembre"] = 0;$data['F']["Decembre"] = 0;
-        foreach(Demande::all() as $demande){
+        foreach(Demand::all() as $demande){
             if ($demande->user->sexe === 'M'){
                 switch ($demande->dateDeb->month) {
                     case 1:
@@ -191,7 +191,7 @@ class MoreController extends Controller
     {
         $notification->markAsRead();
         $notification = $notification->created_at;
-        $demande = Demande::find($id);
+        $demande = Demand::find($id);
         return view('emails.demande.avisMail',compact('demande','notification'));
     }
 }

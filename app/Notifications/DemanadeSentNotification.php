@@ -4,7 +4,7 @@ namespace App\Notifications;
 
 use App\Mail\DemandeSentMail;
 use App\Mail\TestMail;
-use App\Models\Demande;
+use App\Models\Demand;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,7 @@ class DemanadeSentNotification extends Notification
      *
      * @return void
      */
-    public function __construct(Demande $demande)
+    public function __construct(Demand $demande)
     {
         $this->demande = $demande;
     }

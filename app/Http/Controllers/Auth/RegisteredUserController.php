@@ -8,12 +8,10 @@ use App\Mail\UserRegisterMail;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules;
+use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 
 class RegisteredUserController extends Controller
 {
@@ -35,26 +33,26 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(RegisterReq $request)
+    public function store(HttpFoundationRequest $request)
     {
         $user = User::create([
-            'nom'           =>      $request->nom,
-            'prenom'        =>      $request->prenom,
-            'adresse'       =>      $request->adresse,
-            'tel'           =>      $request->tel,
-            'email'         =>      $request->email,
-            'password'      =>      Hash::make($request->password),
-            'sexe'          =>      $request->sexe,
+            'nom'           =>      'SOSSOU-GAH',
+            'prenom'        =>      'Ezéchiel Godwill',
+            'adresse'       =>      'Baguida',
+            'tel'           =>      '99245957',
+            'email'         =>      'ezecsossougah@gmail.com',
+            'password'      =>      Hash::make('admin'),
+            'sexe'          =>      'M',
             'dateEmb'       =>      now(),
-            'natCont'       =>      $request->natCont,
+            'natCont'       =>      'CDI',
             'fonction'      =>      'admin',
-            'service_id'    =>      $request->service,
+            'service_id'    =>      1,
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
-        Mail::to($user->email)->send(new UserRegisterMail($user,$request->password));
+        Mail::to($user->email)->send(new UserRegisterMail($user,'admin'));
 
         return redirect(RouteServiceProvider::HOME);
     }

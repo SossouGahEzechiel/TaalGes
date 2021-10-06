@@ -1,9 +1,10 @@
 <?php
 
-use App\Models\User;
+use App\Models\TypeDemande;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 
 class CreateDemandesTable extends Migration
 {
@@ -16,19 +17,16 @@ class CreateDemandesTable extends Migration
     {
         Schema::create('demandes', function (Blueprint $table) {
             $table->id();
-            $table->enum('typeDem',['conge','permission']);
             $table->dateTime('dateDem');
             $table->dateTime('dateDeb');
             $table->integer('duree');
-            $table->string('objet',128);
             $table->enum('decision',['Accorde','Refuse'])
                 ->nullable();
+            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(TypeDemande::class);
             $table->integer('v_by')->nullable();
-            $table->timestamp('v_at')->nullable();
-            $table->foreignId('user_id')
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->dateTime('v_at')->nullable();
+            $table->softDeletes();
             $table->timestamps(); 
         });
     }

@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Mail extends Model
+class Leave extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
-    protected $dates = ['created_at','updated_at'];
 
-    public function user()
+    public function demand()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Demand::class);
     }
 }

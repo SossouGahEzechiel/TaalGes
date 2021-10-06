@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Demande;
+use App\Models\Demand;
 use DateTime;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -21,7 +21,7 @@ class AvisMail extends Mailable
      *
      * @return void
      */
-    public function __construct(Demande $demande,DateTime $timestamps)
+    public function __construct(Demand $demande,DateTime $timestamps)
     {
         $this->demande = $demande;
         $this->timestamps = $timestamps;

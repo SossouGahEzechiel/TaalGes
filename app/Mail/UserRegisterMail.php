@@ -46,7 +46,7 @@ class UserRegisterMail extends Mailable
     {
         $mail = Mail::create([
             'message'=>$msg,
-            'auteur' => Auth::user()->id,
+            'user_id' => Auth::user()->id,
             'destinataire' => $id
         ]);
         //Le mail est attaché au destinataire

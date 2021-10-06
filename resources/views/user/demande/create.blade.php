@@ -9,8 +9,8 @@
                 <!-- Type de dzmande -->
                 <div class="form-floating">
                     <select class="form-select @error('typeDem') is-invalid @enderror " id="typeDem" name="typeDem" aria-label="Floating label select example">
-                        <option value="congé">Congé</option>
-                        <option value="permission">Permission</option>
+                        <option value="1">Congé</option>
+                        <option value="2">Permission</option>
                     </select>
                     <label for="natCont">Type de demande</label>
                 </div>

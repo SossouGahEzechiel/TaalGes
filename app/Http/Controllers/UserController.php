@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Mail\TestMail;
-use App\Models\Demande;
+use App\Models\Demand;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserReq;
@@ -102,7 +102,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         $departement = Service::whereDirecteur_id($user->id)->first();
-        $last = Demande::whereUser_id($user->id)->get()->max('dateDeb');
+        $last = Demand::whereUser_id($user->id)->get()->max('dateDeb');
         if (Auth::user()->fonction == "user") {
             return view('user.self.show',compact('user','last','departement'));
         }
@@ -229,7 +229,7 @@ class UserController extends Controller
     }
     public function profil()
     {
-        $demandes = Demande::where('user_id',Auth::user()->id)->simplePaginate(15);
+        $demandes = Demand::where('user_id',Auth::user()->id)->simplePaginate(15);
         return view('user.demande.index',compact('demandes'));
     }
 

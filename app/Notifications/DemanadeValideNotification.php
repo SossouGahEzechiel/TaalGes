@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use App\Mail\DemandeValideMail;
-use App\Models\Demande;
+use App\Models\Demand;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
@@ -18,10 +18,10 @@ class DemanadeValideNotification extends Notification
      *
      * @return void
      */
-    public function __construct(Demande $demande)
+    public function __construct(Demand $demande)
     {
         $this->demande = $demande;
-        $this->user = Demande::whereUser_id($demande->user_id)->first();
+        $this->user = Demand::whereUser_id($demande->user_id)->first();
         // $this->toMail();
     }
 

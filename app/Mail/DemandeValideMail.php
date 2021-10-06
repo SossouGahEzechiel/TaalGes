@@ -2,9 +2,9 @@
 
 namespace App\Mail;
 
+use App\Models\Demand;
 use App\Models\Demande;
 use App\Models\Mail;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -30,7 +30,7 @@ class DemandeValideMail extends Mailable
      *
      * @return void
      */
-    public function __construct(Demande $demande, $user)
+    public function __construct(Demand $demande, $user)
     {
         $this->celui = $demande->user->id;
         $this->nom = $user->nom;
@@ -57,7 +57,7 @@ class DemandeValideMail extends Mailable
     {
         return $mail = Mail::create([
             'message'=>$msg,
-            'auteur' => Auth::user()->id,
+            'user_id' => Auth::user()->id,
             'destinataire' => $celui
         ]);
     }

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Demande;
+use App\Models\Leave;
+use App\Models\Demand;
+use App\Models\Permission;
 use App\Mail\DemandeSentMail;
-use App\Mail\DemandeValideMail;
 use App\Mail\DemandeAvorteMail;
+use App\Mail\DemandeValideMail;
 use App\Http\Requests\SearchReq;
 use MercurySeries\Flashy\Flashy;
 use Illuminate\Support\Facades\Auth;
@@ -31,53 +33,63 @@ class DemandeController extends Controller
     }
     public function index()
     {
-        $total = Demande::all()->count();
-        $demandes = Demande::orderByDesc('id')->simplePaginate(15);
+        $total = Demand::all()->count();
+        $demandes = Demand::orderByDesc('id')->simplePaginate(15);
         return view('admin.demande.index',compact('demandes','total'));
     }
 
     public function create()
     {
-        $demande = new Demande;
+        $demande = new Demand;
         return view('user.demande.create',compact('demande'));
     }
 
     public function store(DemandeRequest $request)
     {
         if (Auth::user()->reserve > 0) {
-            $demande = Demande::create([
-                'typeDem'=>$request->typeDem,
+            $Demand = Demand::create([
+                'type_demande_id'=>$request->typeDem,
                 'dateDem'=>now(),
                 'dateDeb'=>$request->dateDeb,
                 'duree'=>$request->duree,
-                'objet' => $request->objet,
                 'decision' => null,
                 'user_id'=> Auth::user()->id
             ]);
+            if ($request->typeDem == 1) {
+                Leave::create([
+                    'demand_id' =>$Demand->id
+                ]);
+            } else {
+                Permission::create([
+                    'objet' =>$request->objet,
+                    'demand_id' =>$Demand->id
+                ]);
+            }
             
-            Notification::send(User::whereFonction('admin')->get(),new DemanadeSentNotification($demande));
-            Mail::to('taalsa@gmail.com')->send(new DemandeSentMail($demande,Auth::user()));
+            
+            Notification::send(User::whereFonction('admin')->get(),new DemanadeSentNotification($Demand));
+            Mail::to('taalsa@gmail.com')->send(new DemandeSentMail($Demand,Auth::user()));
             Flashy::success("Votre demande a été envoyée avec succès");
-            return redirect(route('user.show',$demande->user->id));
+            return redirect(route('user.show',$Demand->user->id));
         }
         
         Mail::to(Auth::user()->email)->send(new DemandeAvorteMail(Auth::user()));
-        Flashy::error("Un problème s'est posé avec votre demande");
+        Flashy::error("Un problème s'est posé avec votre Demand");
         return back();
-        // Auth::user()->notify(new DemandeAvorteNotificatçion()); À complèter 
+        // Auth::user()->notify(new DemandAvorteNotificatçion()); À complèter 
     }
 
-    public function show(Demande $demande)
+    public function show(Demand $demande)
     {
         return view('admin.demande.show',compact('demande'));
     }
 
-    public function edit(Demande $demande)
+    public function edit(Demand $Demand)
     {
         //
     }
 
-    public function update(Demande $demande)
+    public function update(Demand $demande)
     {
         $demande->update([
             'decision' => 'Refuse',
@@ -91,7 +103,7 @@ class DemandeController extends Controller
         return back();
     }
 
-    public function destroy(Demande $demande)
+    public function destroy(Demand $demande)
     {
         $demande->delete();
         Flashy::error('Demande supprimée avec succès');
@@ -101,32 +113,32 @@ class DemandeController extends Controller
     //Mes actions
     public function attente()
     {
-        $demandes = Demande::whereDecision(null)->simplePaginate(15);
-        $total = Demande::whereDecision(null)->count();
-        return view('admin.demande.etat',compact('demandes','total'));
+        $Demands = Demand::whereDecision(null)->simplePaginate(15);
+        $total = Demand::whereDecision(null)->count();
+        return view('admin.demande.etat',compact('Demands','total'));
     }
     
     public function refuse()
     {
-        $demandes = Demande::whereDecision('Refusé')->simplePaginate(15);
-        $total = Demande::whereDecision('Refusé')->count();
-        return view('admin.demande.etat',compact('demandes','total'));
+        $Demands = Demand::whereDecision('Refusé')->simplePaginate(15);
+        $total = Demand::whereDecision('Refusé')->count();
+        return view('admin.demande.etat',compact('Demands','total'));
     }
     
     public function accorde()
     {
-        $demandes = Demande::whereDecision('Accordé')->simplePaginate(15);
-        $total = Demande::whereDecision('Accordé')->count();
-        return view('admin.demande.etat',compact('demandes','total'));
+        $Demands = Demand::whereDecision('Accordé')->simplePaginate(15);
+        $total = Demand::whereDecision('Accordé')->count();
+        return view('admin.demande.etat',compact('Demands','total'));
     }
 
     public function search(SearchReq $request)
     {
-        $demandes = Demande::with('user')->whereRelation('user','nom','like',"%$request->search%")->get();
-        return view('admin.demande.serach',compact('demandes','request'));
+        $Demands = Demand::with('user')->whereRelation('user','nom','like',"%$request->search%")->get();
+        return view('admin.demande.serach',compact('Demands','request'));
     }
 
-    public function validation(Demande $demande, $decision, $opt = null)
+    public function validation(Demand $demande, $decision, $opt = null)
     {
         if($decision){
             $demande->update([
@@ -155,9 +167,9 @@ class DemandeController extends Controller
     public function today()
     {
         $demandes = [];
-        foreach (Demande::orderByDesc('dateDem')->get() as $demande) {
-            if($demande->dateDem->isToday())
-                $demandes[] = $demande;
+        foreach (Demand::orderByDesc('dateDem')->get() as $demand) {
+            if($demand->dateDem->isToday())
+                $demandes[] = $demand;
         }
         $total = sizeof($demandes);
         return view('admin.demande.by',compact('demandes','total'));
@@ -166,7 +178,7 @@ class DemandeController extends Controller
     public function thisWeek()
     {
         $demandes = [];
-        foreach (Demande::orderByDesc('dateDem')->get() as $demande) {
+        foreach (Demand::orderByDesc('dateDem')->get() as $demande) {
             if($demande->dateDem->isCurrentWeek())
                 $demandes[] = $demande;
         }
@@ -177,7 +189,7 @@ class DemandeController extends Controller
     public function thisMonth()
     {
         $demandes = [];
-        foreach (Demande::orderByDesc('dateDem')->get() as $demande) {
+        foreach (Demand::orderByDesc('dateDem')->get() as $demande) {
             if($demande->dateDem->isCurrentMonth())
                 $demandes[] = $demande;
         }

@@ -16,28 +16,24 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('nom',60);
-            $table->string('prenom',60);
-            $table->string('adresse',100);
-            $table->string('tel',30);
-            $table->string('email',60);
-            $table->string('password',60);
+            $table->string('nom');
+            $table->string('prenom');
+            $table->string('adresse');
+            $table->string('tel');
+            $table->string('email');
+            $table->string('password');
             $table->enum('sexe',['M','F']);
             $table->dateTime('dateEmb');
             $table->enum('natCont',['CDD','CDI'])
-                ->default('CDD');
+                ->default('CDI');
             $table->integer('dureCont')
                 ->nullable();
             $table->integer('reserve')
                 ->default(30);
             $table->enum('fonction',['admin','user'])->default('user');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
-            $table->foreignId('service_id')
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->foreignIdFor(Service::class)->onDelete('cascade');
             $table->timestamps(); 
+            $table->softDeletes();
         });
     }
 

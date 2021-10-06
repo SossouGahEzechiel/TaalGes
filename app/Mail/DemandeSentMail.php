@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\Demande;
+use App\Models\Demand;
 use App\Models\Mail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -24,7 +24,7 @@ class DemandeSentMail extends Mailable
      *
      * @return void
      */
-    public function __construct(Demande $demande,User $user)
+    public function __construct(Demand $demande,User $user)
     {
         $this->user = $user;
         $this->demande = $demande;
@@ -36,7 +36,7 @@ class DemandeSentMail extends Mailable
     {
         $mail = Mail::create([
             'message'=>$msg,
-            'auteur' => Auth::user()->id
+            'user_id' => Auth::user()->id
         ]);
         //Le mail est attaché au destinataire
         // $mail->users()->attach(User::whereFonction('admin')->first()->id);
